@@ -1,0 +1,121 @@
+<#compress>
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${base}/res/layer/layer.js"></script>
+<title>快卡养车汽修厂后台管理系统</title>
+<style type="text/css">
+.form-singnin {
+	margin-top: 35%;
+	/* padding 内边距   margin 外边距 */
+}
+</style>
+<script type="text/javascript">
+	$(function() {
+		var ii;
+		var r_m, _ajax = false, login_success = false;
+
+		$.ajaxSetup({
+			beforeSend : function(request) {
+				if (_ajax) {
+					request.abort();
+				} else {
+					_ajax = true;
+					$('#loginForm input').attr('disabled', 'disabled');
+				}
+			},
+			complete : function(request, status) {
+				if (login_success) {
+					return;
+				}
+				_ajax = false;
+				$('#loginForm input').removeAttr('disabled', 'disabled');
+				$('#password').val('');
+				if (r_m == 0) {
+					$('#password').focus();
+				} else if (r_m == 1) {
+					$('#username').focus().val('');
+				} else {
+					$('#username').focus().val('');
+				}
+			},
+			error : function() {
+				layer.close(ii);
+				layer.msg('发起登录请求失败！');
+			}
+		});
+
+		$('#loginForm').submit(function() {
+			if (!validation()) {
+				return false;
+			}
+			var data = $('#loginForm').serialize();
+			ii = layer.load();
+			$.post('${base}/blogin/loginCheck', data, function(r) {
+				layer.close(ii);
+				if (r.e) {
+					layer.msg(r.e);
+				} else if (r.r) {
+					top.document.location = '${base}/blogin/main';
+				} else {
+					layer.msg('登录失败！');
+				}
+			}, 'json');
+			return false;
+		});
+	});
+	/*验证登录信息*/
+	function validation() {
+		if ($.trim($('#username').val()) == '') {
+			layer.msg('用户名不能为空！');
+			$('#username').focus();
+			return false;
+		}
+		if ($.trim($('#password').val()) == '') {
+			layer.msg('密码不能为空！');
+			$('#password').focus();
+			return false;
+		}
+		return true;
+	}
+</script>
+</head>
+<body style="background-color: silver;">
+	<div class="container" style="text-align: center;">
+		<h4 class="form-signin-heading">快卡养车汽修厂后台管理系统</h4>
+		<form action="#" role="form" class="form-singnin" id="loginForm"
+			onsubmit="return false;" style="background-color: maroon;">
+			<div style='height: 2px; clear: both; display: block'></div>
+			<h4 style="color: red">用户登录</h4>
+			<input type='text'
+				class='col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4'
+				placeholder='请输入用户名' required name="username" id="username">
+			<div style='height: 10px; clear: both; display: block'></div>
+			<input type="password"
+				class='col-xs-8 col-xs-offset-2  col-sm-4 col-sm-offset-4'
+				placeholder='请输入密码' required name="password" id="password">
+			<div style='height: 10px; clear: both; display: block'></div>
+			<input type="submit" class='btn btn-sm btn-primary col-xs-8 col-xs-offset-2  col-sm-4 col-sm-offset-4' name="登录" value="登录">
+			<div style='height: 10px; clear: both; display: block'></div>
+		</form>
+	</div>
+</body>
+</html>
+</#compress>

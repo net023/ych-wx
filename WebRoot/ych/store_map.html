@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<style type="text/css">
+		body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+		#allmap{width:100%;height:500px;}
+		p{margin-left:5px; font-size:14px;}
+	</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=PoxXygaQZtma9DpYa6blnKep"></script>
+<title>门店地址</title>
+</head>
+<body>
+<div class="row">
+  <div  class="col-xs-3 col-md-2" style="padding:0px;">
+    <ul >
+      <li class="common_li"> <a href="index.html" target="_self"  value="返回"><img src="img/ic_common_back.png"/><span class="text_color_white">返回</span></a> </li>
+    </ul>
+  </div>
+  <div  class="col-xs-6 col-md-8" style="padding:0px;">
+    <ul>
+      <li class="common_li_2">门店地址</li>
+    </ul>
+  </div>
+  <div  class="col-xs-3 col-md-2"style="padding:0px;" >
+    <li class="common_li_3"></li>
+  </div>
+</div>
+<div id="allmap" style="width:100%; height:100%;"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	map.setCurrentCity("重庆");  
+	map.centerAndZoom(new BMap.Point(106.54	,29.59), 11);
+	var local = new BMap.LocalSearch(map, {
+		renderOptions:{map: map}
+	});
+	local.search("重庆江北红旗河沟红石路88号");
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
+	/*缩放控件type有四种类型:
+	BMAP_NAVIGATION_CONTROL_SMALL：仅包含平移和缩放按钮；BMAP_NAVIGATION_CONTROL_PAN:仅包含平移按钮；BMAP_NAVIGATION_CONTROL_ZOOM：仅包含缩放按钮*/
+	
+	//添加控件和比例尺
+	map.addControl(top_left_control);        
+	map.addControl(top_left_navigation);     
+	map.addControl(top_right_navigation);    
+	
+</script>

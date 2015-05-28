@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<title>保养查询</title>
+</head>
+<body bgcolor="#F1F1F1">
+<div class="row">
+  <div  class="col-xs-3 col-md-2" style="padding:0px;">
+    <ul >
+      <li class="common_li"> <a href="index.html" target="_self"  value="返回"><img src="img/ic_common_back.png"/><span class="text_color_white">返回</span></a> </li>
+    </ul>
+  </div>
+  <div  class="col-xs-6 col-md-8" style="padding:0px;">
+    <ul>
+      <li class="common_li_2">保养查询</li>
+    </ul>
+  </div>
+  <div  class="col-xs-3 col-md-2"style="padding:0px;" >
+    <li class="common_li_3"></li>
+  </div>
+</div>
+<div class="row add_car_div">
+  <div class="col-xs-3 col-md-2" id="add_car_div_li">
+    <ul>
+      <li> <a target="_self" href="add_car.html"><img src="img/ic_red_car.png" height="69" width="69"/></a> </li>
+    </ul>
+  </div>
+  <div  class="col-xs-7 col-md-8" id="car_maintenance_add_car">
+    <ul>
+      <li>
+        <div align="left"><a target="_self" href="add_car.html"><span class="add_car_top">添加我的爱车</span></a> <br />
+          <a target="_self" href="add_car.html"><span id="add_maintenance_buttom">点击选择我的爱车品牌</span></a> </div>
+      </li>
+    </ul>
+  </div>
+  <div class="col-xs-2 col-md-2" id="car_maintenance_ic">
+    <ul>
+      <li><img src="img/ic_go.png" width="15" height="25"/></li>
+    </ul>
+  </div>
+</div>
+<div class="row add_car_div">
+  <div  class="col-xs-3 col-md-2" >
+    <ul>
+      <li><img src="img/ic_km.png"/></li>
+    </ul>
+  </div>
+  <div  class="col-xs-7 col-md-8">
+    <ul>
+      <li>
+        <div align="left">
+          <input type="text" class="car_maintenance_input" placeholder="请输入行驶里程（公里）" />
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div align="center"> <a href="submit_orders.html">
+  <input class="car_maintenance_btn" type="button" value="查询保养项目" />
+  </a> </div>
+<div>
+  <ul>
+    <li> <span class="car_maintenance_result"><img src="img/ic_title_prompt.png"/>&nbsp;&nbsp;查询结果</span> </li>
+  </ul>
+</div>
+<hr  size="2"/>
+<!-- 展示结果 -->
+<p id="car_maintenance_result"></p>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="Order">
+	
+	<!-- 动态SQL处理 -->
+	<sql id="pager">
+		<![CDATA[ 
+			FROM ( 
+				select t1.o_id,t1.res_time,t1.`status`,t3.phone,t4.price,t4.fs,t5.ms from (
+					select id o_id,b_id,`status`,res_time from `order` where 1=1
+					<% if(!isEmpty(sd)){ %>
+						AND res_time>=#'$sd$'#
+					<% } %>
+					<% if(!isEmpty(ed)){ %>
+					 AND res_time<DATE_ADD(#'$ed$'#,INTERVAL 1 DAY)
+					<% } %>
+				)t1
+				left join(
+					select o_id,u_id from wxuser_order
+				)t2 on t2.o_id = t1.o_id
+				left join wxuser t3 on t3.id = t2.u_id
+				left join(
+					select o_id,sum(pp) price,group_concat(fs) fs from (
+						select t1.*,t1.n*t2.price pp,t3.fs from (
+							select o_id,c_id,sum(num) n from order_commodity group by o_id,c_id
+						)t1
+						left join commodity t2 on t2.id = t1.c_id
+						left join(
+							select group_concat(f_id) 'fs',c_id from commodity_pic group by c_id
+						)t3 on t3.c_id = t2.id
+					)tt group by o_id
+				)t4 on t4.o_id = t1.o_id
+				left join(
+					select o_id,group_concat(`name`) ms from (
+						select t1.o_id,t1.ms_id,t2.`name` from order_mtser t1
+						left join mtser t2 on t2.id = t1.ms_id
+					)t group by o_id
+				)t5 on t5.o_id = t1.o_id
+			)t
+		]]>
+	</sql>
+	
+</sqlGroup>

@@ -1,0 +1,29 @@
+<#compress>
+<!DOCTYPE html">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>提现记录</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta content="telephone=no" name="format-detection">
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body class="bge">
+        <ul class="swlist">
+        	<%if(tixian!=null){for(tx in tixian){%>
+        		<li>
+	                <i>${txLP.index}</i>
+	                <span class="tx">${tx.ttime}</span>
+	                <span class="tx">${tx.m}元</span>
+	                <span class="swact">${tx.state}</span>
+	            </li>
+        	<%}}else{%>
+        		<span style="margin: auto;">暂无提现记录信息</span>
+        	<%}%>
+            
+        </ul>
+    </body>
+</html>
+</#compress>

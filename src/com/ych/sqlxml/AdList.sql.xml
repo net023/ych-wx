@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="AdList">
+	
+	<!-- 动态SQL处理 -->
+	<sql id="pager">
+		<![CDATA[ 
+			FROM (
+				SELECT id,`name`,bid,jhjj,pUrl,plUrl,IFNULL(wprice,0.00) price,apstwz,word
+				FROM ad_info 
+				WHERE state = 1 
+				ORDER BY sort ASC
+			)t
+		]]>
+	</sql>
+	
+</sqlGroup>

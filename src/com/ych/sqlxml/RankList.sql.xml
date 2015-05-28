@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="RankList">
+	
+	<!-- 动态SQL处理 -->
+	<sql id="pager">
+		<![CDATA[ 
+			FROM rank_list order by money desc
+		    
+		]]>
+	</sql>
+	
+</sqlGroup>

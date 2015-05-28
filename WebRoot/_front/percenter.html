@@ -1,0 +1,105 @@
+<#compress>
+<!DOCTYPE html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>个人中心</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta content="telephone=no" name="format-detection">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bge">
+<section>
+    <ul class="incomebox">
+        <li>
+            <div class="wrapli">
+                <img src="<%if(userInfo!=null){%>${userInfo.headimgurl}<%}%>" width="55" alt="" class="frimg"> <span class="ltext">头像</span>
+            </div>
+        </li>
+        <li>
+            <div class="wrapli">
+                <span class="mon" id="isNull">${dian}</span><span>点儿ID</span>
+            </div>
+        </li>
+        <li>
+            <div class="wrapli">
+                <span class="mon"><%if(userInfo!=null){%>${userInfo.nickname}<%}%></span><span>微信昵称</span>
+            </div>
+        </li>
+    </ul>
+    <a href="${base}/wx/toDraw?openId=${userInfo.openid}" title="" class="tixian"><span>添加提现信息</span></a>
+    <ul class="incomebox" id="js-percen">
+        <li>
+            <a href="${base}/wx/swjl?openId=${userInfo.openid}" title="" id="sw">
+            	<span class="mon"> 
+	            	<%if(swjl==0){%>
+	            		暂无
+	            	<%}else{%>
+	            		${swjl.adname}
+	            	<%}%>
+            	</span>
+            	<span>试玩记录</span>
+            </a>
+        </li>
+        <li>
+            <a href="${base}/wx/txjl?openId=${userInfo.openid}" title="" id="tx">
+            	<span class="mon">
+            		<%if(txjlsize==0){%>
+	            		暂无
+	            	<%}%>
+            	</span>
+            	<span>提现记录</span>
+            </a>
+        </li>
+    </ul>
+    <input type="hidden" id="txjlsize" value="${txjlsize}"/>
+    <input type="hidden" id="swjlsize" value="${swjlsize}"/>
+</section>
+        <script src="${base}/js/jquery-1.9.1.min.js"></script>
+        <script src="${base}/js/layer.m.js"></script>
+        <script type="text/javascript">
+        $(function(){
+            $("#sw").click(function() {
+            var swjlsize = $("#swjlsize").val();
+            	if(swjlsize==0){
+            		layer.open({
+	                    content: '您还没有相应记录哦',
+	                    style:'color:#ff6634',
+	                    btn: ['确定']
+	                });
+	                return false;
+            	}
+            });
+            $("#tx").click(function() {
+            var txjlsize = $("#txjlsize").val();
+            	if(txjlsize==0){
+	                layer.open({
+	                    content: '您还没有相应记录哦',
+	                    style:'color:#ff6634',
+	                    btn: ['确定']
+	                });
+	                return false;
+            	}
+            });
+
+        /* 判断与用户关联的点的信息是否存在，如果不存在退出当前页面 */
+   		var isNull = document.getElementById("isNull").innerHTML;
+   			if(isNull=="还没安装点"){
+	     		/* 询问框 */
+	     		layer.open({
+	                 content: '您还没有安装小点儿或没有激活点儿哦',
+	                 style:'color:#ff6634',
+	                 btn: ['确定'],
+	                 yes:function(index){
+	             		window.location.href="${base}/wx/xzxd";
+					}
+	             });
+             
+   			}
+        });
+        </script>
+</body>
+</html>
+</#compress>

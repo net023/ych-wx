@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="AppVer">
+	
+	<!-- 动态SQL处理 -->
+	
+	<sql id="app">
+		<![CDATA[ 
+			FROM app_version where cur=1
+		]]>
+	</sql>
+	
+</sqlGroup>

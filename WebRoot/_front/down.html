@@ -1,0 +1,56 @@
+<!DOCTYPE html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>应用点儿</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta content="telephone=no" name="format-detection">
+<link rel="stylesheet" href="${base}/css/style.css">
+
+</head>
+<body class="bge">
+<section class="downapp">
+    <img src="${base}/img/logo2.png" height="89" alt="点儿">
+    <p>点儿</p>
+    <a href="javascript:void(0);" title="" class="appbtn" id="dian_down_btn">下载</a>
+</section>
+<script src="${base}/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	var userAgent = navigator.userAgent; 
+	var isSafari = userAgent.indexOf("Safari") > -1;
+	var down_dian_url_by_safari = "itms-services://?action=download-manifest&url=";
+	var down_dian_url = '${app.plUrl}';
+	var d_url; 
+	
+	 
+	
+	$(function(){
+		$("#dian_down_btn").click(function(){
+			if(isSafari==true){
+				d_url = down_dian_url_by_safari+down_dian_url;
+				/* 下载小兵 */
+				window.location.href= d_url;
+			}else{
+				/* d_url = down_dian_url;
+		        var link = document.createElement('a');
+		        link.rel='noreferrer';
+		        if(d_url.indexOf("?")>-1){
+		        	d_url += '&_='+new Date().getTime();
+		        }else{
+		        	d_url += '?_='+new Date().getTime();
+		        }
+		        link.href = d_url;
+		        document.body.appendChild(link);
+		        link.click();  */
+		        alert('请在右上角菜单中点击在Safari中打开再进行下载安装');
+			}  
+		});
+		
+	});
+	
+	
+</script>
+</body>
+</html>

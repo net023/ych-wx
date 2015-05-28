@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="SwInCome">
+	
+	<!-- 动态SQL处理 -->
+	<sql id="pager">
+		<![CDATA[ 
+			FROM (
+				SELECT 
+				ai.pUrl purl,
+				ai.name adname,
+				IFNULL(si.money, 0) m,
+				DATE_FORMAT(si.time, '%Y-%m-%d') swtime,
+				CASE WHEN si.state=1 THEN '已激活'
+					WHEN si.state=2 THEN '未激活'
+					END state
+				FROM wx_client wc ,sw_info si,ad_info ai
+				WHERE si.did=wc.id AND ai.id=si.adid AND wc.openid=#'$openId$'#
+				
+			)t
+		]]>
+	</sql>
+	
+</sqlGroup>

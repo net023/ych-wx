@@ -1,0 +1,12 @@
+/com/
+/dbConfig.properties
+/dev.properties
+/dev_dbConfig.properties
+/dev_sysConfig.properties
+/dev_yingmobCache.properties
+/ehcache.xml
+/log4j.properties
+/quartzjob.properties
+/sysConfig.properties
+/ych.properties
+/yingmobCache.properties

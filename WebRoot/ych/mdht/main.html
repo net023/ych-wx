@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="${base}/res/layer/layer.js"></script> -->
+<script type="text/javascript" src="${base}/res/layer_mobile/layer_mobile.js"></script>
+<!-- datetimepicker -->
+<script type="text/javascript" src="${base}/res/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="${base}/res/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<link rel="stylesheet" type="text/css" href="${base}/res/datetimepicker/bootstrap-datetimepicker.min.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.0/bootstrap-table.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.0/bootstrap-table.min.js"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<title>快卡养车汽修厂后台管理系统</title>
+<base href="${base}">
+<script type="text/javascript">
+	$(function(){
+		//url:'${base}/blogin/data1?s_d='+$("#s_d").val()+"&e_d="+$("#e_d").val()
+		$("#search_btn").click(function(){
+			alert(1);
+			$('#table').bootstrapTable("refresh",{
+				url:'${base}/blogin/data1?s_d='+$("#s_d").val()+"&e_d="+$("#e_d").val()
+			});
+		});
+		
+		$('#s_d').datetimepicker({
+			format: 'yyyy-mm-dd',
+			language:'zh-CN',
+			todayBtn:true,
+			autoclose:true,
+			minView:2,
+			maxView:3
+		});
+		$('#e_d').datetimepicker({
+			format: 'yyyy-mm-dd',
+			language:'zh-CN',
+			todayBtn:true,
+			autoclose:true,
+			minView:2,
+			maxView:3
+		});
+		
+		/*
+			<th>订单号</th>
+			<th>项目</th>
+			<th>配件</th>
+			<th>总价</th>
+			<th>电话</th>
+			<th>时间</th>
+			<th>状态</th>
+		*/
+		
+		$("#table").bootstrapTable({
+			url:'${base}/blogin/data1',
+			method:'get',
+			cache:false,
+			pagination:true,
+			height:400,
+			sidePagination:'server',
+			pageSize: 2,
+			columns:[
+			    {field:'o_id',title:'订单号'},     
+			    {field:'ms',title:'项目',visible:false},     
+			    {field:'fs',title:'配件',visible:false},     
+			    {field:'price',title:'总价',visible:false},     
+			    {field:'phone',title:'电话'},     
+			    {field:'res_time',title:'时间'},     
+			    {field:'status',title:'状态',formatter:function(value,row,index){
+			    	switch(value){
+					case 0:return '<font color="green">新增</font>';break;
+					case 1:return '<font color="blue">已通过</font>';break;
+					case 2:return '<font color="red">已驳回</font>';break;
+					}
+			    }},     
+			    {field:'opt',title:'操作',formatter:function(value,row,index){
+			    	var html = "<a href='javascript:;' onclick='show("+index+")'>查看</a>";
+			    	return html;
+			    }}    
+			]
+		}); 
+		
+	});
+	
+	function show(index){
+		//layer.msg("show..."+index);
+		var dd = $('#table').bootstrapTable('getData')[index];
+		switch(dd.status){
+		case 0:dd.status = '<font color="green">新增</font>';break;
+		case 1:dd.status = '<font color="blue">已通过</font>';break;
+		case 2:dd.status = '<font color="red">已驳回</font>';break;
+		}
+		var html = $('<div>');
+		var fsArr = dd.fs.split(",");
+		
+		for(var i in fsArr){
+			var fid = fsArr[i];
+			var img = '<img src="${base}/file/download?fID='+fid+'" style="width:80px;height:80px;">';
+			html.append(img);
+		}
+		
+		layer.open({
+		    type: 3,
+		    content: '<div class="row"><table border="1"><tr><th>订单号</th><th>用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td>'+dd.phone+'</td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>'
+		});
+	}
+	
+</script>
+</head>
+<body>
+	<div class="container" style="border: 1px solid red;">
+		<!-- head -->
+		<div class="row" style="border: 1px solid green;">
+			<strong class="col-xs-3">汽修厂管理后台</strong>
+			<em class="col-xs-4">快卡服务热线：${tell}</em>
+			<div class="col-xs-4 col-xs-offset-1">
+				<span class="col-xs-7">
+					<a href="javascript:;"><span class="glyphicon glyphicon-user">${nick}</span></a>
+				</span>
+				<span class="col-xs-5"><a href="javascript:;">退出</a></span>
+			</div>
+		</div>
+		
+		<!-- search -->
+		<div class="row">
+			<form action="#" role="form" class="form-inline" onsubmit="return false;">
+				<div class="form-group">
+					<label for="s_d">开始时间:</label>
+					<input type="text" id="s_d" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="e_d">结束时间:</label>
+					<input type="text" id="e_d" class="form-control">
+				</div>
+				<div class="form-group">
+					<input type="submit" id="search_btn" value="查询" class="btn btn-primary form-control">
+				</div>
+			</form>
+		</div>
+		
+		<!-- body -->
+		<table id="table" data-pagination="true">
+		</table>
+	</div>
+</body>
+</html>

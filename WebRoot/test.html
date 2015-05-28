@@ -1,0 +1,52 @@
+<!DOCTYPE html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>应用点儿</title>
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	
+	function ccc(data){
+		alert(data.isok);
+		console.info(data);
+	}
+		
+	$(function(){
+		
+		var openId="123";
+		var id="123";
+		$("#btn").click(function(){
+			$.ajax({
+				url:"http://119.29.75.90:8001/ad/report?callback=ccc",
+				type:'GET',
+				dataType:'jsonp',
+				jsonp:'callback', 
+				data:"openid="+openId+"&adid="+id+"&type=1",
+				cache:false
+			}); 
+			/* var amount=16;
+        	var openId="oq3IpuIKg28Xl6XKF4zq8CWNUFL8";
+        	$.ajax({
+				url:"http://119.29.75.90:8001/wx/txReq",
+				type:'GET',
+				dataType:'jsonp',
+				jsonp:'callback',
+				jsonpCallback :ccc,
+				data:"openid="+openId+"&amount="+amount+"",
+				cache:false,
+				success:function(r){
+					alert(r.isok);
+					console.info(r); 
+				},
+				error:function(){
+				}
+			}); */
+		});
+	});
+</script>
+</head>
+<body>
+	<input type="button" id="btn" value="提交"/>
+</body>
+</html>
