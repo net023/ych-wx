@@ -3,7 +3,6 @@ package com.ych.web.controller;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class BLoginController extends BaseController {
 			BUserModel user = getUser();
 			if(null!=user){
 				setAttr("tell", YchConstants.YCH_TELL);
-				setAttr("nick", user.get("nickname"));
+				setAttr("nick", user.get("name"));
 				render("/ych/mdht/main");
 				return;
 			}
@@ -48,7 +47,7 @@ public class BLoginController extends BaseController {
 		String username = getPara("username");
 		String password = getPara("password");
 		if (StrKit.isBlank(username) || StrKit.isBlank(password)) {
-			result.put(ERROR, "用户名密码错误");
+			result.put(ERROR, "用户名/密码不能为空");
 			renderJson(result);
 		}
 		try {
@@ -57,6 +56,8 @@ public class BLoginController extends BaseController {
 				result.put(RESULT, true);
 				getSession().setAttribute(SysConstants.SESSION_USER, user);
 				new SysLoginLogModel().set("userID", user.get("id")).set("username", user.get("username")).set("loginIP", getRealIpAddr(getRequest())).set("loginDate", new Date()).save();
+			}else{
+				result.put(ERROR, "用户名/密码错误!");
 			}
 		} catch (Exception e) {
 			result.put(ERROR, "登录失败");
@@ -69,15 +70,35 @@ public class BLoginController extends BaseController {
 		getSession().removeAttribute(SysConstants.SESSION_USER);
 		redirect("/blogin");
 	}
+	
+	
+	public void changePass(){
+		Map<String, Object> result = getResultMap();
+		try {
+			String newPassword = getPara("np");
+			Integer uid = getParaToInt("id");
+			boolean isChangePassword = BUserModel.dao.changePassword(uid, newPassword);
+			if(isChangePassword){
+				result.put(RESULT, true);
+			}else{
+				result.put(ERROR, "服务器修改失败");
+			}
+		} catch (Exception e) {
+			result.put(ERROR, "服务器异常");
+			LOG.error("修改密码失败", e);
+		}
+		renderJson(result);
+	}
+	
 
 	public void main() {
 		BUserModel user = getUser();
 		if(user==null){
 			redirect("/blogin");
 		}else{
-			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			setAttr("sysDate", format.format(Calendar.getInstance().getTime()));
-			setAttr("nick", user.get("nickname"));
+//			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//			setAttr("sysDate", format.format(Calendar.getInstance().getTime()));
+			setAttr("nick", user.get("name"));
 			setAttr("tell", YchConstants.YCH_TELL);
 			render("/ych/mdht/main");
 		}
@@ -123,12 +144,15 @@ public class BLoginController extends BaseController {
 		Integer start = getParaToInt("offset");
 		//数据长度
 		Integer lenght = getParaToInt("limit");
+		
+		Integer uid = getParaToInt("id");
+		
 		//s_d
 		String sd = getPara("s_d");
 		//e_d
 		String ed = getPara("e_d");
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("sd", sd);param.put("ed", ed);
+		param.put("sd", sd);param.put("ed", ed);param.put("uid", uid);
 		
 		Page<Record> page = OrderModel.dao.getData1(start, lenght, param);
 		

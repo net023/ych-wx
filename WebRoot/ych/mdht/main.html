@@ -19,7 +19,13 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="${base}/res/layer/layer.js"></script> -->
-<script type="text/javascript" src="${base}/res/layer_mobile/layer_mobile.js"></script>
+<!-- <script type="text/javascript" src="${base}/res/layer_mobile/layer_mobile.js"></script> -->
+<!-- modaldialog -->
+<!-- <script type="text/javascript" src="${base}/res/modaldialog/jquery.modaldialog.js"></script>
+<link rel="stylesheet" type="text/css" href="${base}/res/modaldialog/jquery.modaldialog.css"> -->
+<!-- artdialog -->
+<link rel="stylesheet" type="text/css" href="${base}/res/artdialog/ui-dialog.css">
+<script type="text/javascript" src="${base}/res/artdialog/dialog-plus-min.js"></script>
 <!-- datetimepicker -->
 <script type="text/javascript" src="${base}/res/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="${base}/res/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -38,9 +44,8 @@
 	$(function(){
 		//url:'${base}/blogin/data1?s_d='+$("#s_d").val()+"&e_d="+$("#e_d").val()
 		$("#search_btn").click(function(){
-			alert(1);
 			$('#table').bootstrapTable("refresh",{
-				url:'${base}/blogin/data1?s_d='+$("#s_d").val()+"&e_d="+$("#e_d").val()
+				url:'${base}/blogin/data1?id=${user.id}&s_d='+$("#s_d").val()+"&e_d="+$("#e_d").val()
 			});
 		});
 		
@@ -72,20 +77,24 @@
 		*/
 		
 		$("#table").bootstrapTable({
-			url:'${base}/blogin/data1',
+			url:'${base}/blogin/data1?id=${user.id}',
 			method:'get',
 			cache:false,
 			pagination:true,
 			height:400,
 			sidePagination:'server',
-			pageSize: 2,
+			pageSize: 9,
+			pageList:[9],/*如果pageSize和pageList一样，那么就不会显示pagelist选择框*/
 			columns:[
 			    {field:'o_id',title:'订单号'},     
 			    {field:'ms',title:'项目',visible:false},     
 			    {field:'fs',title:'配件',visible:false},     
 			    {field:'price',title:'总价',visible:false},     
 			    {field:'phone',title:'电话'},     
-			    {field:'res_time',title:'时间'},     
+			    {field:'res_time',title:'时间',formatter:function(value,row,index){
+			    	var date = value.split(" ")[0];
+			    	return date.substring(5);
+			    }},     
 			    {field:'status',title:'状态',formatter:function(value,row,index){
 			    	switch(value){
 					case 0:return '<font color="green">新增</font>';break;
@@ -100,7 +109,71 @@
 			]
 		}); 
 		
+		 $('#logout').click(function(){
+            /* asyncbox.confirm('确定要退出系统吗？','系统提示',function(action){ 
+                if(action == 'ok'){
+                    document.location = window.rootPath + "/login/logout";
+                }
+            }); */
+            var lgo = dialog({
+            	title:'系统提示',
+                content: '确定要退出系统吗？',
+                okValue: '确定',
+                ok: function () {
+                	document.location = "${base}/blogin/logout";
+                    return true;
+                },
+                cancelValue: '取消',
+                cancel: function () {}
+            });
+            lgo.showModal();
+        });
+		 
+		 function changePassword(newPass){
+			 var u_id = $("#u_id").val();
+			 $.post('${base}/blogin/changePass', {id:u_id,np:newPass}, function(r) {
+				if (r.e) {
+					dialog({content: r.e,okValue: '确定',ok:function(){}}).showModal();
+				} else if (r.r) {
+					dialog({content: '修改成功!',okValue: '确定',ok:function(){}}).showModal();
+					
+				} else {
+					dialog({content: '修改失败！',okValue: '确定',ok:function(){}}).showModal();
+				}
+			}, 'json');
+		 }
+		 
+		 
+		 $("#user").click(function(){
+			 var cp = dialog({
+			    title: '修改密码',
+			    content: '<input id="changePS" type="password"/>',
+			    okValue: '确定',
+			    ok: function () {
+			        var value = $('#changePS').val().trim();
+			        if(''==value){
+			        	dialog({content: '密码不能为空',okValue: '确定',ok:function(){}}).showModal();
+			        	return false;
+			        }
+			        changePassword(value);
+			        this.remove();
+			    },
+			    cancelValue: '取消',
+                cancel: function () {}
+			});
+			cp.showModal();
+		 });
+		
+		
 	});
+	
+	function showPicInfo(fid){
+		dialog({
+			title:'大图',
+		    content:'<img src="${base}/file/download?fID='+fid+'" style="width:200px;height:200px;">'
+		}).showModal();
+	}
+	
 	
 	function show(index){
 		//layer.msg("show..."+index);
@@ -111,33 +184,80 @@
 		case 2:dd.status = '<font color="red">已驳回</font>';break;
 		}
 		var html = $('<div>');
-		var fsArr = dd.fs.split(",");
+		
+		var fsArr = new Array();
+		if(dd.fs){
+			fsArr = dd.fs.split(",");
+		}
+		
+		if(!dd.o_id){
+			dd.o_id='';
+		}
+		if(!dd.price){
+			dd.price=0.00;
+		}
+		if(!dd.ms){
+			dd.ms='';
+		}
+		if(!dd.res_time){
+			dd.res_time='';
+		}
+		if(!dd.phone){
+			dd.phone='';
+		}
 		
 		for(var i in fsArr){
 			var fid = fsArr[i];
-			var img = '<img src="${base}/file/download?fID='+fid+'" style="width:80px;height:80px;">';
+			var img = '<img src="${base}/file/download?fID='+fid+'" style="width:80px;height:80px;margin:5px;" onclick="showPicInfo('+fid+')">';
 			html.append(img);
 		}
 		
-		layer.open({
-		    type: 3,
-		    content: '<div class="row"><table border="1"><tr><th>订单号</th><th>用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td>'+dd.phone+'</td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>'
+		
+		var d = dialog({
+			//cancel: false,
+		    title: '详细信息',
+		    okValue: '关闭',
+			content:'<div><table border="1" id="show_table"><tr><th>订单号</th><th sytle="background-color: yellow;">用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td><a href="tel:'+dd.phone+'">'+dd.phone+'</a></td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>',
+		    ok: function () {}
 		});
+		d.showModal();
+		
+		
+		/* art.dialog({
+			title:'详细信息',
+			content:'<div class="row" style="overflow:scroll;"><table border="1"><tr><th>订单号</th><th>用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td>'+dd.phone+'</td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>'
+		}); */
+		
+		/* $.modaldialog.success('<div class="row" style="overflow:scroll;"><table border="1"><tr><th>订单号</th><th>用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td>'+dd.phone+'</td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>', {
+		  title: '详细信息'
+		}); */
+		
+		/* layer.open({
+		    type: 3,
+		    content: '<div class="row" style="overflow:scroll;"><table border="1"><tr><th>订单号</th><th>用户电话</th><th>状态</th></tr><tr><td>'+dd.o_id+'</td><td>'+dd.phone+'</td><td>'+dd.status+'</td></tr><tr><th colspan="2">预约时间</th><th>总价格</th></tr><tr><td colspan="2">'+dd.res_time+'</td><td>'+dd.price+'元</td></tr><tr><th colspan="3">保养项目</th></tr><tr><td colspan="3">'+dd.ms+'</td></tr><tr><th colspan="3">配件图片</th></tr><tr><td colspan="3">'+html.html()+'</td></tr></table></div>'
+		}); */
 	}
 	
 </script>
+<style type="text/css">
+	#show_table th{
+		background-color: #87CEEB;
+	}
+</style>
 </head>
 <body>
+	<input type="hidden" value="${user.id}" id="u_id">
 	<div class="container" style="border: 1px solid red;">
 		<!-- head -->
 		<div class="row" style="border: 1px solid green;">
 			<strong class="col-xs-3">汽修厂管理后台</strong>
-			<em class="col-xs-4">快卡服务热线：${tell}</em>
-			<div class="col-xs-4 col-xs-offset-1">
+			<!-- <em class="col-xs-4">快卡服务热线：${tell}</em> -->
+			<em class="col-xs-4">快卡服务热线：<a href="tel:${tell}">${tell}</a></em>
+			<div class="col-xs-5">
 				<span class="col-xs-7">
-					<a href="javascript:;"><span class="glyphicon glyphicon-user">${nick}</span></a>
+					<a href="javascript:;" id="user"><span class="glyphicon glyphicon-user">${nick}</span></a>
 				</span>
-				<span class="col-xs-5"><a href="javascript:;">退出</a></span>
+				<span class="col-xs-5"><a href="javascript:;" id="logout">退出</a></span>
 			</div>
 		</div>
 		
@@ -161,6 +281,7 @@
 		<!-- body -->
 		<table id="table" data-pagination="true">
 		</table>
+		
 	</div>
 </body>
 </html>

@@ -13,6 +13,9 @@
 					<% if(!isEmpty(ed)){ %>
 					 AND res_time<DATE_ADD(#'$ed$'#,INTERVAL 1 DAY)
 					<% } %>
+					<% if(!isEmpty(uid)){ %>
+					 AND b_id=#$uid$#
+					<% } %>
 				)t1
 				left join(
 					select o_id,u_id from wxuser_order
