@@ -1,186 +1,186 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="http://lib.sinaapp.com/js/jquery/1.8.3/jquery.min.js"></script>
-<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-<link href="css/index.css" rel="stylesheet" type="text/css" />
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.event.drag-1.5.min.js"></script>
-<script type="text/javascript" src="js/jquery.touchSlider.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
+<html lang="zh-cmn-Hans">
 
-	$(".main_visual").hover(function(){
-		$("#btn_prev,#btn_next").fadeIn()
-	},function(){
-		$("#btn_prev,#btn_next").fadeOut()
-	});
-	
-	$dragBln = false;
-	
-	$(".main_image").touchSlider({
-		flexible : true,
-		speed : 200,
-		btn_prev : $("#btn_prev"),
-		btn_next : $("#btn_next"),
-		paging : $(".flicking_con a"),
-		counter : function (e){
-			$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
-		}
-	});
-	
-	$(".main_image").bind("mousedown", function() {
-		$dragBln = false;
-	});
-	
-	$(".main_image").bind("dragstart", function() {
-		$dragBln = true;
-	});
-	
-	$(".main_image a").click(function(){
-		if($dragBln) {
-			return false;
-		}
-	});
-	
-	timer = setInterval(function(){
-		$("#btn_next").click();
-	}, 5000);
-	
-	$(".main_visual").hover(function(){
-		clearInterval(timer);
-	},function(){
-		timer = setInterval(function(){
-			$("#btn_next").click();
-		},5000);
-	});
-	
-	$(".main_image").bind("touchstart",function(){
-		clearInterval(timer);
-	}).bind("touchend", function(){
-		timer = setInterval(function(){
-			$("#btn_next").click();
-		}, 5000);
-	});
-	
-});</script>
-<style type="text/css">
-.index_check_li{
-background:url(img/ic_index_bg.png);
-			background-repeat:no-repeat;
-			background-size:100% 100px;
-			
-}
-        .on{
-            background:url(img/ic_index_bg_selected.png);
-			background-repeat:no-repeat;
-			background-size:100% 100px;
-        }
-        .off{
-            background:url(img/ic_index_bg.png);
-			background-repeat:no-repeat;
-			background-size:100% 100px;
-        }
-</style>
-<title>欢迎进入快卡</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>快卡首页</title>
+    <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../res/jquery/jquery-1.11.3.min.js"></script>
+    <script src="../res/jquery/jquery.touchSwipe.min.js"></script>
+    <script src="../res/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <link href="css/base.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <script src="js/index.js"></script>
 </head>
+
 <body>
-<div class="row" style="background-color:#12D586;">
-  <div class="col-xs-3 col-md-3">
-    <ul>
-      <li class="li_index_phone"><a href="tel:800000000" id="index_title_corlor"> <img src="img/ic_phone.png" width="33" height="31" align="middle" />&nbsp;电话</a></li>
-    </ul>
-  </div>
-  <div class="col-xs-6 col-md-6 li_index">
-    <ul>
-      <li class="li_index"> <span>快卡养车</span></li>
-    </ul>
-  </div>
-  <div class="col-xs-3 col-md-3" id="div_menu">
-    <ul>
-      <li>
-        <div class="pull-right dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/ic_menu.png" alt="下拉菜单按钮" width="33" height="31" /> </a>
-          <ul class="dropdown-menu" role='menu' aria-labelledby='dLabel' style="background-color:#333333">
-            <li role="presentation"><a title="保养档案" style="color:#939393" href="order_form_record.html"><img src="img/ic_form.png"/>&nbsp;&nbsp;保养档案</a> </li>
-            <li role="presentation"><a title="保养查询" style="color:#939393" href="car_maintenance_inquiry.html"><img src="img/ic_search.png"/>&nbsp;&nbsp;保养查询</a> </li>
-            <li role="presentation"><a title="关于我们" style="color:#939393" href="about_us.html"><img src="img/ic_about_us.png"/>&nbsp;&nbsp;关于我们</a> </li>
-            <li role="presentation"><a title="帮助中心" style="color:#939393" href="help_center.html"><img src="img/ic_help.png"/>&nbsp;&nbsp;帮助中心</a> </li>
-          </ul>
+    <div class="container-fluid">
+        <header class="row">
+            <div class="col-xs-4">
+                <a class="plain-link text-white" href="tel:123456789"><img src="img/ic_phone.png" alt="">客服电话</a>
+            </div>
+            <div class="col-xs-4 text-center">
+                <img class="logo" src="img/title.png">
+            </div>
+            <div class="col-xs-4">
+                <div class="btn-group pull-right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href=""><img src="img/ic_menu.png">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" style="background-color:#333333">
+                        <li role="presentation"><a title="保养档案" style="color:#939393" href="byda"><img src="img/ic_form.png"/>&nbsp;&nbsp;保养档案</a> </li>
+			            <li role="presentation"><a title="保养查询" style="color:#939393" href="bycx"><img src="img/ic_search.png"/>&nbsp;&nbsp;保养查询</a> </li>
+			            <li role="presentation"><a title="关于我们" style="color:#939393" href="gywm"><img src="img/ic_about_us.png"/>&nbsp;&nbsp;关于我们</a> </li>
+			            <li role="presentation"><a title="帮助中心" style="color:#939393" href="bzzx"><img src="img/ic_help.png"/>&nbsp;&nbsp;帮助中心</a> </li>
+                    </ul>
+                </div>
+
+            </div>
+        </header>
+        <div class="row">
+            <div id="myCarousel" class="carousel slide col-md-12">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                <% for (carousel in carousels) { %>
+                    <li data-target="#myCarousel" data-slide-to="${carouselLP.index - 1}" ${carouselLP.first ? 'class="active"'}></li>
+                <% } %>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                <% for (carousel in carousels) { %>
+                    <div class="item ${carouselLP.first ? 'active'}">
+	                    <a href="../news/show?nID=${carousel.n_id}">
+	                        <img src="../file/download?fID=${carousel.f_id}">
+    	                </a>
+                    </div>
+                <% } %>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
         </div>
-      </li>
-    </ul>
-  </div>
-</div>
-</div>
-<div class="main_visual">
-  <div class="flicking_con"> <a href="#">1</a> <a href="#">2</a> <a href="#">3</a> </div>
-  <div class="main_image">
-    <ul>
-      <li><a href="add_car.html"><span class="img_1"></span></a></li>
-      <li><span class="img_2"></span></li>
-      <li><span class="img_3"></span></li>
-    </ul>
-    <a href="javascript:;" id="btn_prev"></a> <a href="javascript:;" id="btn_next"></a> </div>
-</div>
-<div class="row add_car_div">
-  <div  class="col-xs-3 col-md-2" id="add_car_div_li">
-    <ul>
-      <li> <a target="_self" href="add_car.html"><img src="img/ic_red_car.png" height="69" width="69"/></a> </li>
-    </ul>
-  </div>
-  <div  class="col-xs-7 col-md-8" id="add_car_div_li_2">
-    <ul>
-      <li>
-        <div align="left"> <a target="_self" href="add_car.html"><span class="add_car_top">添加我的爱车</span></a> <br />
-          <a target="_self" href="add_car.html"><span id="add_car_buttom">点击选择我的爱车品牌</span></a> </div>
-      </li>
-    </ul>
-  </div>
-  <div  class="col-xs-2 col-md-2" id="add_car_div_li_3">
-    <ul>
-      <li><img src="img/ic_go.png" width="15" height="25"/></li>
-    </ul>
-  </div>
-</div>
-<div class="index_check_div">
-  <ul>
-    <li class="index_check_li"> <img src="img/ic_tool.png" width="15%" height="auto"/>大保养&#12288;&#12288;&#12288;&#12288;</li>
-    <li class="index_check_li"> <img src="img/ic_small_maintenance.png"  width="15%" height="auto"/>小保养&#12288;&#12288;&#12288;&#12288;</li>
-  </ul>
-</div>
-<div  class="index_check_div">
-  <ul>
-    <li class="index_check_li" > <img src="img/ic_antifreeze.png"  width="15%" height="auto"/> <span>更换防冻液&#12288;&#12288;</span> </li>
-    <li class="index_check_li" > <img src="img/ic_spark_plug.png"  width="15%" height="auto"/> <span>更换火花塞&#12288;&#12288;</span> </li>
-  </ul>
-</div>
-<div  class="index_check_div">
-  <ul>
-    <li class="index_check_li"> <img src="img/ic_brake_oil.png" width="15%" height="auto"/> <span>更换刹车油&#12288;&#12288;</span> </li>
-    <li class="index_check_li" > <img src="img/ic_brake_pads.png" width="15%" height="auto"/> <span>更换刹车片&#12288;&#12288;</span> </li>
-  </ul>
-</div>
-<div  class="index_check_div">
-  <ul>
-    <li class="index_check_li"> <img src="img/ic_air_conditioning_filter.png" width="15%" height="auto"/> <span>更换空调滤清器</span> </li>
-    <li class="index_check_li" > <img src="img/ic_more.png" width="15%" height="auto"/> <span>其他需求&#12288;&#12288;</span> </li>
-  </ul>
-</div>
-<div align="center"> <a href="submit_orders.html">
-  <input  class="index_button" type="button" value="选择配件" />
-  </a> </div>
-<script type="text/javascript">
-    function getSelect(){
-         alert($('.on').length);
-    }
-  $('.index_check_li').click(function(){
-     $(this).toggleClass('on');
-  });
-</script>
+        <div class="add-car row bg-white border-tb">
+            <div class="col-xs-12">
+                <img class="pull-left" src="img/ic_red_car.png">
+                <div class="pull-left">
+                    <div id="car-name">${car! != null ? car.name : '添加我的爱车'}</div>
+                    <input id="car" type="hidden" value="${car! != null ? car.id}">
+                    <input id="car-lyid" type="hidden" value="${car! != null ? car.ly_id}">
+                    <div class="small">点击选择我的爱车品牌</div>
+                </div>
+                <img class="pull-right icon" src="img/ic_go.png">
+            </div>
+        </div>
+        <div class="row part">
+        	<div class="col-xs-12 part-title">
+        		<img src="img/maintain-1.png" alt="" class="pull-left" />
+        		<div class="pull-left">
+        			<div>大保养</div>
+        			<div class="small">全面的爱车保养服务</div>
+        		</div>
+        		<button class="pull-right btn btn-green" id="big-maintain">选择保养</button>
+        	</div>
+        	<div class="col-xs-12 part-body text-center">
+        		<div class="col-xs-3">
+	        		<img src="img/ic_engine_oil.png">
+        		</div>
+        		<div class="col-xs-3">
+	        		<img src="img/ic_oil_filter.png">
+        		</div>
+        		<div class="col-xs-3">
+	        		<img src="img/ic_air_filter.png">
+        		</div>
+        		<div class="col-xs-3">
+	        		<img src="img/ic_air_condition.png">
+        		</div>
+        	</div>
+        </div>
+        <div class="row part">
+        	<div class="col-xs-12 part-title">
+        		<img src="img/maintain-2.png" alt="" class="pull-left" />
+        		<div class="pull-left">
+        			<div>小保养</div>
+        			<div class="small">方便快捷的爱车保养服务</div>
+        		</div>
+        		<button class="pull-right btn btn-green" id="small-maintain">选择保养</button>
+        	</div>
+        	<div class="col-xs-12 part-body text-center">
+        		<div class="col-xs-3">
+	        		<img src="img/ic_engine_oil.png">
+        		</div>
+        		<div class="col-xs-3">
+	        		<img src="img/ic_oil_filter.png">
+        		</div>
+        	</div>
+        </div>
+        <!-- <div class="row">
+            <div class="maintain radio col-xs-6">
+                <label>
+                    <img src="img/maintain-1.png">
+                    <input name="wide-category" type="radio">
+			                    大保养
+                </label>
+            </div>
+            <div class="maintain radio col-xs-6">
+                <label>
+                    <img src="img/maintain-2.png" alt="">
+                    <input name="wide-category" type="radio">
+			                    小保养
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-3.png">
+                    <input type="checkbox">
+			                    更换防冻液
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-4.png" alt="">
+                    <input type="checkbox">
+			                    更换火花塞
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-5.png">
+                    <input type="checkbox">
+			                    更换刹车油
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-6.png" alt="">
+                    <input type="checkbox">
+			                    更换刹车片
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-7.png">
+                    <input type="checkbox">
+			                    更换空调滤清器
+                </label>
+            </div>
+            <div class="maintain checkbox col-xs-6">
+                <label>
+                    <img src="img/maintain-8.png" alt="">
+                    <input type="checkbox">
+			                    其他
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12"><button type="button" class="btn btn-lg btn-green max-width" onclick="next();">选择配件</button></div>
+        </div> -->
+    </div>
 </body>
+
 </html>
