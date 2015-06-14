@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+.type:hover {
+	cursor: pointer;
+}
+.car {
+	display: block;
+	height: 35px;
+	margin: 5px -5px;
+	padding: 5px;
+	border: 1px solid #b8b8b8;	
+}
+.car:hover {
+	cursor: pointer;
+}

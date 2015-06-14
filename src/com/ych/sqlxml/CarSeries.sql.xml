@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="CarSeries">
+    
+    <sql id="seriesWithTypes">
+        <![CDATA[
+        SELECT
+			t1.id AS sid,
+			t2.ids AS tids,
+			t1.`name` AS sname,
+			t2.`names` AS tnames
+		FROM
+			(
+				(
+					SELECT
+						id,
+						`name`
+					FROM
+						car_series
+					WHERE
+						b_id = ?
+					AND `status` = 0
+				) t1
+				LEFT JOIN (
+					SELECT
+						GROUP_CONCAT(id) AS `ids`,
+						GROUP_CONCAT(`name`) AS `names`,
+						s_id
+					FROM
+						car_type
+					WHERE
+						`status` = 0
+					GROUP BY
+						s_id
+				) t2 ON t1.id = t2.s_id
+			)
+        ]]>
+    </sql>
+</sqlGroup>

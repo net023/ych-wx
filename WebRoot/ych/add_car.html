@@ -1,196 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
-<link href="css/index.css" rel="stylesheet" type="text/css" />
-<title>添加车型</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>添加车型</title>
+    <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../res/jquery/jquery-1.11.3.min.js"></script>
+    <script src="../res/bootstrap/js/bootstrap.min.js"></script>
+    <link href="css/add_car.css" rel="stylesheet">
+    <script src="js/add_car.js"></script>
 </head>
+
 <body>
-<div class="row">
-  <div  class="col-xs-3 col-md-2" style="padding:0px;">
-    <ul >
-      <li class="common_li"> <a href="index.html" target="_self"  value="返回"><img src="img/ic_common_back.png"/><span class="text_color_white">返回</span></a> </li>
-    </ul>
-  </div>
-  <div  class="col-xs-6 col-md-8" style="padding:0px;">
-    <ul>
-      <li class="common_li_2">添加车型</li>
-    </ul>
-  </div>
-  <div  class="col-xs-3 col-md-2"style="padding:0px;" >
-    <li class="common_li_3"></li>
-  </div>
-</div>
-<div class="div_gray_1">
-  <input id="input_number" type="text" value="请输入17位VIN码确定车型" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#999'}"/>
-</div>
-<div class="add_car_search_div"> <span>选择爱车品牌首字母，快速查找</span>
-  </li>
-</div>
-<div class="car_letter_all">
-  <ul>
-    <li>
-      <input id="car_a" type="radio" name="radiobutton" value="radiobutton"  checked="checked"/>
-      <label for="car_a"><a href="#car_a">A</a></label>
-    </li>
-    <li>
-      <input id="car_b" type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_b"><a href="#car_b">B</a></label>
-    </li>
-    <li>
-      <input  id="car_c"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_c"><a href="#car_c">C </a></label>
-    </li>
-    <li>
-      <input  id="car_d"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_d"> <a href="#car_d">D</a></label>
-    </li>
-    <li>
-      <input  id="car_e"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_e"><a href="#car_e">E</a></label>
-    </li>
-    <li>
-      <input  id="car_f"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_f"><a href="#car_f">F</a></label>
-    </li>
-    <li>
-      <input  id="car_g"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_g"> <a href="#car_g">G</a></label>
-    </li>
-    <li>
-      <input  id="car_h"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_h"><a href="#car_h">H</a></label>
-    </li>
-    <li>
-      <input  id="car_i"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_i"><a href="#car_i">I </a></label>
-    </li>
-    <li>
-      <input  id="car_j"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_j"><a href="#car_j">J</a></label>
-    </li>
-  </ul>
-  <ul>
-    <li> <a href="#car_k">
-      <input  id="car_k"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_k">K</label>
-      </a></li>
-    <li> <a href="#car_l">
-      <input  id="car_l"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_l">L</label>
-      </a></li>
-    <li> <a href="#car_m">
-      <input  id="car_m"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_m">M</label>
-      </a></li>
-    <li> <a href="#car_n">
-      <input  id="car_n"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_n">N</label>
-      </a></li>
-    <li> <a href="#car_o">
-      <input  id="car_o"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_o">O</label>
-      </a></li>
-    <li> <a href="#car_p">
-      <input  id="car_p"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_p">P</label>
-      </a></li>
-    <li> <a href="#car_q">
-      <input  id="car_q"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_q">Q</label>
-      </a></li>
-    <li> <a href="#car_r">
-      <input  id="car_r"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_r">R</label>
-      </a></li>
-    <li> <a href="#car_s">
-      <input  id="car_s"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_s">S</label>
-      </a></li>
-  </ul>
-  <ul>
-    <a href="#car_t">
-    <li>
-      <input  id="car_t"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_t">T</label>
-    </li>
-    </a>
-    <li> <a href="#car_u">
-      <input  id="car_u"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_u">U</label>
-      </a></li>
-    <li> <a href="#car_v">
-      <input  id="car_v"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_v">V</label>
-      </a></li>
-    <li> <a href="#car_w">
-      <input  id="car_w"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_w">W</label>
-      </a></li>
-    <li> <a href="#car_x">
-      <input  id="car_x"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_x">X</label>
-      </a></li>
-    <li> <a href="#car_y">
-      <input  id="car_y"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_y">Y</label>
-      </a></li>
-    <li> <a href="#car_z">
-      <input  id="car_z"type="radio" name="radiobutton" value="radiobutton" />
-      <label for="car_z">Z</label>
-      </a></li>
-  </ul>
-</div>
-<div class="car_name_all_div">
-  <div class="car_leeter_div"> <a name="car_a"><span >A</span></a> </div>
-  <div >
-    <ul class="car_name_ul">
-      <li class="car_name_li">奥迪</li>
-      <li class="car_name_li">阿斯顿马丁</li>
-      <li class="car_name_li">阿尔法罗密欧</li>
-    </ul>
-  </div>
-</div>
-<div class="car_name_all_div">
-  <div class="car_leeter_div"> <a name="car_b"><span >B</span></a> </span> </div>
-  <div>
-    <ul class="car_name_ul">
-      <li class="car_name_li">保时捷</li>
-      <li class="car_name_li">别克</li>
-      <li class="car_name_li">北京汽车</li>
-      <li class="car_name_li">奔腾</li>
-    </ul>
-    <ul class="car_name_ul">
-      <li class="car_name_li">奔驰</li>
-      <li class="car_name_li">宝马</li>
-      <li class="car_name_li">宝骏</li>
-      <li class="car_name_li">宝龙</li>
-    </ul>
-    <ul class="car_name_ul">
-      <li class="car_name_li">宾利</li>
-      <li class="car_name_li">本田</li>
-      <li class="car_name_li">标致</li>
-      <li class="car_name_li">比亚迪</li>
-    </ul>
-  </div>
-</div>
-<div>
-  <div class="car_leeter_div"><a name="car_c"><span >C</span></a> </div>
-  <div class="car_name_all_div">
-    <ul class="car_name_ul">
-      <li class="car_name_li">传祺</li>
-      <li class="car_name_li">昌河</li>
-      <li class="car_name_li">长丰</li>
-      <li class="car_name_li">长城</li>
-    </ul>
-    <ul class="car_name_ul">
-      <li class="car_name_li">长安</li>
-    </ul>
-  </div>
-</div>
+	<div class="container-fluid">
+		<div class="search row">
+			<div class="col-xs-9"><input class="form-control" id="vin" type="text" placeholder="请输入17位VIN码确定车型"></div>
+			<div class="col-xs-3"><button class="btn btn-green max-width" id="search" type="button">搜索</button></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<strong>选择爱车品牌首字母，快速查找</strong>
+			</div>
+		</div>
+		<div class="row">
+			<div class="text-center col-xs-2"><input id="A" type="radio" name="letter" checked><label for="A">A</label></div>
+			<div class="text-center col-xs-2"><input id="B" type="radio" name="letter"><label for="B">B</label></div>
+			<div class="text-center col-xs-2"><input id="C" type="radio" name="letter"><label for="C">C</label></div>
+			<div class="text-center col-xs-2"><input id="D" type="radio" name="letter"><label for="D">D</label></div>
+			<div class="text-center col-xs-2"><input id="E" type="radio" name="letter"><label for="E">E</label></div>
+			<div class="text-center col-xs-2"><input id="F" type="radio" name="letter"><label for="F">F</label></div>
+			<div class="text-center col-xs-2"><input id="G" type="radio" name="letter"><label for="G">G</label></div>
+			<div class="text-center col-xs-2"><input id="H" type="radio" name="letter"><label for="H">H</label></div>
+			<div class="text-center col-xs-2"><input id="I" type="radio" name="letter"><label for="I">I</label></div>
+			<div class="text-center col-xs-2"><input id="J" type="radio" name="letter"><label for="J">J</label></div>
+			<div class="text-center col-xs-2"><input id="K" type="radio" name="letter"><label for="K">K</label></div>
+			<div class="text-center col-xs-2"><input id="L" type="radio" name="letter"><label for="L">L</label></div>
+			<div class="text-center col-xs-2"><input id="M" type="radio" name="letter"><label for="M">M</label></div>
+			<div class="text-center col-xs-2"><input id="N" type="radio" name="letter"><label for="N">N</label></div>
+			<div class="text-center col-xs-2"><input id="O" type="radio" name="letter"><label for="O">O</label></div>
+			<div class="text-center col-xs-2"><input id="P" type="radio" name="letter"><label for="P">P</label></div>
+			<div class="text-center col-xs-2"><input id="Q" type="radio" name="letter"><label for="Q">Q</label></div>
+			<div class="text-center col-xs-2"><input id="R" type="radio" name="letter"><label for="R">R</label></div>
+			<div class="text-center col-xs-2"><input id="S" type="radio" name="letter"><label for="S">S</label></div>
+			<div class="text-center col-xs-2"><input id="T" type="radio" name="letter"><label for="T">T</label></div>
+			<div class="text-center col-xs-2"><input id="U" type="radio" name="letter"><label for="U">U</label></div>
+			<div class="text-center col-xs-2"><input id="V" type="radio" name="letter"><label for="V">V</label></div>
+			<div class="text-center col-xs-2"><input id="W" type="radio" name="letter"><label for="W">W</label></div>
+			<div class="text-center col-xs-2"><input id="X" type="radio" name="letter"><label for="X">X</label></div>
+			<div class="text-center col-xs-2"><input id="Y" type="radio" name="letter"><label for="Y">Y</label></div>
+			<div class="text-center col-xs-2"><input id="Z" type="radio" name="letter"><label for="Z">Z</label></div>
+		</div>
+		<div class="row">
+		<%
+			for (brand in brands) {
+				var ids = strutil.split(brand.ids, ",");
+				var names = strutil.split(brand.names, ",");	
+		%>
+			<div class="letter col-xs-12" mark="${strutil.toUpperCase(brand.letter)}"><span>${strutil.toUpperCase(brand.letter)}</span></div>
+			<%  for (var i = 0; i < ids.~size; i++) { %>
+			<div class="col-xs-3"><div id="${ids[i]}" class="brand">${names[i]}</div></div>
+			<%  } %>
+		<% } %>
+		</div>
+	</div>
 </body>
+
 </html>

@@ -39,4 +39,66 @@ public class YchWxController extends BaseController {
 		}
 		render("/ych/index");
 	}
+	
+	/**
+	 * 添加汽车
+	 */
+	public void tjqc() {
+		List<CarBrandModel> brands = CarBrandModel.dao.getBrands();
+		setAttr("brands", brands);
+		render("/ych/add_car");
+	}
+	
+	/**
+	 * 选择汽车
+	 */
+	public void xzqc() {
+		Integer bID = getParaToInt("brand");
+		List<CarSeriesModel> series = CarSeriesModel.dao.getSeries(bID);
+		setAttr("series", series);
+		render("/ych/select_car");
+	}
+
+	/**
+	 * 保存选中汽车
+	 */
+	public void bcqc() {
+		String query = getPara("query");
+		try {
+			Integer cID = getParaToInt("car");
+			String code = getPara("code");
+			if (code == null) {
+				redirect(MessageFormat.format(
+						OAUTH2_URL,
+						URLEncoder.encode(WX_SER_URL + "ych/bcqc?car=" + cID
+								+ (query != null ? "&query=1" : ""), "UTF-8")));
+				return;
+			}
+			Map<String, Object> infos = AccessUserInfoByOAuth2
+					.getWxUserInfo(code);
+			System.out.println(infos);
+			Integer uID = (Integer) infos.get("did");
+			WxUserCarModel carModel = WxUserCarModel.dao.getWxUserCarModel(uID);
+			boolean result = false;
+			if (carModel == null) {
+				carModel = new WxUserCarModel();
+				carModel.set("u_id", uID);
+				carModel.set("c_id", cID);
+				result = carModel.save();
+			} else {
+				carModel.set("c_id", cID);
+				result = carModel.update();
+			}
+			if (!result) {
+				render("/ych/add_car_error");
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (query == null)
+			redirect("/ych/yyby");
+		else
+			redirect("/ych/bycx");
+	}
 }
