@@ -68,8 +68,6 @@ public class JsApiTicket {
 		System.out.println("aaa");
 		if (expiredTime == null)
 			return false;
-		if (errcode == null)
-			return false;
 		if (expiredTime < System.currentTimeMillis())
 			return false;
 		return ticket != null;

@@ -116,7 +116,7 @@ public class SqlXmlKit {
 			String val = String.valueOf(param.get(clounm3));
 			if (clounm.equals("#" + clounm2 + "#")) { // 数值型，可以对应处理int、long、bigdecimal、double等等
 				try {
-					Integer.parseInt(val);
+					//Integer.parseInt(val);
 					sql = sql.replace(clounm, val);
 				} catch (NumberFormatException e) {
 					LOG.error("查询参数值错误,整型值传入了字符串,非法字符串:val=" + val);

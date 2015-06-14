@@ -1,9 +1,15 @@
 package com.jfinal.weixin.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.jfinal.kit.EncryptionKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.api.ApiResult;
+import com.jfinal.weixin.sdk.api.JsApiTicket;
+import com.jfinal.weixin.sdk.api.JsApiTicketApi;
 import com.jfinal.weixin.sdk.api.MenuApi;
 import com.jfinal.weixin.sdk.api.UserApi;
 import com.jfinal.weixin.sdk.jfinal.ApiController;
@@ -59,5 +65,41 @@ public class WeixinApiController extends ApiController {
 		ApiResult apiResult = UserApi.getFollows();
 		// TODO 用 jackson 解析结果出来
 		renderText(apiResult.getJson());
+	}
+	
+	public void getJsConfig() {
+		getResponse().addHeader("Access-Control-Allow-Origin", "*");
+		JsApiTicket jsTicket = JsApiTicketApi.getJsApiTicket();
+		long timestamp = System.currentTimeMillis() / 1000;
+		String url = getPara("url");
+		String noncestr = EncryptionKit.sha1Encrypt(timestamp + "");
+
+		System.out.println(url);
+		if (!jsTicket.isAvailable() || url == null) {
+			renderText("js ticket or url unavailable");
+			return;
+		}
+
+		String signature = generateSignature(jsTicket.getTicket(), timestamp, url, noncestr);
+		System.out.println("jsapi_ticket=" + jsTicket.getTicket());
+		System.out.println("timestamp=" + timestamp);
+		System.out.println("nonceStr=" + noncestr);
+		System.out.println("url=" + url);
+		System.out.println("signature=" + signature);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("timestamp", timestamp);
+		result.put("signature", signature);
+		result.put("nonceStr", noncestr);
+		renderJson(result);
+
+	}
+
+	private String generateSignature(String jsTicket, long timestamp, String url, String noncestr) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("jsapi_ticket=").append(jsTicket).append("&").append("noncestr=").append(noncestr)
+				.append("&").append("timestamp=").append(timestamp).append("&").append("url=").append(url);
+		System.out.println(builder.toString());
+		return EncryptionKit.sha1Encrypt(builder.toString());
 	}
 }
