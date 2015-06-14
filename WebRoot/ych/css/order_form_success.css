@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+.row > img {
+	height: 80px;
+	margin: 10px;
+}
+.btn.btn-green > img {
+	height: 20px;
+	margin-right: 10px;
+}

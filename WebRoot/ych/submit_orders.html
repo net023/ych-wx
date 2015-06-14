@@ -1,138 +1,94 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link  rel="stylesheet" type="text/css" href="css/index.css"/>
-<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<title>提交订单</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>提交订单</title>
+    <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../res/jquery/jquery-1.11.3.min.js"></script>
+    <script src="../res/bootstrap/js/bootstrap.min.js"></script>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/submit_orders.css" rel="stylesheet">
+    <script src="js/submit_orders.js"></script>
 </head>
+
 <body>
-<div class="row">
-  <div  class="col-xs-3 col-md-2" style="padding:0px;">
-    <ul >
-      <li class="common_li"> <a href="index.html" target="_self"  value="返回"><img src="img/ic_common_back.png"/><span class="text_color_white">返回</span></a> </li>
-    </ul>
-  </div>
-  <div  class="col-xs-6 col-md-8" style="padding:0px;">
-    <ul>
-      <li class="common_li_2">提交订单</li>
-    </ul>
-  </div>
-  <div  class="col-xs-3 col-md-2"style="padding:0px;" >
-    <li class="common_li_3"></li>
-  </div>
-</div>
-<div class="row add_car_div">
-  <div  class="col-xs-3 col-md-2" id="submit_car_div_li">
-    <ul>
-      <li> <a target="_self" href="add_car.html"><img src="img/ic_green_car.png" height="80" width="auto"  style="margin-left:10px"/></a> </li>
-    </ul>
-  </div>
-  <div  class="col-xs-7 col-md-8" id="submit_car_div_li_2">
-    <ul>
-      <li>
-        <div align="left"> <a target="_self" href="add_car.html"><span id="submit_car_top">添加我的爱车</span></a> <br />
-          <a target="_self" href="add_car.html"><span id="submit_car_buttom">点击选择我的爱车品牌</span></a> </div>
-      </li>
-    </ul>
-  </div>
-  <div  class="col-xs-2 col-md-2" id="submit_car_div_li_3">
-    <ul>
-      <li> <a target="_self" href="add_car.html"><img src="img/ic_go.png" width="15" height="25"/></a></li>
-    </ul>
-  </div>
-</div>
-<div class="row add_car_div">
-  <div  class="col-xs-3 col-md-2" id="submit_car_div_li_tool">
-    <ul>
-      <li> <a target="_self" href="add_car.html"><img src="img/ic_tool_oval.png" height="80" width="auto" style="margin-left:10px"/></a> </li>
-    </ul>
-  </div>
-  <div  class="col-xs-7 col-md-8" id="submit_car_div_li_2_tool">
-    <ul>
-      <li>
-        <div align="left">保养项目<br />
-          <span id="add_car_buttom"><img src="img/ic_green_check.png" width="35" height="35" />&nbsp;换防冻液</span> </div>
-      </li>
-    </ul>
-  </div>
-  <div  class="col-xs-2 col-md-2" id="submit_car_div_li_3_tool">
-    <ul>
-      <li> <img src="img/ic_go.png" width="15" height="25"/> </li>
-    </ul>
-  </div>
-</div>
-<div class="submit_order_car">
-  <ul>
-    <li class="submit_order_span"><span>| 推荐配件</span></li>
-    <hr />
-    <li id="submit_order_checkbox_3">
-      <div class="submit_orders_img"> <img src="img/img_product_image.png" width="179" height="193"/> </div>
-      <div class="submit_orders_text">
-        <ul>
-          <li class="submit_order_img_li"> U2 | 防冻液 </li>
-          <li class="submit_order_img_li_2"> 建议数量
-            <div class="dropdown" style="float:right; margin-left:10px;">
-              <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
-      data-toggle="dropdown" style="background-color:#258EF9;color:#FFFFFF; width:80px">1<span class="caret" style="color:#FFFFFF; margin-left:10px"></span> </button>
-              <ul class="dropdown-menu pull-right" role="menu" 
-      aria-labelledby="dropdownMenu1">
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="#">1</a> </li>
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="#">2</a> </li>
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="#"> 3</a> </li>
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="#">4</a> </li>
-              </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="part">
+                <div class="part-title">
+                    <img src="img/ic_title_prompt.png" alt="" /><strong>保养项目</strong>
+                </div>
+                <div class="part-body">
+		        <%
+		        var totalPrice = 0; 
+		        for(recommend in recommends) {
+		        totalPrice = totalPrice + recommend.price * recommend.number;
+		        %>
+                    <div class="part">
+                    	<input class="commodity" type="hidden" value="${recommend.id}-${trunc(recommend.number)}">
+                        <div class="part-title"><strong>${recommend.type == 1 ? "更换滤清器" : "更换机油"}</strong>
+                        </div>
+                        <div class="part-body">
+                            <img class="product-img" src="${recommend.p_id! != null ? '../file/download?fID=' + recommend.p_id : 'img/img_product_image.png'}">
+                            <strong>${recommend.name}</strong>
+                            <br>
+                            <span class="light">建议数量</span>&nbsp;${trunc(recommend.number)}<span></span>
+                            ${recommend.type! == 2 ? '<button class="btn btn-green btn-xs" id="other-brand" type="button">更换其他品牌</button>'}
+                            <br>
+                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${recommend.price}元</span>
+                        </div>
+                    </div>
+                <% } %>
+                </div>
+                <div class="part-footer text-right middle">
+                    共计：配件费${trunc(totalPrice, 2)}元+工时费${trunc(mtser.cost, 2)}元 <span class="emphasis">￥${trunc(totalPrice + mtser.cost, 2)}元</span>
+                </div>
             </div>
-          </li>
-          <li class="submit_order_img_li_3"> 价&nbsp;&nbsp;格 <span style="color:#12D586">50元 </span></li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-  <ul>
-    <hr />
-    <li class="submit_order_span"><span>| 选择门店</span></li>
-    <ul id="myTab" class="nav nav-tabs">
-      <li class="active"> <a href="#distance" data-toggle="tab"> 按距离 </a> </li>
-      <li><a href="#score" data-toggle="tab">按评分</a></li>
-      <li><a href="#times" data-toggle="tab">按次数</a></li>
-    </ul>
-    <div id="myTabContent" class="tab-content">
-      <div class="tab-pane fade in active" id="distance"> 万豪汽车维修门市
-        <ul class="evaluation">
-          <a href="store_introduction.html">
-          <li class="evaluation-li"> <img src="img/ic_praise.png" width="40" height="40"/>&nbsp;好评率90%</li>
-          </a>
-          <li class="evaluation-li"><img src="img/ic_tool.png" width="40" height="40"/>&nbsp;服务88次</li>
-          <li class="evaluation-li"><img src="img/ic_address.png" width="40" height="40"/>&nbsp;离我3K米</li>
-        </ul>
-      </div>
-      <div class="tab-pane fade" id="score"> 万豪汽车维修门市
-        <ul class="evaluation">
-          <a href="store_introduction.html">
-          <li class="evaluation-li"> <img src="img/ic_praise.png" width="40" height="40"/>&nbsp;好评率90%</li>
-          </a>
-          <li class="evaluation-li"><img src="img/ic_tool.png" width="40" height="40"/>&nbsp;服务88次</li>
-          <li class="evaluation-li"><img src="img/ic_address.png" width="40" height="40"/>&nbsp;离我3K米</li>
-        </ul>
-      </div>
-      <div class="tab-pane fade" id="times"> 万豪汽车维修门市
-        <ul class="evaluation">
-          <a href="store_introduction.html">
-          <li class="evaluation-li"> <img src="img/ic_praise.png" width="40" height="40"/>&nbsp;好评率90%</li>
-          </a>
-          <li class="evaluation-li"><img src="img/ic_tool.png" width="40" height="40"/>&nbsp;服务88次</li>
-          <li class="evaluation-li"><img src="img/ic_address.png" width="40" height="40"/>&nbsp;离我3K米</li>
-        </ul>
-      </div>
+        </div>
+        <div class="row">
+            <div class="part">
+                <div class="part-title">
+                    <img src="img/ic_title_prompt.png" alt="" /><strong>选择门店</strong>
+                    <label class="classify checked middle" for="distance">
+                        <input id="distance" type="radio" name="sort" checked>按距离
+                    </label>
+                    <label class="classify middle" for="score">
+                        <input id="score" type="radio" name="sort">按评分
+                    </label>
+                    <label class="classify middle" for="aptitude">
+                        <input id="aptitude" type="radio" name="sort">按资质
+                    </label>
+                    <a href="../news/show?nID=3">什么是资质？</a>
+                </div>
+                <div class="part-body">
+	        	<% for(store in stores) { %>
+                    <label class="part ${storeLP.first ? 'checked'}" for="${store.id}">
+                    	<input class="store" id="${store.id}" name="store" type="radio" value="${store.id!}" ${storeLP.first ? 'checked'}>
+                        <div class="part-title"><strong>${store.name}</strong><a href="ckmd?sID=${store.id}">查看详情</a>
+                        </div>
+                        <div class="part-body light">
+                            <img class="icon" src="img/ic_praise.png">&nbsp;好评率${store.rate!90}%
+                            <img class="icon" src="img/ic_tool.png">&nbsp;服务${store.service!10}次
+                            <img class="icon" src="img/ic_address.png">&nbsp;离我${store.distance!10000 / 1000}K米
+                        </div>
+                        <div class="part-footer middle">
+                            地址：${store.address}
+                        </div>
+                    </label>
+	            <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="part">
+                <div class="part-body">
+                    <a class="btn btn-green btn-lg max-width" id="submit" href="submit_contact.html">立即下单</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </ul>
-</div>
-<div align="center"> <a href="submit_contact.html">
-  <input  class="index_button" type="button" value="立即下单" />
-  </a> </div>
 </body>
+
 </html>

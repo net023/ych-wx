@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.row.text-center {
+	height: 40px;
+	line-height: 40px;
+}
+.row + .row {
+	margin-bottom: 5px;
+}
+img {
+	margin-right: 5px;
+}
+img + span {
+	line-height: 37px;
+}
+.col-xs-12.text-grey {
+	padding-left: 30px;
+}

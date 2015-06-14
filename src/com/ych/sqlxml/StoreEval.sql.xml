@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="StoreEval">
+    
+    <sql id="evalutates">
+        <![CDATA[
+        FROM (
+	        SELECT
+				t1.id,
+				u_id,
+				u_n,
+				u_h,
+				evaluate,
+				e_time,
+				c_time
+			FROM
+				(
+					SELECT
+						id,
+						`user` AS u_id,
+						store,
+						evaluate,
+						c_time AS e_time
+					FROM
+						store_eval
+					WHERE
+						store = ?
+				) t1
+			LEFT JOIN (
+				SELECT
+					id,
+					`name` AS u_n,
+					head AS u_h
+				FROM
+					wxuser
+			) t2 ON t1.u_id = t2.id
+			LEFT JOIN (
+				SELECT
+					id,
+					c_time
+				FROM
+					`order`
+				WHERE
+					id = ?
+			) t3 ON  t1.store = t3.id
+			ORDER BY
+				e_time DESC
+		) t
+        ]]>
+    </sql>
+</sqlGroup>

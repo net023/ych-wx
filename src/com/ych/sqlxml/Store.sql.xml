@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="Store">
+	
+	<!-- 动态SQL处理 -->
+	<sql id="pager">
+		<![CDATA[ 
+			FROM ( 
+				SELECT
+					id,
+					`name`,
+					address,
+					lon,
+					lat,
+					province,
+					city,
+					county,
+				
+				IF (t3.rate, t3.rate, 0.00) AS rate,
+				
+				IF (t4.service, t4.service, 0) AS service,
+				<% if(!isEmpty(lat) && !isEmpty(lon)){ %>
+				ROUND(
+					6378.138 * 2 * asin(
+						SQRT(
+							POW(
+								SIN(
+									(
+										#$lat$# * PI() / 180 - lat * PI() / 180
+									) / 2
+								),
+								2
+							) + COS(#$lat$# * PI() / 180) * COS(lat * PI() / 180) * POW(
+								SIN(
+									(
+										#$lon$# * PI() / 180 - lon * PI() / 180
+									) / 2
+								),
+								2
+							)
+						)
+					) * 1000
+				) AS distance
+				<% } else { %>
+				'未知' AS distance
+				<% } %>
+				FROM
+					store t1
+				LEFT JOIN (
+					SELECT
+						t1.store,
+						ROUND(t1.great / t2.`all` * 100, 2) AS rate
+					FROM
+						(
+							SELECT
+								store,
+								COUNT(*) AS great
+							FROM
+								store_eval
+							WHERE
+								grade < 3
+							GROUP BY
+								store
+						) t1
+					INNER JOIN (
+						SELECT
+							store,
+							COUNT(*) AS `all`
+						FROM
+							store_eval
+						GROUP BY
+							store
+					) t2 ON t1.store = t2.store
+				) t3 ON t1.id = t3.store
+				LEFT JOIN (
+					SELECT
+						b_id AS store,
+						COUNT(*) AS service
+					FROM
+						`order`
+					WHERE
+						`status` = 3
+					GROUP BY
+						b_id
+				) t4 ON t1.id = t4.store
+				ORDER BY
+					distance
+			)t
+		]]>
+	</sql>
+	<sql id="store">
+	    <![CDATA[ 
+		    SELECT *
+			FROM
+				(
+					SELECT
+						id,
+						`name`,
+						address,
+						lon,
+						lat,
+						province,
+						city,
+						county,
+						info,
+			
+					IF (t3.rate, t3.rate, 0.00) AS rate,
+			
+				IF (t4.service, t4.service, 0) AS service,
+				ROUND(
+					6378.138 * 2 * asin(
+						SQRT(
+							POW(
+								SIN(
+									(
+										#$lat$# * PI() / 180 - lat * PI() / 180
+									) / 2
+								),
+								2
+							) + COS(#$lat$# * PI() / 180) * COS(lat * PI() / 180) * POW(
+								SIN(
+									(
+										#$lon$# * PI() / 180 - lon * PI() / 180
+									) / 2
+								),
+								2
+							)
+						)
+					) * 1000
+				) AS distance
+			FROM
+				store t1
+			LEFT JOIN (
+				SELECT
+					t1.store,
+					ROUND(t1.great / t2.`all` * 100, 2) AS rate
+				FROM
+					(
+						SELECT
+							store,
+							COUNT(*) AS great
+						FROM
+							store_eval
+						WHERE
+							grade < 3
+						GROUP BY
+							store
+					) t1
+				INNER JOIN (
+					SELECT
+						store,
+						COUNT(*) AS `all`
+					FROM
+						store_eval
+					GROUP BY
+						store
+				) t2 ON t1.store = t2.store
+			) t3 ON t1.id = t3.store
+			LEFT JOIN (
+				SELECT
+					b_id AS store,
+					COUNT(*) AS service
+				FROM
+					`order`
+				WHERE
+					`status` = 3
+				GROUP BY
+					b_id
+			) t4 ON t1.id = t4.store
+				) t WHERE id = #$id$#;	    
+		]]>
+	</sql>
+	
+</sqlGroup>

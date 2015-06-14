@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+
+.carousel {
+	margin: -20px 0;
+	padding: 0;
+}
+
+.row+.row {
+	border-top: 1px solid #f1f1f1;
+}
+
+.row img {
+	height: 20px;
+	margin-right: 5px;
+}
+
+.row {
+	padding: 20px 0;
+}
+
+.comments_details {
+	position: relative;
+	margin: 20px;
+	font-size: 0.75em;
+	padding: 10px; 
+	background-color: #F8F8F8;
+	border: 1px solid #E7E7E7;
+}
+
+.comments_details span {
+	position: absolute;
+	left: 8px;
+	top: -40px;
+	border-width: 20px;
+	border-style: solid dashed dashed;
+	border-color: transparent transparent #E7E7E7 transparent;
+	line-height: 0;
+}
+
+.comments_details em {
+	position: absolute;
+	top: -38px;
+	border-width: 20px;
+	left: 8px;
+	border-style: solid dashed dashed;
+	border-color: transparent transparent #F8F8F8 transparent;
+	line-height: 0;
+}

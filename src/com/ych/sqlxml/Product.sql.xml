@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="Product">
+    
+    <sql id="oilRecommend">
+        <![CDATA[
+        SELECT
+			t1.id, t4.id AS b_id, t4.`name` AS b_n, t5.id AS m_id, t5.`name` AS m_n, t6.id AS e_id, t6.`name` AS e_n, t1.type, t3.p_id
+		FROM
+			(
+				SELECT
+					id,
+					e_id,
+					type,
+		
+				IF (
+					FLOOR(fill / 4) = 0,
+					1,
+					FLOOR(fill / 4)
+				) AS big,
+		
+			IF (
+				CEIL(fill % 4) = 4,
+				0,
+				CEIL(fill % 4)
+			) AS small
+			FROM
+				oil_product
+			WHERE
+				ly_id = ?
+			) t1
+		LEFT JOIN (
+			SELECT
+				b_id,
+				m_id,
+				e_id,
+				type,
+				price,
+				litre
+			FROM
+				oil_price
+			WHERE
+				`status` = 0
+			AND recmd = 0
+		) t2 ON t1.e_id = t2.e_id
+		AND t1.type = t2.type LEFT JOIN oil_pic t3 ON t2.b_id = t3.b_id AND t2.m_id = t3.m_id AND t2.e_id = t3.e_id AND t2.type = t3.type INNER JOIN oil_brand t4 ON t2.b_id = t4.id INNER JOIN oil_model t5 ON t2.m_id = t5.id INNER JOIN oil_etalon t6 ON t2.e_id = t6.id 
+		WHERE
+		
+		IF (big > 0, litre = 4, 0)
+		OR
+		IF (small > 0, litre = 1, 0)
+        ]]>
+    </sql>
+    <sql id="filterRecommend">
+        <![CDATA[
+        SELECT
+        	t1.id,
+			t4.id AS b_id,
+			t4.`name` AS b_n,
+			t5.id AS t_id,
+			t5.`name` AS t_n,
+			t3.p_id
+		FROM
+			(
+				SELECT
+					id,
+					ly_id,
+					b_id,
+					t_id,
+					num
+				FROM
+					filter_product
+				WHERE
+					ly_id = ?
+				AND t_id IN (?)
+			) t1
+		LEFT JOIN (
+			SELECT
+				b_id,
+				t_id,
+				num,
+				price
+			FROM
+				filter_price
+			WHERE
+				`status` = 0
+			AND recmd = 0
+		) t2 ON t1.b_id = t2.b_id
+		AND t1.t_id = t2.t_id
+		AND t1.num = t2.num
+		LEFT JOIN filter_pic t3 ON t2.b_id = t3.b_id
+		AND t2.t_id = t3.t_id 
+		INNER JOIN filter_brand t4 ON t2.b_id = t4.id
+		INNER JOIN filter_type t5 ON t2.t_id = t5.id
+		LEFT JOIN car t6 ON t1.ly_id = t6.ly_id
+		WHERE IF(t6.price>=20, t1.b_id = 1, t1.b_id = 2);
+		]]>
+    </sql>
+    <sql id="recommend">
+        <![CDATA[
+        SELECT
+			t1.id,
+			t4.id AS b_id,
+			CONCAT(
+				t4.`name`,
+				'|',
+				t5.`name`,
+				' ',
+				t6.`name`,
+				' ',t2.litre,'L ',
+		
+			IF (
+				t1.type = 1,
+				'（全合成）',
+		
+			IF (
+				t1.type = 2,
+				'（半合成）',
+				'（矿物油）'
+			)
+			)
+			) AS `name`,
+			t3.p_id,
+			2 AS type,
+			t2.price,
+			IF(t2.litre=4,t1.big,t1.small) AS number
+		FROM
+			(
+				SELECT
+					id,
+					e_id,
+					type,
+		
+				IF (
+					FLOOR(fill / 4) = 0,
+					1,
+					FLOOR(fill / 4)
+				) AS big,
+		
+			IF (
+				CEIL(fill % 4) = 4,
+				0,
+				CEIL(fill % 4)
+			) AS small
+			FROM
+				oil_product
+			WHERE
+				ly_id = ?
+			) t1
+		LEFT JOIN (
+			SELECT
+				b_id,
+				m_id,
+				e_id,
+				type,
+				price,
+				litre
+			FROM
+				oil_price
+			WHERE
+				`status` = 0
+			AND recmd = 0
+		) t2 ON t1.e_id = t2.e_id
+		AND t1.type = t2.type
+		LEFT JOIN oil_pic t3 ON t2.b_id = t3.b_id
+		AND t2.m_id = t3.m_id
+		AND t2.e_id = t3.e_id
+		AND t2.type = t3.type
+		INNER JOIN oil_brand t4 ON t2.b_id = t4.id
+		INNER JOIN oil_model t5 ON t2.m_id = t5.id
+		INNER JOIN oil_etalon t6 ON t2.e_id = t6.id
+		WHERE
+		
+		IF (big > 0, litre = 4, 0)
+		OR
+		IF (small > 0, litre = 1, 0)
+		UNION ALL
+			(
+				SELECT
+					t1.id,
+					t4.id AS b_id,
+					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
+					t3.p_id,
+					1 AS type,
+					t2.price,
+					1 AS number
+				FROM
+					(
+						SELECT
+							id,
+							ly_id,
+							b_id,
+							t_id,
+							num
+						FROM
+							filter_product
+						WHERE
+							ly_id = ?
+						AND t_id IN (1, 2, 3)
+					) t1
+				LEFT JOIN (
+					SELECT
+						b_id,
+						t_id,
+						num,
+						price
+					FROM
+						filter_price
+					WHERE
+						`status` = 0
+					AND recmd = 0
+				) t2 ON t1.b_id = t2.b_id
+				AND t1.t_id = t2.t_id
+				AND t1.num = t2.num
+				LEFT JOIN filter_pic t3 ON t2.b_id = t3.b_id
+				AND t2.t_id = t3.t_id
+				INNER JOIN filter_brand t4 ON t2.b_id = t4.id
+				INNER JOIN filter_type t5 ON t2.t_id = t5.id
+				LEFT JOIN car t6 ON t1.ly_id = t6.ly_id
+				WHERE
+		
+				IF (
+					t6.price >= 20,
+					t1.b_id = 1,
+					t1.b_id = 2
+				)
+			)
+			]]>
+    </sql>
+    <sql id="recommend1">
+        <![CDATA[
+        SELECT
+			t1.id,
+			t4.id AS b_id,
+			CONCAT(
+				t4.`name`,
+				'|',
+				t5.`name`,
+				' ',
+				t6.`name`,
+				' ',t2.litre,'L ',
+		
+			IF (
+				t1.type = 1,
+				'（全合成）',
+		
+			IF (
+				t1.type = 2,
+				'（半合成）',
+				'（矿物油）'
+			)
+			)
+			) AS `name`,
+			t3.p_id,
+			2 AS type,
+			t2.price,
+			IF(t2.litre=4,t1.big,t1.small) AS number
+		FROM
+			(
+				SELECT
+					id,
+					e_id,
+					type,
+		
+				IF (
+					FLOOR(fill / 4) = 0,
+					1,
+					FLOOR(fill / 4)
+				) AS big,
+		
+			IF (
+				CEIL(fill % 4) = 4,
+				0,
+				CEIL(fill % 4)
+			) AS small
+			FROM
+				oil_product
+			WHERE
+				ly_id = ?
+			) t1
+		LEFT JOIN (
+			SELECT
+				b_id,
+				m_id,
+				e_id,
+				type,
+				price,
+				litre
+			FROM
+				oil_price
+			WHERE
+				`status` = 0
+			AND recmd = 0
+		) t2 ON t1.e_id = t2.e_id
+		AND t1.type = t2.type
+		LEFT JOIN oil_pic t3 ON t2.b_id = t3.b_id
+		AND t2.m_id = t3.m_id
+		AND t2.e_id = t3.e_id
+		AND t2.type = t3.type
+		INNER JOIN oil_brand t4 ON t2.b_id = t4.id
+		INNER JOIN oil_model t5 ON t2.m_id = t5.id
+		INNER JOIN oil_etalon t6 ON t2.e_id = t6.id
+		WHERE
+		
+		IF (big > 0, litre = 4, 0)
+		OR
+		IF (small > 0, litre = 1, 0)
+		UNION ALL
+			(
+				SELECT
+					t1.id,
+					t4.id AS b_id,
+					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
+					t3.p_id,
+					1 AS type,
+					t2.price,
+					1 AS number
+				FROM
+					(
+						SELECT
+							id,
+							ly_id,
+							b_id,
+							t_id,
+							num
+						FROM
+							filter_product
+						WHERE
+							ly_id = ?
+						AND t_id IN (1)
+					) t1
+				LEFT JOIN (
+					SELECT
+						b_id,
+						t_id,
+						num,
+						price
+					FROM
+						filter_price
+					WHERE
+						`status` = 0
+					AND recmd = 0
+				) t2 ON t1.b_id = t2.b_id
+				AND t1.t_id = t2.t_id
+				AND t1.num = t2.num
+				LEFT JOIN filter_pic t3 ON t2.b_id = t3.b_id
+				AND t2.t_id = t3.t_id
+				INNER JOIN filter_brand t4 ON t2.b_id = t4.id
+				INNER JOIN filter_type t5 ON t2.t_id = t5.id
+				LEFT JOIN car t6 ON t1.ly_id = t6.ly_id
+				WHERE
+		
+				IF (
+					t6.price >= 20,
+					t1.b_id = 1,
+					t1.b_id = 2
+				)
+			)
+			]]>
+    </sql>
+</sqlGroup>
