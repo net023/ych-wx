@@ -41,6 +41,22 @@ public class YchWxController extends BaseController {
 	}
 	
 	/**
+	 * 关于我们
+	 */
+	public void gywm() {
+		render("/ych/about_us");
+	}
+
+	/**
+	 * 帮助中心
+	 */
+	public void bzzx() {
+		List<HelpModel> helpList = HelpModel.dao.getHots();
+		setAttr("helpList", helpList);
+		render("/ych/help_center");
+	}
+	
+	/**
 	 * 添加汽车
 	 */
 	public void tjqc() {
