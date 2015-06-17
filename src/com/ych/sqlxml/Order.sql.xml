@@ -5,6 +5,41 @@
 	<sql id="pager">
 		<![CDATA[ 
 			FROM ( 
+				select t1.o_id,t1.res_time,t1.`status`,t1.price,t2.phone,t3.fs,t3.type,t4.`name` ms from (
+					select id o_id,b_id,wx_id,`status`,res_time,price,ms_id from `order` where 1=1
+					<% if(!isEmpty(sd)){ %>
+						AND res_time>=#'$sd$'#
+					<% } %>
+					<% if(!isEmpty(ed)){ %>
+					 AND res_time<DATE_ADD(#'$ed$'#,INTERVAL 1 DAY)
+					<% } %>
+					<% if(!isEmpty(uid)){ %>
+					 AND b_id=#$uid$#
+					<% } %>
+				)t1
+				left join wxuser t2 on t2.id = t1.wx_id
+				left join(
+					select o_id,group_concat(fs) fs,group_concat(type) type from (
+						select t1.o_id,t1.type,
+							case WHEN t1.type in(1,2,3,4) THEN t2.p_id ELSE t3.p_id END AS 'fs'
+						from (
+							select o_id,c_id,type from order_commodity group by o_id,c_id,type
+						)t1
+						LEFT JOIN oil_price tt1 ON tt1.id = t1.c_id
+						LEFT JOIN filter_price tt2 ON tt2.id = t1.c_id
+						LEFT JOIN filter_pic t2 ON t2.b_id = tt2.b_id and t2.t_id = tt2.t_id
+						LEFT JOIN oil_pic t3 ON t3.b_id = tt1.b_id and t3.e_id=tt1.e_id and t3.m_id = tt1.m_id
+					)tt group by o_id
+				)t3 on t3.o_id = t1.o_id
+				left join mtser t4 on t4.id = t1.ms_id
+			)t
+		]]>
+	</sql>
+	
+	<!-- 
+	<sql id="pager_old">
+		<![CDATA[ 
+			FROM ( 
 				select t1.o_id,t1.res_time,t1.`status`,t3.phone,t4.price,t4.fs,t5.ms from (
 					select id o_id,b_id,`status`,res_time from `order` where 1=1
 					<% if(!isEmpty(sd)){ %>
@@ -41,5 +76,6 @@
 			)t
 		]]>
 	</sql>
+	 -->
 	
 </sqlGroup>

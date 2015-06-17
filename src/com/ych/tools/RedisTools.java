@@ -26,9 +26,6 @@ public class RedisTools {
 	private static final Logger LOG = Logger.getLogger(RedisTools.class);
 	public static Cache cache = new RedisClient(DevConstants.YINGMOB_CACHE_FILENAME);
 
-	public static void main(String[] args) {
-		System.out.println("========");
-	}
 
 	/**
 	 * redis累加统计
