@@ -1,5 +1,7 @@
 package com.ych.web.model;
 
+import java.util.Date;
+
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.ych.core.kit.SqlXmlKit;
@@ -31,6 +33,7 @@ public class StoreEvalModel extends Model<StoreEvalModel> {
 		eval.set("evaluate", evaluate);
 		eval.set("o_id", oID);
 		eval.set("grade", grade);
+		eval.set("c_time", new Date());
 		return eval.save();
 	}
 }

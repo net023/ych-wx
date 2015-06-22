@@ -500,7 +500,7 @@ public class YchWxController extends BaseController {
 			List<StorePicModel> pics = StorePicModel.dao.getStorePics(sID);
 			StoreModel store = StoreModel.dao.getStore(sID, lat, lon);
 			Page<StoreEvalModel> evalsPage = StoreEvalModel.dao.getEvalutates(
-					sID, 1, 20);
+					sID, 1, 10);
 			setAttr("pics", pics);
 			setAttr("store", store);
 			setAttr("evals", evalsPage.getList());
