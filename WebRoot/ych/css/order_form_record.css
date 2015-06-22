@@ -11,3 +11,8 @@ body{background-color: #F1F1F1;}
 .container-fluid .row.part>div.part-body>div.col-xs-3{padding:0px;text-align:center;}
 .container-fluid .row.part>div.part-body>div.col-xs-3 img{float:none;width:50px;height: 50px;}
 .container-fluid .row.part>div.part-body>div.col-xs-9{padding:0px}
+.row.text-center.icon {margin-top: 20px;}
+.row.text-center.icon>img {height: 40px;}
+.row.text-center.big {margin-top: 20px;color: black;font-size: 18px;}
+.row.text-center.small {margin-top: 10px;color:#b8b8b8;font-size: 12px;}
+.row.button {margin-top: 20px;}

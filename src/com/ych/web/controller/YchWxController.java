@@ -102,6 +102,7 @@ public class YchWxController extends BaseController {
 			System.out.println("uID: " + uID);
 			Page<OrderModel> pager = OrderModel.dao.getOrders(1, 10, uID);
 			setAttr("orders", pager.getList());
+			setAttr("uID", uID);
 			setAttr("page", pager.getPageNumber());
 			setAttr("totalPage", pager.getTotalPage());
 			render("/ych/order_form_record");
