@@ -2,7 +2,19 @@ $(function() {
 	var typeId;
     $('.panel-collapse').collapse({
         toggle: false
-    })
+    });
+    $(".select_car .panel-group .panel-heading").click(function(){
+        var flage =  $(this).find("span.ic_arrow").hasClass("up");
+        $(".select_car .panel-group .panel-heading>span.ic_arrow").removeClass("up").addClass("down");
+        if(flage){
+            $(this).find("span.ic_arrow").removeClass("up").addClass("down");
+        }else{
+            $(this).find("span.ic_arrow").removeClass("down").addClass("up");
+        }
+    });
+    $("ul.car_type li").click(function(){
+        $(this).toggleClass("click");
+    });
     $('.type').click(function(eventObject) {
     	typeId = eventObject.target.id;
     	$('#carModal').modal();

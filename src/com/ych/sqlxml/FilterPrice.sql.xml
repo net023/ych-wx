@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="FilterPrice">
+    
+    <sql id="recommendAll">
+        <![CDATA[
+        SELECT
+			t.id,
+			t.t_id AS type,
+			CONCAT(
+				filter_brand.`name`,
+				'|',
+				filter_type.`name`,
+				'(',
+				t.num,
+				')'
+			) AS `name`,
+			t.price,
+			p_id
+		FROM
+			(
+				SELECT
+					id,
+					b_id,
+					t_id,
+					num,
+					price
+				FROM
+					filter_price
+				WHERE
+					b_id = ? 
+				AND t_id = ?
+				AND num = ?
+				AND `status` = 0
+				AND recmd = 0
+			) t
+		LEFT JOIN filter_brand ON t.b_id = filter_brand.id
+		AND filter_brand.`status` = 0
+		LEFT JOIN filter_type ON t.t_id = filter_type.id
+		AND filter_type.`status` = 0
+		LEFT JOIN filter_pic ON t.b_id = filter_pic.b_id
+		AND t.t_id = filter_pic.t_id
+		WHERE 
+		IF(? >= 20, t.b_id = 1, t.b_id = 2)
+        ]]>
+    </sql>
+</sqlGroup>

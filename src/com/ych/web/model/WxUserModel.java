@@ -8,9 +8,6 @@ import com.ych.core.plugin.annotation.Table;
 
 @Table(tableName = "wxuser")
 public class WxUserModel extends Model<WxUserModel> {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2500346355554845512L;
 	public static final WxUserModel dao = new WxUserModel();
 
@@ -21,7 +18,7 @@ public class WxUserModel extends Model<WxUserModel> {
 
 	public List<WxUserModel> getPage(String openid) {
 		return this
-				.find("select id, openid, head as pUrl, name as nick, qq as pAccount from wxuser where openid = ? limit 1",
+				.find("select id, openid, head as pUrl, name as nick, qq as pAccount, phone from wxuser where openid = ? limit 1",
 						openid);
 	}
 
@@ -30,6 +27,12 @@ public class WxUserModel extends Model<WxUserModel> {
 				.findFirst(
 						"select id, openid, head, `name`, qq from wxuser where openid = ?",
 						openid);
+	}
+
+	public boolean bindPhone(Integer uID, String phone) {
+		WxUserModel user = this.findById(uID);
+		user.set("phone", phone);
+		return user.update();
 	}
 
 }

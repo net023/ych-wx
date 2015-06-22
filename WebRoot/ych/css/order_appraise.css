@@ -1,4 +1,7 @@
 @CHARSET "UTF-8";
+body {
+	background-color: #f4f4f4;
+}
 input[type=radio] {
     display:none;
 	text-align:center;
@@ -25,4 +28,17 @@ input[type=radio]:checked + label {
     background-color:#FF4242;
 	color:#FFFFFF;
 	text-align:center;
+}
+.part {
+	margin-top: 5px;
+}
+label.grade {
+	border: 1px solid #258ff8;
+	border-radius: 5px;
+	padding: 10px;
+	color: #258ff8;
+}
+label.grade.checked {
+	color: white;
+	background-color: #258ff8;
 }

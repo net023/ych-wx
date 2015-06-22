@@ -1,3 +1,4 @@
+<#compress>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
@@ -10,24 +11,87 @@
     <script src="../res/bootstrap/js/bootstrap.min.js"></script>
     <link href="css/base.css" rel="stylesheet" />
     <link href="css/order_form_record.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+    <script src="js/jsrender.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pagination-plugin.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	$(function(){
+			var arrdata = [];
+			for(var i=1;i<=3;i++){
+				arrdata.push({
+					orderNo:"123123"+i,
+					orderDate:"2015.01.30",
+					orderAmount:55+i,
+					childList:[{
+						name:"更换防冻液"+1+i
+					},{
+						name:"更换防冻液"+2+i
+					}]
+				});
+			}
+			var pageObj = $(".container-fluid").pagination({
+				totalPage:3,//总页数
+				data:arrdata,
+				htmlTplDomId:"theTmpl",
+				scrollBottomCalFn:function(pageIndex){
+					pageObj.appendChild(arrdata);
+				}
+			});
+			//重新加载数据，该方法可以解决“点击分类标签调用不同的排序接口取第一页数据”
+			//pageObj.reloadData([{},{},{}]);
+    	});
+    </script>
 </head>
 
 <body>
 	<div class="container-fluid">
+		<% for(order in orders) { %>
 		<div class="row part">
 			<div class="col-xs-12 part-title">
-				<div class="col-xs-4">订单号：******</div>
-				<div class="col-xs-4">下单日期：2015.00.00</div>
-				<div class="col-xs-4">金额：55</div>
+				<div class="col-xs-4">订单号: ${order.id!'未知订单号'}</div>
+				<div class="col-xs-4">下单日期: ${order.c_time!, dateFormat='yyyy-MM-dd'}</div>
+				<div class="col-xs-4">金额: ${trunc(order.price!, 2) < 0 ? '以门店为准' : trunc(order.price!, 2)}</div>
 			</div>
 			<div class="col-xs-12 part-body">
+				<div class="col-xs-3"><div><img class="product-img" src="img/maintain-${order.ms_id}.png"></div>
+				<div><span>${order.ms_id == 1 ? '大保养' : '小保养'}</span></div>
+				</div>
+				<div class="col-xs-9"><img class="product-img" src="img/img_product_image.png">
 				<img class="product-img" src="img/img_product_image.png">
+				<img class="product-img" src="img/img_product_image.png">
+				</div>
 			</div>
 			<div class="col-xs-12 text-right part-footer">
-				<button class="btn btn-green btn-xs" type="button">去评价</button>
+				<a class="btn btn-green btn-xs" id="${order.eval! == 0 ? 'eval' : 'view'}" href="${order.eval! == 0 ? 'pjmd?oID=' + order.id : 'ckmd?sID=' + order.s_id!}">${order.eval! == 0 ? '去评价' : '查看评价'}</a>
 			</div>
 		</div>
+		<% } %>
 	</div>
+	<script id="theTmpl" type="text/x-jsrender">
+		<div class="row part">
+			<div class="col-xs-12 part-title">
+				<div class="col-xs-4">订单号: {{:orderNo}}</div>
+				<div class="col-xs-4">下单日期: {{:orderDate}}</div>
+				<div class="col-xs-4">金额: {{:orderAmount}}</div>
+			</div>
+			{{for childList}}
+				<div class="col-xs-12 part-body">
+					<div class="col-xs-3"><div><img class="product-img" src="img/ic_antifreeze.png"></div>
+					<div><span>{{:#data.name}}</span></div>
+					</div>
+					<div class="col-xs-9"><img class="product-img" src="img/img_product_image.png">
+					<img class="product-img" src="img/img_product_image.png">
+					<img class="product-img" src="img/img_product_image.png">
+					</div>
+				</div>
+			{{/for}}
+			<div class="col-xs-12 text-right part-footer">
+				<a class="btn btn-green btn-xs" id="${order.eval! == 0 ? 'eval' : 'view'}" href="${order.eval! == 0 ? 'pjmd?oID=' + order.id : 'ckmd?sID=' + order.s_id!}">${order.eval! == 0 ? '去评价' : '查看评价'}</a>
+			</div>
+		</div>
+	</script>
 </body>
 
 </html>
+
+</#compress>

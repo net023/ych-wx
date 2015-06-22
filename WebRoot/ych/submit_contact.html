@@ -1,3 +1,4 @@
+<#compress>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
@@ -21,45 +22,78 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row text-center">
-        	<span>请留下您的手机号，方便客服人员与您联系</span>
-        </div>
-        <div class="row">
-            <div class="col-xs-6 col-xs-offset-1">
-                <input class="form-control" id="phone" name="phone" type="text" placeholder="请输入手机号">
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-green max-width" id="sms">获取验证码</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-                <input class="form-control" id="code" name="code" type="text" placeholder="请输入手机短信验证码">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 input-append date form_datetime">
-                <input class="form-control" id="date" name="date" type="text" readonly placeholder="请选择预约时间">
-                <span class="add-on"><i class="icon-th"></i></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-                <a class="btn btn-green max-width" id="finish" href="wcyy">完成预约</a>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-xs-12"><img src="img/ic_title_prompt.png"><span>温馨提示</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 text-grey">完成预约后，客服人员将在1个小时内与您电话确认具体保养时间，同时快卡物流将您的汽修配件和服务流程单打包发往您选择的汽修门店。</div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 text-grey">快卡承诺100%品牌正品配件，技师将在您的监督下进行服务施工和签字确认。</div>
-        </div>
+	    <form id="form" action="wcyy" method="post">
+	    	<% if(oil1! != null) { %>
+	    	<input class="commodity" id="oil1" name="oil1" type="hidden" value="${oil1!}">
+	    	<% } %>
+	    	<% if(oil2! != null) { %>
+	    	<input class="commodity" id="oil2" name="oil2" type="hidden" value="${oil2!}">
+	    	<% } %>
+	    	<% if(oil_none! != null) { %>
+	    	<input class="commodity" id="oil_none" name="oil_none" type="hidden" value="${oil_none!}">
+	    	<% } %>
+	    	<% if(filter1! != null) { %>
+	    	<input class="commodity" id="filter1" name="filter1" type="hidden" value="${filter1!}">
+	    	<% } %>
+	    	<% if(filter2! != null) { %>
+	    	<input class="commodity" id="filter2" name="filter2" type="hidden" value="${filter2!}">
+	    	<% } %>
+	    	<% if(filter3! != null) { %>
+	    	<input class="commodity" id="filter3" name="filter3" type="hidden" value="${filter3!}">
+	    	<% } %>
+	    	<input id="sID" name="sID" type="hidden" value="${sID!}">
+	    	<input id="msID" name="msID" type="hidden" value="${msID!}">
+	    	<input id="totalPrice" name="totalPrice" type="hidden" value="${totalPrice!}">
+	        <div class="row text-center">
+	        	<span>请留下您的手机号，方便客服人员与您联系</span>
+	        </div>
+	        <div class="row">
+	            <div class="col-xs-${phone! != null ? '10' : '6'} col-xs-offset-1">
+	                <input class="form-control" id="phone" name="phone" type="text" value="${phone!}" placeholder="请输入手机号" ${phone! != null ? 'disabled'}>
+	            </div>
+	            <% if (phone! == null) { %>
+	            <div class="col-xs-4">
+	                <button class="btn btn-green max-width" id="sms" type="button">获取验证码</button>
+	            </div>
+	            <% } %>
+	        </div>
+	        <% if (phone! == null) { %>
+	        <div class="row">
+	            <div class="col-xs-10 col-xs-offset-1">
+	                <input class="form-control" id="phonecode" name="phonecode" type="text" placeholder="请输入手机短信验证码">
+	            </div>
+	        </div>
+	        <% } %>
+	        <div class="row">
+	            <div class="col-xs-10 col-xs-offset-1 input-append date form_datetime">
+	                <input class="form-control" id="date" name="date" type="text" readonly placeholder="请选择预约时间">
+	                <span class="add-on"><i class="icon-th"></i></span>
+	            </div>
+	        </div>
+	        <div class="row">
+	            <div class="col-xs-10 col-xs-offset-1">
+	                <button class="btn btn-green max-width" id="submit">完成预约</button>
+	            </div>
+	        </div>
+	        <hr>
+	        <div class="row">
+	            <div class="col-xs-12"><img src="img/ic_title_prompt.png"><span>温馨提示</span>
+	            </div>
+	        </div>
+	        <div class="row">
+	        	<div class="col-xs-12 text-grey">
+	        		可预约保养服务的时间从预约之日第二天起十天内，更改为从预约之时起24小时后开始的10天内，保养服务时间为早9点到晚6点
+	        	</div>
+	        </div>
+	        <div class="row">
+	            <div class="col-xs-12 text-grey">完成预约后，客服人员将在1个小时内与您电话确认具体保养时间，同时快卡物流将您的汽修配件和服务流程单打包发往您选择的汽修门店。</div>
+	        </div>
+	        <div class="row">
+	            <div class="col-xs-12 text-grey">快卡承诺100%品牌正品配件，技师将在您的监督下进行服务施工和签字确认。</div>
+	        </div>
+        </form>
     </div>
 </body>
 
 </html>
+</#compress>

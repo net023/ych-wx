@@ -17,4 +17,20 @@ public class StoreEvalModel extends Model<StoreEvalModel> {
 				SqlXmlKit.getSql("StoreEval.evalutates"), sID, sID);
 	}
 
+	public boolean commitEval(Integer uID, Integer sID, String evaluate,
+			Integer oID, Integer grade) {
+		StoreEvalModel model = this
+				.findFirst(
+						"select * from store_eval where `user` = ? and store = ? and o_id = ?",
+						uID, sID, oID);
+		if (model != null)
+			return true;
+		StoreEvalModel eval = new StoreEvalModel();
+		eval.set("user", uID);
+		eval.set("store", sID);
+		eval.set("evaluate", evaluate);
+		eval.set("o_id", oID);
+		eval.set("grade", grade);
+		return eval.save();
+	}
 }

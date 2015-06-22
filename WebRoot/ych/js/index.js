@@ -42,6 +42,11 @@ $(function() {
             }
         });
     });*/
+    if(!/MicroMessenger/i.test(navigator.userAgent)) {
+        alert('请通过微信打开');
+        location = 'about:blank';
+        return;
+    }
 	var url = '../api/getJsConfig?url=' + encodeURIComponent(location.href.split('#')[0]);
 	$.get(url, function(data) {
 		wx.config({

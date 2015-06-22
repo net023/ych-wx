@@ -38,6 +38,7 @@ public class AccessUserInfoByOAuth2 {
 				userInfos.put("headimgurl", userList.get(0).get("pUrl"));
 				userInfos.put("nickname", userList.get(0).get("nick"));
 				userInfos.put("pAccount", userList.get(0).get("pAccount"));
+				userInfos.put("phone", userList.get(0).get("phone"));
 				infos.put("userInfo", userInfos);
 				infos.put("did", userList.get(0).get("id"));
 			}

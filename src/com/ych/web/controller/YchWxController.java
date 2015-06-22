@@ -3,6 +3,8 @@ package com.ych.web.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +22,21 @@ import com.ych.web.model.CarBrandModel;
 import com.ych.web.model.CarSeriesModel;
 import com.ych.web.model.CarouselModel;
 import com.ych.web.model.HelpModel;
-import com.ych.web.model.MtserUnitCostModel;
+import com.ych.web.model.OilPriceModel;
+import com.ych.web.model.OrderCommodityModel;
+import com.ych.web.model.OrderModel;
 import com.ych.web.model.ProductModel;
 import com.ych.web.model.StoreEvalModel;
 import com.ych.web.model.StoreModel;
 import com.ych.web.model.StorePicModel;
 import com.ych.web.model.WxUserCarModel;
+import com.ych.web.model.WxUserModel;
 
 @Control(controllerKey = "/ych")
 public class YchWxController extends BaseController {
 
 	private static final Logger LOG = Logger.getLogger(YchWxController.class);
-	private static final String WX_SER_URL = "http://czp.tunnel.mobi/ych-wx/";
+	private static final String WX_SER_URL = "http://xmn.tunnel.mobi/ych-wx/";
 	private static final String OAUTH2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
 			+ SysConstants.WX_APPID
 			+ "&redirect_uri={0}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
@@ -83,7 +88,26 @@ public class YchWxController extends BaseController {
 	 * 保养档案
 	 */
 	public void byda() {
-		render("/ych/order_form_record");
+		try {
+			String code = getPara("code");
+			if (code == null) {
+				redirect(MessageFormat.format(OAUTH2_URL,
+						URLEncoder.encode(WX_SER_URL + "ych/byda", "UTF-8")));
+				return;
+			}
+			Map<String, Object> infos = AccessUserInfoByOAuth2
+					.getWxUserInfo(code);
+			System.out.println(infos);
+			Integer uID = (Integer) infos.get("did");
+			System.out.println("uID: " + uID);
+			Page<OrderModel> pager = OrderModel.dao.getOrders(1, 10, uID);
+			setAttr("orders", pager.getList());
+			setAttr("page", pager.getPageNumber());
+			setAttr("totalPage", pager.getTotalPage());
+			render("/ych/order_form_record");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -176,7 +200,7 @@ public class YchWxController extends BaseController {
 	 * 保养详情
 	 */
 	public void byxq() {
-		Integer mID = getParaToInt("mtser");
+		Integer msID = getParaToInt("mtser");
 		String cLyID = getPara("carlyid");
 		String lonStr = getPara("lon");
 		String latStr = getPara("lat");
@@ -187,19 +211,47 @@ public class YchWxController extends BaseController {
 			lat = Float.parseFloat(latStr);
 		}
 		List<ProductModel> recommends = ProductModel.dao.getRecommends(cLyID,
-				mID);
-		setAttr("recommends", recommends);
-		MtserUnitCostModel mtser = MtserUnitCostModel.dao.getMtserUnitCost(mID);
-		setAttr("mtser", mtser);
+				msID);
+		for (ProductModel recommend : recommends) {
+			Integer type = Integer.parseInt(Long.toString(recommend
+					.getLong("type")));
+			switch (type) {
+			case 1:
+				if (getAttr("filter1") == null)
+					setAttr("filter1", recommend);
+				continue;
+			case 2:
+				if (getAttr("filter2") == null)
+					setAttr("filter2", recommend);
+				continue;
+			case 3:
+				if (getAttr("filter3") == null)
+					setAttr("filter3", recommend);
+				continue;
+			case 5:
+				Integer litre = recommend.getInt("litre");
+				Integer bID = recommend.getInt("b_id");
+				if (litre == 1 && bID == 1 && getAttr("oil1") == null) {
+					setAttr("oil1", recommend);
+					continue;
+				}
+				if (litre == 2 && bID == 1 && getAttr("oil2") == null) {
+					setAttr("oil2", recommend);
+					continue;
+				}
+				continue;
+			default:
+				break;
+			}
+		}
+		setAttr("msID", msID);
 		// TODO MySQL的SQL语句中实现距离查询，可能有性能问题
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (lat != null && lon != null) {
 			params.put("lat", lat);
 			params.put("lon", lon);
 		}
-		// List<StoreModel> stores = StoreModel.dao.getStores();
-		// setAttr("stores", stores);
-		Page<StoreModel> pager = StoreModel.dao.getPager(0, 20, params);
+		Page<StoreModel> pager = StoreModel.dao.getPager(0, 10, params);
 		setAttr("stores", pager.getList());
 		setAttr("page", pager.getPageNumber());
 		setAttr("totalPage", pager.getTotalPage());
@@ -207,27 +259,228 @@ public class YchWxController extends BaseController {
 	}
 
 	/**
+	 * 切换机油品牌
+	 */
+	public void qhjypp() {
+		Map<String, Object> result = getResultMap();
+		try {
+			Integer oil1 = getParaToInt("oil1");
+			Integer oil2 = getParaToInt("oil2");
+			Integer brand = getParaToInt("brand");
+			if ((oil1 == null && oil2 == null) || brand == null) {
+				result.put(RESULT, 1);
+				result.put(ERROR, "缺少必要的参数");
+				renderJson(result);
+				return;
+			}
+			List<OilPriceModel> oilPrices = new ArrayList<OilPriceModel>();
+			OilPriceModel oilPrice = null;
+			if (oil1 != null) {
+				oilPrice = OilPriceModel.dao.getOtherBrandOilPrice(oil1, brand);
+				if (oilPrice == null) {
+					result.put(RESULT, 2);
+					result.put(ERROR, "无法找到该品牌对应的商品数据");
+					renderJson(result);
+					return;
+				}
+				oilPrices.add(oilPrice);
+			}
+			if (oil2 != null) {
+				oilPrice = OilPriceModel.dao.getOtherBrandOilPrice(oil2, brand);
+				if (oilPrice == null) {
+					result.put(RESULT, 2);
+					result.put(ERROR, "无法找到该品牌对应的商品数据");
+					renderJson(result);
+					return;
+				}
+				oilPrices.add(oilPrice);
+			}
+			result.put(RESULT, 0);
+			result.put(DATA, oilPrices);
+			renderJson(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put(RESULT, 3);
+			result.put(ERROR, "未得到正确的数据");
+			renderJson(result);
+		}
+	}
+
+	/**
 	 * 确认详情
 	 */
 	public void qrxq() {
-		render("/ych/submit_contact");
+		try {
+			Integer msID = getParaToInt("msID");
+			String oil1 = getPara("oil1");
+			String oil2 = getPara("oil2");
+			String oilNone = getPara("oil-none");
+			String filter1 = getPara("filter1");
+			String filter2 = getPara("filter2");
+			String filter3 = getPara("filter3");
+			Integer sID = getParaToInt("store");
+			String totalPriceStr = getPara("totalPrice");
+			Double totalPrice = null;
+			if (totalPriceStr != null)
+				totalPrice = Double.parseDouble(totalPriceStr);
+
+			String code = getPara("code");
+			if (code == null) {
+				StringBuilder urlBuilder = new StringBuilder();
+				urlBuilder.append(WX_SER_URL).append("ych/qrxq?msID=")
+						.append(msID);
+				if (oil1 != null)
+					urlBuilder.append("&oil1=").append(oil1);
+				if (oil2 != null)
+					urlBuilder.append("&oil2=").append(oil2);
+				if (oilNone != null)
+					urlBuilder.append("&oil-none=").append(oilNone);
+				if (filter1 != null)
+					urlBuilder.append("&filter1=").append(filter1);
+				if (filter2 != null)
+					urlBuilder.append("&filter2=").append(filter2);
+				if (filter3 != null)
+					urlBuilder.append("&filter3=").append(filter3);
+				if (sID != null)
+					urlBuilder.append("&store=").append(sID);
+				if (totalPriceStr != null)
+					urlBuilder.append("&totalPrice=").append(totalPriceStr);
+				redirect(MessageFormat.format(OAUTH2_URL,
+						URLEncoder.encode(urlBuilder.toString(), "UTF-8")));
+				return;
+			}
+			Map<String, Object> infos = AccessUserInfoByOAuth2
+					.getWxUserInfo(code);
+			System.out.println(infos);
+			Map<String, Object> userInfos = (Map<String, Object>) infos
+					.get("userInfo");
+			String phone = (String) userInfos.get("phone");
+			if (phone != null)
+				setAttr("phone", phone);
+			System.out
+					.printf("msID: %s, oil1: %s, oil2: %s, oil-none: %s, filter1: %s, filter2: %s, filter3: %s, store: %s\n",
+							msID, oil1, oil2, oilNone, filter1, filter2,
+							filter3, sID);
+			setAttr("msID", msID);
+			if (oil1 != null)
+				setAttr("oil1", oil1);
+			if (oil2 != null)
+				setAttr("oil2", oil2);
+			if (oilNone != null)
+				setAttr("oil_none", oilNone);
+			if (filter1 != null)
+				setAttr("filter1", filter1);
+			if (filter2 != null)
+				setAttr("filter2", filter2);
+			if (filter3 != null)
+				setAttr("filter3", filter3);
+			if (totalPrice != null)
+				setAttr("totalPrice", totalPrice);
+			setAttr("sID", sID);
+			render("/ych/submit_contact");
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * 完成预约
+	 * 
+	 * @throws Exception
 	 */
 	@Before(Tx.class)
-	public void wcyy() {
-		Integer mID = getParaToInt("mtser");
-		Integer oID = getParaToInt("order");
-		Date date = getParaToDate("date");
-		String[] commodities = getParaValues("commodities");
-		System.out.println(date);
-		Map<String, Object> result = getResultMap();
-		// TODO 校验日期是否符合规范
-		// result.put(RESULT, true);
-		// renderJson(result);
-		render("/ych/order_form_success");
+	public void wcyy() throws Exception {
+		try {
+			Integer msID = getParaToInt("msID");
+			String oil1 = getPara("oil1");
+			String oil2 = getPara("oil2");
+			String oilNone = getPara("oil-none");
+			String filter1 = getPara("filter1");
+			String filter2 = getPara("filter2");
+			String filter3 = getPara("filter3");
+			Integer sID = getParaToInt("sID");
+			String phone = getPara("phone");
+			Date resTime = getParaToDate("date");
+			String totalPriceStr = getPara("totalPrice");
+			Double totalPrice = null;
+			if (totalPriceStr != null)
+				totalPrice = Double.parseDouble(totalPriceStr);
+
+			if (msID == null || totalPriceStr == null || resTime == null
+					|| sID == null) {
+				setAttr("error", "请确定保养类型、总价、预约时间不为空");
+				render("/ych/order_form_fail");
+				return;
+			}
+			if (oil1 == null && oil2 == null && oilNone == null
+					|| filter1 == null) {
+				setAttr("error", "保养信息不全请");
+				render("/ych/order_form_fail");
+				return;
+			}
+
+			StringBuilder urlBuilder = new StringBuilder();
+			urlBuilder.append(WX_SER_URL).append("ych/wcyy?msID=").append(msID);
+			if (oil1 != null)
+				urlBuilder.append("&oil1=").append(oil1);
+			if (oil2 != null)
+				urlBuilder.append("&oil2=").append(oil2);
+			if (oilNone != null)
+				urlBuilder.append("&oil-none=").append(oilNone);
+			if (filter1 != null)
+				urlBuilder.append("&filter1=").append(filter1);
+			if (filter2 != null)
+				urlBuilder.append("&filter2=").append(filter2);
+			if (filter3 != null)
+				urlBuilder.append("&filter3=").append(filter3);
+			if (sID != null)
+				urlBuilder.append("&sID=").append(sID);
+			if (phone != null)
+				urlBuilder.append("&phone=").append(phone);
+			if (resTime != null) {
+				SimpleDateFormat formatter = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				urlBuilder.append("&date=").append(formatter.format(resTime));
+			}
+			if (totalPrice != null)
+				urlBuilder.append("&totalPrice=").append(totalPrice);
+			String code = getPara("code");
+
+			if (code == null) {
+				redirect(MessageFormat.format(OAUTH2_URL,
+						URLEncoder.encode(urlBuilder.toString(), "UTF-8")));
+				return;
+			}
+			Map<String, Object> infos = AccessUserInfoByOAuth2
+					.getWxUserInfo(code);
+			System.out.println(infos);
+
+			Integer uID = (Integer) infos.get("did");
+			if (phone != null) {
+				if (!WxUserModel.dao.bindPhone(uID, phone)) {
+					setAttr("error", "手机绑定失败");
+				}
+			}
+
+			int oID = OrderModel.dao.makeOrder(uID, msID, sID, resTime,
+					totalPrice);
+			OrderCommodityModel.dao.saveBatch(oID, oil1, oil2, oilNone,
+					filter1, filter2, filter3);
+
+			System.out
+					.printf("msID: %s, oil1: %s, oil2: %s, oil-none: %s, filter1: %s, filter2: %s, filter3: %s, store: %s, phone: %s, date: %s, totalPrice: %s\n",
+							msID, oil1, oil2, oilNone, filter1, filter2,
+							filter3, sID, phone, resTime, totalPrice);
+
+			// TODO 校验日期是否符合规范
+			render("/ych/order_form_success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			render("/ych/order_form_fail");
+			throw e;
+		}
 	}
 
 	/**
@@ -258,7 +511,7 @@ public class YchWxController extends BaseController {
 			LOG.error("查看门店信息失败", e);
 		}
 	}
-	
+
 	/**
 	 * 查看地图
 	 */
@@ -266,5 +519,66 @@ public class YchWxController extends BaseController {
 		setAttr("lon", getPara("lon"));
 		setAttr("lat", getPara("lat"));
 		render("/ych/store_map");
+	}
+
+	/**
+	 * 评价门店
+	 */
+	public void pjmd() {
+		Integer oID = getParaToInt("oID");
+		String latStr = getPara("lat");
+		String lonStr = getPara("lon");
+		Float lat = null;
+		Float lon = null;
+		if (latStr != null && lonStr != null) {
+			lat = Float.parseFloat(latStr);
+			lon = Float.parseFloat(lonStr);
+		}
+		OrderModel order = OrderModel.dao.getOrder(oID);
+		Integer sID = order.getInt("s_id");
+		StoreModel store = StoreModel.dao.getStore(sID, lat, lon);
+		setAttr("order", order);
+		setAttr("store", store);
+		render("/ych/order_appraise");
+	}
+
+	/**
+	 * 提交评论
+	 */
+	public void tjpl() {
+		// TODO 此处BUG，微信有时会重定向两次，在StoreEvalModel中进行了判断，防止同一订单重复提交评论
+		try {
+			Integer oID = getParaToInt("o_id");
+			Integer sID = getParaToInt("s_id");
+			String code = getPara("code");
+			String content = getPara("content");
+			System.out.println("content: " + content);
+			Integer grade = getParaToInt("grade");
+			if (code == null) {
+				StringBuilder urlBuilder = new StringBuilder();
+				urlBuilder.append(WX_SER_URL).append("ych/tjpl?o_id=")
+						.append(oID).append("&s_id=").append(sID)
+						.append("&content=").append(content).append("&grade=")
+						.append(grade);
+				redirect(MessageFormat.format(OAUTH2_URL,
+						URLEncoder.encode(urlBuilder.toString(), "UTF-8")));
+				return;
+			}
+			Map<String, Object> infos = AccessUserInfoByOAuth2
+					.getWxUserInfo(code);
+			System.out.println(infos);
+			Integer uID = (Integer) infos.get("did");
+			boolean result = StoreEvalModel.dao.commitEval(uID, sID, content,
+					oID, grade);
+			if (result)
+				redirect("/ych/yyby");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) throws UnsupportedEncodingException {
+		System.out.println(URLEncoder.encode(
+				WX_SER_URL + "ych/tjpl?content=中文", "UTF-8"));
 	}
 }

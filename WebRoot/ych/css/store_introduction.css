@@ -19,18 +19,13 @@
 }
 
 .comments_details {
-	position: relative;
-	margin: 20px;
-	font-size: 0.75em;
-	padding: 10px; 
-	background-color: #F8F8F8;
-	border: 1px solid #E7E7E7;
+	
 }
 
 .comments_details span {
 	position: absolute;
-	left: 8px;
-	top: -40px;
+	left: 20px;
+	top: -15px;
 	border-width: 20px;
 	border-style: solid dashed dashed;
 	border-color: transparent transparent #E7E7E7 transparent;
@@ -39,10 +34,25 @@
 
 .comments_details em {
 	position: absolute;
-	top: -38px;
+	top: -14px;
 	border-width: 20px;
-	left: 8px;
+	left: 20px;
 	border-style: solid dashed dashed;
 	border-color: transparent transparent #F8F8F8 transparent;
 	line-height: 0;
+	z-index: 101;
 }
+
+.container-fluid .row div.col-xs-12.text-light{padding:0px 5px}
+.container-fluid .row._title,.container-fluid .row._info,.container-fluid .row._address,.container-fluid .row._pl{padding:10px}
+.container-fluid .row._title>div.col-xs-12{font-size:15px;font-weight: bold;}
+.container-fluid .row._title>div.col-xs-12>span.text-light{font-size:12px;font-weight: normal;color: #676767;margin-left:5px}
+
+.container-fluid .row._address{padding:10px}
+.container-fluid .row._address>div._a1{font-size:15px;color: #676767;}
+.container-fluid .row._info>div.col-xs-12{padding:0px 23px;line-height: 25px;}
+.container-fluid .row._pl:first-child{border-top:1px solid #f1f1f1 !important}
+.container-fluid .row._pl>div.col-xs-12{position: relative;}
+.container-fluid .row._pl>div.col-xs-12>div.col-xs-6:first-child{padding:0px}
+.container-fluid .row._pl>div.col-xs-12>div.col-xs-6.text-light{text-align: right;padding:0px}
+.container-fluid .row._pl>div.col-xs-12>div._pl_detail{margin: 15px 0px;font-size: 14px;color:#676767;padding: 10px;background-color: #F8F8F8;border: 1px solid #E7E7E7;border-radius: 3px;}

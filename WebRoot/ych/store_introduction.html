@@ -1,3 +1,4 @@
+<#compress>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
@@ -10,11 +11,13 @@
     <script src="../res/bootstrap/js/bootstrap.min.js"></script>
     <link href="css/base.css" rel="stylesheet" />
     <link href="css/store_introduction.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+    <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body>
     <div class="container-fluid">
-    <% if (pics.~size > 0) { %>
+        <% if (pics.~size > 0) { %>
         <div class="row">
             <div id="myCarousel" class="carousel slide col-md-12">
                 <!-- 轮播（Carousel）指标 -->
@@ -40,30 +43,45 @@
                 </a>
             </div>
         </div>
-    <% } %>
-        <div class="row">
+        <% } %>
+        <div class="row _title">
             <div class="col-xs-12"><img src="img/ic_title_prompt.png">${store.name!未获得门店名称}</div>
         </div>
         <div class="row">
-            <div class="col-xs-12 text-light"><img src="img/ic_praise.png">好评率${store.rate!0}%<img src="img/ic_tool.png">服务${store.service!0}次<img src="img/ic_address.png">离我${store.distance!0/1000}K米</div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">地址：${store.address}</div>
-            <div class="col-xs-12"><a href="ckdt?lat=${store.lat}&lon=${store.lon}">地图上查看</a>
+            <div class="col-xs-12 text-light">
+                <div class="col-xs-4"><img src="img/ic_praise.png">好评率${store.rate!0}%</div>
+                <div class="col-xs-4"><img src="img/ic_tool.png">服务${store.service!0}次</div>
+                <div class="col-xs-4"><img src="img/ic_address.png">离我${store.distance!0/1000}K米</div>
             </div>
+        </div>
+        <div class="row _address">
+            <div class="col-xs-12 _a1">地址：${store.address}</div>
+            <div class="col-xs-12"><a href="ckdt?lat=${store.lat}&lon=${store.lon}">地图上查看&gt;</a>
+            </div>
+        </div>
+        <div class="row _info">
             <div class="col-xs-12 text-light">${store.info}</div>
         </div>
-        <div class="row">
+        <div class="row _title">
             <div class="col-xs-12"><img src="img/ic_title_prompt.png">车友评论<span class="text-light">(限成功下单车友)</span></div>
-            <% for(eval in evals) { %>
-            <div class="col-xs-6"><img src="img/ic_about_us.png">${eval.u_n}</div>
-            <div class="col-xs-6 text-light">下单日期：${eval.c_time}</div>
-            <div class="col-xs-10 col-xs-offset-1 comments_details">
-            	<span></span><em></em>
-            	${eval.evaluate}
-            </div>
-            <% } %>
         </div>
+        <div class="row _pl">
+        <% for(eval in evals) { %>
+            <div class="col-xs-12 _pl_person">
+                <div class="col-xs-6"><img src="img/ic_about_us.png">${eval.u_n}</div>
+                <div class="col-xs-6 text-light">下单日期：${eval.c_time}</div>
+            </div>
+            <div class="col-xs-12 comments_details">
+                <span></span><em></em>
+                <div class="col-xs-12 col-xs-offset-1 _pl_detail">
+                    ${eval.evaluate}
+                </div>
+            </div>
+        <% } %>
+        </div>
+    </div>
 </body>
 
 </html>
+
+</#compress>

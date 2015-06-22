@@ -1,0 +1,7 @@
+@charset "utf-8";
+.__header{position: fixed;top:0px;width:100%;z-index: 999; height:50px;background-color: #2A292F;text-align: center;}
+.__header span{height:50px;line-height:50px;display: inline-block;color:#fff;}
+.__header>span.__back{float:left;margin-left:10px;font-size: 25px;}
+.__header>span.__back1{float:left;font-size:15px;margin-left:3px;}
+.__header>span.__title{font-size:18px;font-weight: normal;}
+.__header>span.__menu{float:right;margin-right:10px;}

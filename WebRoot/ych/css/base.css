@@ -24,7 +24,7 @@
 	color: white;
 }
 .border-tb {
-	border: 1px solid #b8b8b8;
+	border: 1px solid #e6e6e6;
 }
 a.plain-link,
 a.plain-link:link,
@@ -42,16 +42,16 @@ a.plain-link:active {
 	width: 100%;
 }
 .part {
-    border: 1px solid #b8b8b8;
+    border: 1px solid #e6e6e6;
     background-color: white;
 }
 .part-title {
     padding: 5px 15px;
-    border-bottom: 1px solid #b8b8b8;
+    border-bottom: 1px solid #e6e6e6;
 }
 .part-body {
     padding: 10px;
-    border-bottom: 1px solid #b8b8b8;
+    border-bottom: 1px solid #e6e6e6;
 }
 .part-title:after,
 .part-body:after {

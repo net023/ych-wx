@@ -23,7 +23,7 @@ img.icon {
 	position: absolute;
 	width: 100%;
 	overflow: hidden;
-	top: 175px;
+	top: 269px;
 	bottom: 0px;
 }
 .query-result > .part-body {
@@ -35,3 +35,13 @@ img.icon {
 .last-item {
 	margin-bottom: 10px;
 }
+/* .row.add-car {
+	padding: 10px 0px;
+} */
+.container-fluid .row.add-car div.col-xs-12{height:65px;}
+.container-fluid .row.add-car div.col-xs-12 img.icon{margin-top:24px}
+.container-fluid .row.add-car div.col-xs-12 img.pull-left{margin-top:14px;}
+.container-fluid .row.add-car div.col-xs-12 div.pull-left{margin-top:15px;}
+.container-fluid .row.add-car div.col-xs-12 div.pull-left div#car-name{font-size:16px}
+.container-fluid .row>div.col-xs-12>button.btn{height:52px;font-size:15px;}
+.container-fluid .row>div.col-xs-12._button{margin:10px 0px}

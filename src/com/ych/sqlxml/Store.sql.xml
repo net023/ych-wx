@@ -82,9 +82,7 @@
 					GROUP BY
 						b_id
 				) t4 ON t1.id = t4.store
-				ORDER BY
-					distance
-			)t
+			)t ORDER BY distance
 		]]>
 	</sql>
 	<sql id="store">

@@ -32,3 +32,8 @@ input[type=radio] + label {
 .brand:hover {
 	cursor: pointer;
 }
+.container-fluid .search.row input.form-control{text-align: center;}
+.container-fluid .row>div.col-xs-12.title{margin:10px}
+.container-fluid .row>div.col-xs-12.title>strong{font-weight: normal;font-size: 15px;}
+.container-fluid .row>div.col-xs-12.brands{margin:15px auto}
+.container-fluid .row>div.col-xs-12.brands div.brand{font-size:14px}

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlGroup namespace="OilPrice">
+    <sql id="recommendedAll">
+        <![CDATA[
+		SELECT
+			t.id,
+			t.b_id,
+			5 AS type,
+			CONCAT(
+				oil_brand.`name`,
+				'|',
+				oil_model.`name`,
+				' ',
+				oil_etalon.`name`,
+				' ',
+			IF (litre = 1, 1, 4), 'L ', 
+				IF (
+					t.type = 1,
+					'（全合成）',
+						IF (
+							t.type = 2,
+							'（半合成）',
+							'（矿物油）'
+						)
+				)
+			) AS `name`,
+			litre,
+			price,
+			p_id
+		FROM
+			(
+				SELECT
+					id,
+					e_id,
+					type,
+					b_id,
+					m_id,
+					price,
+					litre
+				FROM
+					oil_price
+				WHERE
+					e_id = ? 
+				AND type = ?
+				AND `status` = 0
+				AND recmd = 0
+			) t
+		LEFT JOIN oil_brand ON t.b_id = oil_brand.id
+		AND oil_brand.`status` = 0
+		LEFT JOIN oil_model ON t.m_id = oil_model.id
+		AND oil_model.`status` = 0
+		LEFT JOIN oil_etalon ON t.e_id = oil_etalon.id
+		AND oil_etalon.`status` = 0
+		LEFT JOIN oil_pic ON t.e_id = oil_pic.e_id
+		AND t.type = oil_pic.type
+        ]]>
+    </sql>
+    <sql id="otherBrandOilPrice">
+        <![CDATA[
+        SELECT
+			new_oil.id,
+			new_oil.litre,
+			CONCAT(
+				oil_brand.`name`,
+				'|',
+				oil_model.`name`,
+				' ',
+				oil_etalon.`name`,
+				' ',
+		
+			IF (new_oil.litre = 1, 1, 4),
+			'L ',
+		
+		IF (
+			new_oil.type = 1,
+			'（全合成）',
+		
+		IF (
+			new_oil.type = 2,
+			'（半合成）',
+			'（矿物油）'
+		)
+		)
+			) AS `name`,
+			p_id,
+			new_oil.price
+		FROM
+			(
+				SELECT
+					b_id,
+					m_id,
+					type,
+					e_id,
+					litre
+				FROM
+					oil_price
+				WHERE
+					id = ?
+			) AS origin_oil
+		LEFT JOIN oil_price AS new_oil ON origin_oil.e_id = new_oil.e_id
+		AND origin_oil.type = new_oil.type
+		AND origin_oil.litre = new_oil.litre
+		AND new_oil.b_id = ?
+		LEFT JOIN oil_brand ON new_oil.b_id = oil_brand.id
+		AND oil_brand.`status` = 0
+		LEFT JOIN oil_model ON new_oil.m_id = oil_model.id
+		AND oil_model.`status` = 0
+		LEFT JOIN oil_etalon ON new_oil.e_id = oil_etalon.id
+		AND oil_etalon.`status` = 0
+		LEFT JOIN oil_pic ON new_oil.e_id = oil_pic.e_id
+		AND new_oil.type = oil_pic.type
+		WHERE
+			new_oil.id IS NOT NULL;
+        ]]>
+    </sql>
+</sqlGroup>

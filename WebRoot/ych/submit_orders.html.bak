@@ -1,0 +1,249 @@
+<#compress>
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>提交订单</title>
+    <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../res/jquery/jquery-1.11.3.min.js"></script>
+    <script src="../res/bootstrap/js/bootstrap.min.js"></script>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/submit_orders.css" rel="stylesheet">
+    <script src="js/submit_orders.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+	<script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pagination-plugin.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/tabs-plugin.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	$(function(){
+			var arrdata = [];
+			for(var i=1;i<=3;i++){
+				arrdata.push({
+					msname:"万豪汽车维修门市"+i,
+					hpl:90+i,
+					fwnum:30+i,
+					jl:10+i,
+					address:"重庆江北红旗河沟红石路88号"+i
+				});
+			}
+			var pageObj = $("#__order_list").pagination({
+				totalPage:3,//总页数
+				data:arrdata,
+				htmlTplDomId:"theTmpl",
+				scrollBottomCalFn:function(pageIndex){
+					pageObj.appendChild(arrdata);
+				}
+			});
+			//重新加载数据，该方法可以解决“点击分类标签调用不同的排序接口取第一页数据”
+			//pageObj.reloadData([{},{},{}]);
+			new Tabs({
+				//idArray:["tab1","tab2","tab3"],
+				className:"__tabs",
+				click:function(el,index){
+					//do something 在这里可以实现“点击分类标签调用不同的排序接口取第一页数据”,可以根据索引index来判断到底该执行那一个逻辑进行分页数据查询
+					console.log("index:"+index+"__"+el.text().trim());
+					//在这里调用分页组建进行分页处理
+					alert("执行'"+el.text().trim()+"'的分页查询逻辑");
+				}
+			});
+    	});
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+	    <form action="qrxq?msID=${msID}" method="post">
+	        <div class="row">
+	            <div class="part">
+	                <div class="part-title">
+	                    <img src="img/ic_title_prompt.png" alt="" /><strong>保养项目</strong>
+	                </div>
+	                <div class="part-body">
+	                	<div class="part">
+	                        <div class="part-title"><strong>更换机油</strong>
+	                        		<% if(oil1! != null || oil2! != null) { %>
+	                       			<label class="classify middle checked" for="qiaopai"><input id="qiaopai" name="brand" type="radio" value="1" checked>壳牌</label>
+		                            <label class="classify middle" for="jiashiduo"><input id="jiashiduo" name="brand" type="radio" value="2">嘉实多</label>
+		                            <label class="classify middle" for="meifu"><input id="meifu" name="brand" type="radio" value="3">美孚</label>
+		                            <% } %>
+	                        </div>
+	                        <div class="part-body">
+	                        	<% 
+	                        	   var totalPrice = 0;
+	                        	   if(oil1! != null) { 
+	                        	   		totalPrice = totalPrice + oil1.price * oil1.number;
+	                        	%>
+	                        	<div class="row">
+		                        	<div class="col-xs-12">
+		                        		<input class="commodity" id="oil1" name="oil1" type="hidden" value="5-${oil1.id}-${trunc(oil1.number)}">
+			                            <img class="product-img" id="oil1_img" src="${oil1.p_id! != null ? '../file/download?fID=' + oil1.p_id! : 'img/img_product_image.png'}">
+			                            <strong id="oil1_name">${oil1.name!}</strong>
+			                            <br>
+			                            <span class="light">建议数量</span>&nbsp;${oil1.number! != null ? trunc(oil1.number) : '请以门店为准'}<span></span>
+			                            <br>
+			                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${oil1.price! != null ? '<span id="oil1_price">' + oil1.price + '</span>元': '请以门店为准'}</span>
+		                        	</div>
+	                        	</div>
+	                        	<% 
+	                        	   }
+	                        	   if(oil2! != null) { 
+	                        	   		totalPrice = totalPrice + oil2.price * oil2.number;
+	                        	%>
+	                        	<div class="row">
+		                        	<div class="col-xs-12">
+			                        	<input class="commodity" id="oil2" name="oil2" type="hidden" value="5-${oil2.id}-${trunc(oil2.number)}">
+			                            <img class="product-img" id="oil2_img" src="${oil2.p_id! != null ? '../file/download?fID=' + oil2.p_id! : 'img/img_product_image.png'}">
+			                            <strong id="oil2_name">${oil2.name!}</strong>
+			                            <br>
+			                            <span class="light">建议数量</span>&nbsp;${oil2.number! != null ? trunc(oil2.number) : '请以门店为准'}<span></span>
+			                            <br>
+			                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${oil2.price! != null ? '<span id="oil2_price">' + oil2.price + '</span>元': '请以门店为准'}</span>
+		                        	</div>
+	                        	</div>
+	                        	<%  
+	                        	    }
+	                        	    if(oil1! == null && oil2! == null) {
+	                        	    	totalPrice = -1;
+	                        	%>
+	                        	<div class="row">
+		                        	<div class="col-xs-12">
+		                        		<input class="commodity" id="oil-none" name="oil-none" type="hidden" value="5">
+			                            <img class="product-img" src="img/img_product_image.png">
+			                            <strong>暂无推荐机油类型，请以门店为准</strong>
+			                            <br>
+			                            <span class="light">建议数量</span>&nbsp;请以门店为准<span></span>
+			                            <br>
+			                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">'请以门店为准'</span>
+		                        	</div>
+	                        	</div>
+	                        	<%  
+	                        	    }
+	                        	    if (msID == 1) {
+	                        	    	if (totalPrice != -1 && filter1.price! != null && filter2.price! != null && filter3.price! != null) {
+		                        	    	totalPrice = totalPrice + filter1.price + filter2.price + filter3.price;
+	                        	    	} else {
+	                        	    		totalPrice = -1;
+	                        	    	}
+	                        	    } else if (msID == 2) {
+	                        	    	if (totalPrice != -1 && filter1! != null) {
+		                        	    	totalPrice = totalPrice + filter1.price;
+	                        	    	} else {
+	                        	    		totalPrice = -1;
+	                        	    	}
+	                        	    }
+	                        	%>
+	                        </div>
+	                    </div>
+	                    <div class="part">
+	                        <div class="part-title"><strong>更换机油滤清器</strong>
+	                        </div>
+	                        <div class="part-body">
+		                        <input class="commodity" id="filter1" name="filter1" type="hidden" value="1${filter1.id! != null ? '-' + filter1.id!}${filter1.number! != null ? '-' + trunc(filter1.number!)}">
+	                            <img class="product-img" src="${filter1.p_id! != null ? '../file/download?fID=' + filter1.p_id! : 'img/img_product_image.png'}">
+	                            <strong>${filter1.name!'暂无推荐机滤，请以门店为准'}</strong>
+	                            <br>
+	                            <span class="light">建议数量</span>&nbsp;${filter1! != null ? 1 : '请以门店为准'}<span></span>
+	                            <br>
+	                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${filter1! != null ? filter1.price + '元' : '请以门店为准'}</span>
+	                        </div>
+	                    </div>
+	                    <% if(msID == 1 && msID! != 2) { %>
+	                    <div class="part">
+	                        <div class="part-title"><strong>更换空气滤清器</strong>
+	                        </div>
+	                        <div class="part-body">
+		                        <input class="commodity" id="filter2" name="filter2" type="hidden" value="2${filter2.id! != null ? '-' + filter2.id!}${filter2.number! != null ? '-' + trunc(filter2.number!)}">
+	                            <img class="product-img" src="${filter2.p_id! != null ? '../file/download?fID=' + filter2.p_id! : 'img/img_product_image.png'}">
+	                            <strong>${filter2.name!'暂无推荐空气滤，请以门店为准'}</strong>
+	                            <br>
+	                            <span class="light">建议数量</span>&nbsp;${filter2! != null ? 1 : '请以门店为准'}<span></span>
+	                            <br>
+	                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${filter2! != null ? filter2.price + '元' : '请以门店为准'}</span>
+	                        </div>
+	                    </div>
+	                    <div class="part">
+	                        <div class="part-title"><strong>更换空调滤清器</strong>
+	                        </div>
+	                        <div class="part-body">
+		                        <input class="commodity" id="filter3" name="filter3" type="hidden" value="3${filter3.id! != null ? '-' + filter3.id!}${filter3.number! != null ? '-' + trunc(filter3.number!)}">
+	                            <img class="product-img" src="${filter3.p_id! != null ? '../file/download?fID=' + filter3.p_id! : 'img/img_product_image.png'}">
+	                            <strong>${filter3.name!'暂无推荐空调滤，请以门店为准'}</strong>
+	                            <br>
+	                            <span class="light">建议数量</span>&nbsp;${filter3! != null ? 1 : '请以门店为准'}<span></span>
+	                            <br>
+	                            <span class="light">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>&nbsp;<span class="emphasis">${filter3! != null ? filter3.price + '元' : '请以门店为准'}</span>
+	                        </div>
+	                    </div>
+	                    <% } %>
+	                </div>
+	                <div class="part-footer text-right middle">
+	                	<input id="totalPrice" name="totalPrice" type="hidden" value="${trunc(totalPrice,2)}">
+	                    共计： <span class="emphasis" id="totalPriceText">${totalPrice != -1 ? '￥' + trunc(totalPrice, 2) + '元' : '请以门店价格为准'}</span>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="row">
+	            <div class="part">
+	                <div class="part-title">
+	                    <img src="img/ic_title_prompt.png" alt="" /><strong>选择门店</strong>
+	                    <label class="__tabs classify checked middle" for="distance">
+	                        <input id="distance" type="radio" name="sort" checked>按距离
+	                    </label>
+	                    <label class="__tabs classify middle" for="score">
+	                        <input id="score" type="radio" name="sort">按评分
+	                    </label>
+	                    <label class="__tabs classify middle" for="aptitude">
+	                        <input id="aptitude" type="radio" name="sort">按资质
+	                    </label>
+	                    <a href="../news/show?nID=3">什么是资质？</a>
+	                </div>
+	                <div id="__order_list" class="part-body">
+		        	<% for(store in stores) { %>
+	                    <label class="part ${storeLP.first ? 'checked'}" for="${store.id}">
+	                    	<input class="store" id="${store.id}" name="store" type="radio" value="${store.id!}" ${storeLP.first ? 'checked'}>
+	                        <div class="part-title"><strong>${store.name}</strong><a href="ckmd?sID=${store.id}">查看详情</a>
+	                        </div>
+	                        <div class="part-body light">
+	                            <img class="icon" src="img/ic_praise.png">&nbsp;好评率${store.rate!90}%
+	                            <img class="icon" src="img/ic_tool.png">&nbsp;服务${store.service!10}次
+	                            <img class="icon" src="img/ic_address.png">&nbsp;离我${store.distance!(10000 / 1000)}K米
+	                        </div>
+	                        <div class="part-footer middle">
+	                            地址：${store.address}
+	                        </div>
+	                    </label>
+		            <% } %>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="row">
+	            <div class="part">
+	                <div class="part-body">
+	                    <button class="btn btn-green btn-lg max-width" id="submit">立即下单</button>
+	                </div>
+	            </div>
+	        </div>
+        </form>
+    </div>
+</body>
+<script id="theTmpl" type="text/x-jsrender">
+	<label class="part" for="{{:id}}">
+		<input class="store" id="{{:id}}" name="store" type="radio" value="{{:id}}">
+		<div class="part-title"><strong>{{:msname}}</strong>&nbsp;&nbsp;<a href="ckmd?sID={{:id}}">查看详情</a>
+		</div>
+		<div class="part-body light">
+			<div class="col-xs-12">
+				<div class="col-xs-4"><img class="icon" src="img/ic_praise.png">&nbsp;好评率{{:hpl}}%</div>
+				<div class="col-xs-4"><img class="icon" src="img/ic_tool.png">&nbsp;服务{{:fwnum}}次</div>
+				<div class="col-xs-4"><img class="icon" src="img/ic_address.png">&nbsp;离我{{:jl}}K米</div>
+			</div>
+		</div>
+		<div class="part-footer middle">
+			地址：{{:address}}
+		</div>
+	</label>
+</script>
+</html>
+</#compress>

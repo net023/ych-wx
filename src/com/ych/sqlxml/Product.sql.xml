@@ -98,95 +98,119 @@
     <sql id="recommend">
         <![CDATA[
         SELECT
-			t1.id,
-			t4.id AS b_id,
+			t.id,
+			t.b_id,
+			5 AS type,
 			CONCAT(
-				t4.`name`,
+				oil_brand.`name`,
 				'|',
-				t5.`name`,
+				oil_model.`name`,
 				' ',
-				t6.`name`,
-				' ',t2.litre,'L ',
+				oil_etalon.`name`,
+				' ',
 		
-			IF (
-				t1.type = 1,
-				'（全合成）',
+			IF (litre = 1, 1, 4),
+			'L ',
 		
-			IF (
-				t1.type = 2,
-				'（半合成）',
-				'（矿物油）'
-			)
-			)
+		IF (
+			t.type = 1,
+			'（全合成）',
+		
+		IF (
+			t.type = 2,
+			'（半合成）',
+			'（矿物油）'
+		)
+		)
 			) AS `name`,
-			t3.p_id,
-			2 AS type,
-			t2.price,
-			IF(t2.litre=4,t1.big,t1.small) AS number
+			price,
+			number,
+			litre,
+			p_id,
+			big,
+			small
 		FROM
 			(
+				SELECT
+					t2.id,
+					b_id,
+					price,
+		
+				IF (t2.litre = 2, big, small) AS number,
+				litre,
+				big,
+				small,
+				m_id,
+				t1.e_id,
+				t1.type
+			FROM
+				(
+					SELECT
+						e_id,
+						type,
+		
+					IF (
+						FLOOR(fill / 4) = 0,
+						1,
+						FLOOR(fill / 4)
+					) AS big,
+		
+				IF (
+					CEIL(fill % 4) = 4,
+					0,
+					CEIL(fill % 4)
+				) AS small
+				FROM
+					oil_product
+				WHERE
+					ly_id = ?
+				) t1
+			LEFT JOIN (
 				SELECT
 					id,
 					e_id,
 					type,
-		
-				IF (
-					FLOOR(fill / 4) = 0,
-					1,
-					FLOOR(fill / 4)
-				) AS big,
-		
-			IF (
-				CEIL(fill % 4) = 4,
-				0,
-				CEIL(fill % 4)
-			) AS small
-			FROM
-				oil_product
+					b_id,
+					m_id,
+					price,
+					litre
+				FROM
+					oil_price
+				WHERE
+					`status` = 0
+				AND recmd = 0
+			) t2 ON t1.e_id = t2.e_id
+			AND t1.type = t2.type
 			WHERE
-				ly_id = ?
-			) t1
-		LEFT JOIN (
-			SELECT
-				b_id,
-				m_id,
-				e_id,
-				type,
-				price,
-				litre
-			FROM
-				oil_price
-			WHERE
-				`status` = 0
-			AND recmd = 0
-		) t2 ON t1.e_id = t2.e_id
-		AND t1.type = t2.type
-		LEFT JOIN oil_pic t3 ON t2.b_id = t3.b_id
-		AND t2.m_id = t3.m_id
-		AND t2.e_id = t3.e_id
-		AND t2.type = t3.type
-		INNER JOIN oil_brand t4 ON t2.b_id = t4.id
-		INNER JOIN oil_model t5 ON t2.m_id = t5.id
-		INNER JOIN oil_etalon t6 ON t2.e_id = t6.id
-		WHERE
 		
-		IF (big > 0, litre = 4, 0)
-		OR
-		IF (small > 0, litre = 1, 0)
+			IF (big > 0, litre = 2, 0)
+			OR
+			IF (small > 0, litre = 1, 0)
+			) t
+		LEFT JOIN oil_brand ON t.b_id = oil_brand.id
+		AND oil_brand.`status` = 0
+		LEFT JOIN oil_model ON t.m_id = oil_model.id
+		AND oil_model.`status` = 0
+		LEFT JOIN oil_etalon ON t.e_id = oil_etalon.id
+		AND oil_etalon.`status` = 0
+		LEFT JOIN oil_pic ON t.e_id = oil_pic.e_id
+		AND t.type = oil_pic.type
 		UNION ALL
 			(
 				SELECT
-					t1.id,
+					t2.id,
 					t4.id AS b_id,
+					t1.t_id AS type,
 					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
-					t3.p_id,
-					1 AS type,
 					t2.price,
-					1 AS number
+					1 AS number,
+					NULL AS litre,
+					t3.p_id,
+					NULL AS big,
+					NULL AS small
 				FROM
 					(
 						SELECT
-							id,
 							ly_id,
 							b_id,
 							t_id,
@@ -199,6 +223,7 @@
 					) t1
 				LEFT JOIN (
 					SELECT
+						id,
 						b_id,
 						t_id,
 						num,
@@ -213,8 +238,8 @@
 				AND t1.num = t2.num
 				LEFT JOIN filter_pic t3 ON t2.b_id = t3.b_id
 				AND t2.t_id = t3.t_id
-				INNER JOIN filter_brand t4 ON t2.b_id = t4.id
-				INNER JOIN filter_type t5 ON t2.t_id = t5.id
+				LEFT JOIN filter_brand t4 ON t2.b_id = t4.id
+				LEFT JOIN filter_type t5 ON t2.t_id = t5.id
 				LEFT JOIN car t6 ON t1.ly_id = t6.ly_id
 				WHERE
 		
@@ -229,95 +254,119 @@
     <sql id="recommend1">
         <![CDATA[
         SELECT
-			t1.id,
-			t4.id AS b_id,
+			t.id,
+			t.b_id,
+			5 AS type,
 			CONCAT(
-				t4.`name`,
+				oil_brand.`name`,
 				'|',
-				t5.`name`,
+				oil_model.`name`,
 				' ',
-				t6.`name`,
-				' ',t2.litre,'L ',
+				oil_etalon.`name`,
+				' ',
 		
-			IF (
-				t1.type = 1,
-				'（全合成）',
+			IF (litre = 1, 1, 4),
+			'L ',
 		
-			IF (
-				t1.type = 2,
-				'（半合成）',
-				'（矿物油）'
-			)
-			)
+		IF (
+			t.type = 1,
+			'（全合成）',
+		
+		IF (
+			t.type = 2,
+			'（半合成）',
+			'（矿物油）'
+		)
+		)
 			) AS `name`,
-			t3.p_id,
-			2 AS type,
-			t2.price,
-			IF(t2.litre=4,t1.big,t1.small) AS number
+			price,
+			number,
+			litre,
+			p_id,
+			big,
+			small
 		FROM
 			(
+				SELECT
+					t2.id,
+					b_id,
+					price,
+		
+				IF (t2.litre = 2, big, small) AS number,
+				litre,
+				big,
+				small,
+				m_id,
+				t1.e_id,
+				t1.type
+			FROM
+				(
+					SELECT
+						e_id,
+						type,
+		
+					IF (
+						FLOOR(fill / 4) = 0,
+						1,
+						FLOOR(fill / 4)
+					) AS big,
+		
+				IF (
+					CEIL(fill % 4) = 4,
+					0,
+					CEIL(fill % 4)
+				) AS small
+				FROM
+					oil_product
+				WHERE
+					ly_id = ?
+				) t1
+			LEFT JOIN (
 				SELECT
 					id,
 					e_id,
 					type,
-		
-				IF (
-					FLOOR(fill / 4) = 0,
-					1,
-					FLOOR(fill / 4)
-				) AS big,
-		
-			IF (
-				CEIL(fill % 4) = 4,
-				0,
-				CEIL(fill % 4)
-			) AS small
-			FROM
-				oil_product
+					b_id,
+					m_id,
+					price,
+					litre
+				FROM
+					oil_price
+				WHERE
+					`status` = 0
+				AND recmd = 0
+			) t2 ON t1.e_id = t2.e_id
+			AND t1.type = t2.type 
 			WHERE
-				ly_id = ?
-			) t1
-		LEFT JOIN (
-			SELECT
-				b_id,
-				m_id,
-				e_id,
-				type,
-				price,
-				litre
-			FROM
-				oil_price
-			WHERE
-				`status` = 0
-			AND recmd = 0
-		) t2 ON t1.e_id = t2.e_id
-		AND t1.type = t2.type
-		LEFT JOIN oil_pic t3 ON t2.b_id = t3.b_id
-		AND t2.m_id = t3.m_id
-		AND t2.e_id = t3.e_id
-		AND t2.type = t3.type
-		INNER JOIN oil_brand t4 ON t2.b_id = t4.id
-		INNER JOIN oil_model t5 ON t2.m_id = t5.id
-		INNER JOIN oil_etalon t6 ON t2.e_id = t6.id
-		WHERE
 		
-		IF (big > 0, litre = 4, 0)
-		OR
-		IF (small > 0, litre = 1, 0)
+			IF (big > 0, litre = 2, 0)
+			OR
+			IF (small > 0, litre = 1, 0)
+			) t
+		LEFT JOIN oil_brand ON t.b_id = oil_brand.id
+		AND oil_brand.`status` = 0
+		LEFT JOIN oil_model ON t.m_id = oil_model.id
+		AND oil_model.`status` = 0
+		LEFT JOIN oil_etalon ON t.e_id = oil_etalon.id
+		AND oil_etalon.`status` = 0
+		LEFT JOIN oil_pic ON t.e_id = oil_pic.e_id
+		AND t.type = oil_pic.type
 		UNION ALL
 			(
 				SELECT
-					t1.id,
+					t2.id,
 					t4.id AS b_id,
+					t1.t_id AS type,
 					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
-					t3.p_id,
-					1 AS type,
 					t2.price,
-					1 AS number
+					1 AS number,
+					NULL AS litre,
+					t3.p_id,
+					NULL AS big,
+					NULL AS small
 				FROM
 					(
 						SELECT
-							id,
 							ly_id,
 							b_id,
 							t_id,
@@ -330,6 +379,7 @@
 					) t1
 				LEFT JOIN (
 					SELECT
+						id,
 						b_id,
 						t_id,
 						num,
@@ -344,8 +394,8 @@
 				AND t1.num = t2.num
 				LEFT JOIN filter_pic t3 ON t2.b_id = t3.b_id
 				AND t2.t_id = t3.t_id
-				INNER JOIN filter_brand t4 ON t2.b_id = t4.id
-				INNER JOIN filter_type t5 ON t2.t_id = t5.id
+				LEFT JOIN filter_brand t4 ON t2.b_id = t4.id
+				LEFT JOIN filter_type t5 ON t2.t_id = t5.id
 				LEFT JOIN car t6 ON t1.ly_id = t6.ly_id
 				WHERE
 		

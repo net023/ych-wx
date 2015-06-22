@@ -27,6 +27,7 @@ $(function() {
         window.location = 'tjqc';
     });
     $('#query').click(function() {
+
         var car = getCar(); // 得到力洋id
         var km = $('#km').val(); // 得到已行驶公里数
         var lastkm = $('#last-km').val();
@@ -43,10 +44,12 @@ $(function() {
         	return;
         }
         console.log(car, km, lastkm);
+        layer.load(2);
         $.get('http://120.24.93.43/ych-jk/jk/smi?lyid=' + car + '&xgls=' + km + '&scgls=' + lastkm, function(data) {
         	console.log(data);
             if (!data) {
                 alert('无返回数据');
+                layer.closeAll('loading');
                 return;
             }
             if (data.r) {
@@ -55,14 +58,15 @@ $(function() {
                     console.log(bys);
                     $('.part-body').empty();
                     $.each(bys, function(index, obj) {
-                        $('.part-body').append('<div class="col-xs-12">保养项目：' + byxmDict[obj.byxmdm] + '</div><div class="col-xs-12">建议说明：' + obj.remake + '</div><div class="col-xs-12">保养类型：' + obj.bylx + '</div><div class="last-item col-xs-12">保养间隔：' + obj.byjg + '</div>')
-                    })
+                        $('.part-body').append('<div class="col-xs-12">保养项目：' + byxmDict[obj.byxmdm] + '</div><div class="col-xs-12">建议说明：' + obj.remake + '</div><div class="col-xs-12">保养类型：' + obj.bylx + '</div><div class="last-item col-xs-12">保养间隔：' + obj.byjg + '</div>');
+                    });
                 } else {
                 	alert(data.d);
                 }
             } else {
                 alert(data.d);
             }
+            layer.closeAll('loading');
         });
     });
 });

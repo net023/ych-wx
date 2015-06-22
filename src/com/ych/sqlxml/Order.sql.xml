@@ -77,5 +77,143 @@
 		]]>
 	</sql>
 	 -->
+	<sql id="selfOrderPager">
+	     FROM (
+		     SELECT
+				`order`.id,
+				`order`.b_id AS s_id,
+				`order`.c_time,
+				`order`.price,
+				ms_id,
+				GROUP_CONCAT(order_commodity.type) AS types,
+				GROUP_CONCAT(
+	
+					IF (
+						CONCAT(
+	
+							IF (
+								filter_pic.p_id IS NULL,
+								'',
+								filter_pic.p_id
+							),
+	
+						IF (
+							oil_pic.p_id IS NULL,
+							'',
+							oil_pic.p_id
+						)
+						) = '',
+						- 1,
+						CONCAT(
+	
+							IF (
+								filter_pic.p_id IS NULL,
+								'',
+								filter_pic.p_id
+							),
+	
+						IF (
+							oil_pic.p_id IS NULL,
+							'',
+							oil_pic.p_id
+						)
+						)
+					)
+				) AS pics,
+			
+			IF (store_eval.id, 1, 0) AS eval
+			FROM
+				(
+					SELECT
+						id,
+						c_time,
+						price,
+						ms_id,
+						wx_id,
+						b_id
+					FROM
+						`order`
+					WHERE
+						wx_id = ?
+				) `order`
+			LEFT JOIN order_commodity ON `order`.id = order_commodity.o_id
+			LEFT JOIN filter_price ON c_id = filter_price.id
+			AND order_commodity.type != 5
+			LEFT JOIN filter_pic ON filter_price.b_id = filter_pic.b_id
+			AND filter_price.t_id = filter_pic.t_id
+			LEFT JOIN oil_price ON c_id = oil_price.id
+			AND order_commodity.type = 5
+			LEFT JOIN oil_pic ON oil_price.b_id = oil_pic.b_id
+			AND oil_price.m_id = oil_pic.m_id
+			AND oil_price.e_id = oil_pic.e_id
+			AND oil_price.type = oil_pic.type
+			LEFT JOIN store_eval ON `order`.id = store_eval.o_id
+			AND `order`.wx_id = store_eval.`user`
+			GROUP BY `order`.id) t
+	</sql>
+	<sql id="order">
+	    SELECT *
+	    FROM (
+		     SELECT
+				`order`.id,
+				`order`.b_id AS s_id,
+				`order`.c_time,
+				`order`.price,
+				ms_id,
+				GROUP_CONCAT(order_commodity.type) AS types,
+				CONCAT(
+			
+					IF (
+						GROUP_CONCAT(filter_pic.p_id),
+						GROUP_CONCAT(
+			
+							IF (
+								filter_pic.p_id,
+								filter_pic.p_id,
+								'-1'
+							)
+						),
+						''
+					),
+			
+				IF (
+					GROUP_CONCAT(oil_pic.p_id),
+					GROUP_CONCAT(
+			
+						IF (
+							oil_pic.p_id,
+							oil_pic.p_id,
+							'-1'
+						)
+					),
+					''
+				)
+				) AS pics
+			
+			FROM
+				(
+					SELECT
+						id,
+						c_time,
+						price,
+						ms_id,
+						b_id
+					FROM
+						`order`
+					WHERE
+						id = ?
+				) `order`
+			LEFT JOIN order_commodity ON `order`.id = order_commodity.o_id
+			LEFT JOIN filter_price ON c_id = filter_price.id
+			AND order_commodity.type != 5
+			LEFT JOIN filter_pic ON filter_price.b_id = filter_pic.b_id
+			AND filter_price.t_id = filter_pic.t_id
+			LEFT JOIN oil_price ON c_id = oil_price.id
+			AND order_commodity.type = 5
+			LEFT JOIN oil_pic ON oil_price.b_id = oil_pic.b_id
+			AND oil_price.m_id = oil_pic.m_id
+			AND oil_price.e_id = oil_pic.e_id
+			AND oil_price.type = oil_pic.type) t
+	</sql>
 	
 </sqlGroup>
