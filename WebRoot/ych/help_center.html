@@ -2,46 +2,58 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-    <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../res/jquery/jquery-1.11.3.min.js"></script>
-    <script src="../res/bootstrap/js/bootstrap.min.js"></script>
-    <title>帮助中心</title>
-    <style>
-	a,
-	a:link,
-    a:visited,
-    a:hover,
-    a:active {
-		text-decoration: none;
-	}
-	img {
-		height: 20px;
-		margin-right: 5px;
-	}
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+        <link href="../res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="../res/jquery/jquery-1.11.3.min.js"></script>
+        <script src="../res/bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/help_center.css" />
+        <link rel="stylesheet" type="text/css" href="css/header.css"/>
+        <title>帮助中心</title>
+        <script type="text/javascript">
+            $(function(){
+                $(".help_center .panel-group .panel-heading").click(function(){
+                    var flage =  $(this).find("span.ic_arrow").hasClass("up");
+                    $(".help_center .panel-group .panel-heading>span.ic_arrow").removeClass("up").addClass("down");
+                    if(flage){
+                        $(this).find("span.ic_arrow").removeClass("up").addClass("down");
+                    }else{
+                        $(this).find("span.ic_arrow").removeClass("down").addClass("up");
+                    }
+                });
+            });
+        </script>
+        <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+    </head>
 
-<body>
-    <div class="panel-group" id="accordion">
-    <% for(help in helpList) { %>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse${helpLP.index}"><img src="img/ic_prompt.png">${help.header}</a>
-		     	</h4>
-            </div>
-            <div id="collapse${helpLP.index}" class="panel-collapse collapse in">
-                <div class="panel-body">
-                ${help.content}
+    <body>
+        <div class="container-fluid">
+        <div class="row help_center">
+        <% if (helpList.~size != 0) { %>
+            <div class="panel-group" id="accordion">
+            <% for(help in helpList) { %>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse${helpLP.index}">
+                        <span class="ic_arrow up"></span>
+                        <h4 class="panel-title">
+                        <img src="img/ic_prompt.png">${help.header}
+                    </h4>
+                    </div>
+                    <div id="collapse${helpLP.index}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                           ${help.content}
+                        </div>
+                    </div>
                 </div>
+            <% } %>
             </div>
+        <% } else { %>
+        暂无内容
+        <% } %>
         </div>
-    <% } %>
-    </div>
-</body>
+        </div>
+    </body>
 
 </html>
 </#compress>
