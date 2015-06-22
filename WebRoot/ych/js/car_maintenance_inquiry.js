@@ -48,7 +48,7 @@ $(function() {
         $.get('http://120.24.93.43/ych-jk/jk/smi?lyid=' + car + '&xgls=' + km + '&scgls=' + lastkm, function(data) {
         	console.log(data);
             if (!data) {
-                alert('无返回数据');
+                layer.msg('无返回数据');
                 layer.closeAll('loading');
                 return;
             }
@@ -61,10 +61,10 @@ $(function() {
                         $('.part-body').append('<div class="col-xs-12">保养项目：' + byxmDict[obj.byxmdm] + '</div><div class="col-xs-12">建议说明：' + obj.remake + '</div><div class="col-xs-12">保养类型：' + obj.bylx + '</div><div class="last-item col-xs-12">保养间隔：' + obj.byjg + '</div>');
                     });
                 } else {
-                	alert(data.d);
+                	layer.msg(data.d);
                 }
             } else {
-                alert(data.d);
+                layer.msg(data.d);
             }
             layer.closeAll('loading');
         });

@@ -23,7 +23,7 @@ img.icon {
 	position: absolute;
 	width: 100%;
 	overflow: hidden;
-	top: 245px;
+	top: 240px;
 	bottom: 0px;
 }
 .query-result > .part-body {
@@ -35,9 +35,7 @@ img.icon {
 .last-item {
 	margin-bottom: 10px;
 }
-/* .row.add-car {
-	padding: 10px 0px;
-} */
+
 .container-fluid .row.add-car div.col-xs-12{height:65px;}
 .container-fluid .row.add-car div.col-xs-12 img.icon{margin-top:24px}
 .container-fluid .row.add-car div.col-xs-12 img.pull-left{margin-top:14px;}
