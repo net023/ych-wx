@@ -62,17 +62,17 @@ label.part {
 }
 .light-emphasis{margin-top:5px}
 .container-fluid div.part-title>strong{font-size:15px;}
-.container-fluid>.row>div.part{border:0px; border-bottom:1px solid #C0C0C0;border-top: 1px solid #C0C0C0;}
-.container-fluid>.row>div.part>div.part-body{padding:0px}
+.container-fluid>form>.row>div.part{border:0px; border-bottom:1px solid #C0C0C0;border-top: 1px solid #C0C0C0;}
+.container-fluid>form>.row>div.part>div.part-body{padding:0px}
 .container-fluid div.part-body>div.part{margin:10px} 
-.container-fluid>.row>div.part>div.part-body div.part div.part-body{padding:0px;}
-.container-fluid>.row>div.part>div.part-body div.part div.part-body div.row{margin:10px -5px}
-.container-fluid>.row>div.part>div.part-body div.part div.part-body div.row img.product-img{margin-right:25px;}
-.container-fluid>.row>div.part>div.part-body div.part div.part-body div.row>div.col-xs-12 strong{font-size:16px;}
+.container-fluid>form>.row>div.part>div.part-body div.part div.part-body{padding:0px;}
+.container-fluid>form>.row>div.part>div.part-body div.part div.part-body div.row{margin:10px -5px}
+.container-fluid>form>.row>div.part>div.part-body div.part div.part-body div.row img.product-img{margin-right:25px;}
+.container-fluid>form>.row>div.part>div.part-body div.part div.part-body div.row>div.col-xs-12 strong{font-size:16px;}
 
-.container-fluid>.row>div.part>div.part-footer{border-top:1px solid #C0C0C0;}
+.container-fluid>form>.row>div.part>div.part-footer{border-top:1px solid #C0C0C0;}
 
-.container-fluid>.row>div.part>div.part-body div.row{margin:10px -5px}
-.container-fluid>.row>div.part>div.part-body>label.part>div.part-footer{border-top:1px solid #C0C0C0;font-weight: normal;font-size:15px;}
-.container-fluid>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-4{font-weight: normal;padding:0px 5px;}
-.container-fluid>.row:last-child>div.part>div.part-body{margin:10px 25px}
+.container-fluid>form>.row>div.part>div.part-body div.row{margin:10px -5px}
+.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-footer{border-top:1px solid #C0C0C0;font-weight: normal;font-size:15px;}
+.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-4{font-weight: normal;padding:0px 5px;}
+.container-fluid>form>.row:last-child>div.part>div.part-body{margin:10px 25px}

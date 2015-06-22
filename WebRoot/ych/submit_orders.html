@@ -13,39 +13,216 @@
 		<link href="css/submit_orders.css" rel="stylesheet">
 		<script src="js/submit_orders.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/header.css"/>
+		<script src="../res/layer/layer.js"></script>
 		<script src="js/header.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/pagination-plugin.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/tabs-plugin.js" type="text/javascript" charset="utf-8"></script>
 	    <script type="text/javascript">
-	    	$(function(){
+	    	function getStoreByDistance(ms_id, page, lat, lon, city) {
+	    		/*alert('ms_id: ' + ms_id + ', page: ' + page + ', lat: ' + lat + ', lon: ' + lon);*/
+	    		var arrdata = [];
+	    		if (!ms_id || !page) {
+	    			layer.msg('保养类型与页码不能为空');
+	    			return arrdata;
+	    		}
+	    		var url = 'http://120.24.93.43/ych-jk/jk/sbd?ms_id=' + ms_id + '&page=' + page;
+	    		if (lat && lon) 
+	    			url = url + '&lat=' + lat + '&lon=' + lon;
+	    		if (city)
+	    			url = url + '&city=' + city;
+	    		$.ajax(url,  {
+	    			async: false,
+	    			success: function(data) {
+	    				if (!data || !data.r) {
+	    					layer.msg('获取数据失败');
+	    					return;
+	    				}
+	    				arrdata = data.d;
+	    				/*alert(JSON.stringify(data));*/
+	    			}
+				});
+				return arrdata;
+	    	}
+	    	function getStoreByGrade(ms_id, page, lat, lon, city) {
 				var arrdata = [];
-				for(var i=1;i<=3;i++){
-					arrdata.push({
-						msname:"万豪汽车维修门市"+i,
-						hpl:90+i,
-						fwnum:30+i,
-						jl:10+i,
-						address:"重庆江北红旗河沟红石路88号"+i
-					});
-				}
+				if (!ms_id || !page) {
+	    			layer.msg('保养类型与页码不能为空');
+	    			return arrdata;
+	    		}
+	    		var url = 'http://120.24.93.43/ych-jk/jk/sbg?ms_id=' + ms_id + '&page=' + page;
+	    		if (lat && lon) 
+	    			url = url + '&lat=' + lat + '&lon=' + lon;
+	    		if (city)
+	    			url = url + '&city=' + city;
+	    		$.ajax(url,  {
+	    			async: false,
+	    			success: function(data) {
+	    				if (!data || !data.r) {
+	    					layer.msg('获取数据失败');
+	    					return;
+	    				}
+	    				arrdata = data.d;
+	    				/*alert(JSON.stringify(data));*/
+	    			}
+				});
+				return arrdata;
+	    	}
+	    	function getStoreByLevel(ms_id, page, lat, lon, city) {
+				var arrdata = [];
+				if (!ms_id || !page) {
+	    			layer.msg('保养类型与页码不能为空');
+	    			return arrdata;
+	    		}
+	    		var url = 'http://120.24.93.43/ych-jk/jk/sbq?ms_id=' + ms_id + '&page=' + page;
+	    		if (lat && lon) 
+	    			url = url + '&lat=' + lat + '&lon=' + lon;
+	    		if (city)
+	    			url = url + '&city=' + city;
+	    		$.ajax(url,  {
+	    			async: false,
+	    			success: function(data) {
+	    				if (!data || !data.r) {
+	    					layer.msg('获取数据失败');
+	    					return;
+	    				}
+	    				arrdata = data.d;
+	    				/*alert(JSON.stringify(data));*/
+	    			}
+				});
+				return arrdata;
+	    	}
+	    	function getStoreByServiceTimes(ms_id, page, lat, lon, city) {
+				var arrdata = [];
+				if (!ms_id || !page) {
+	    			layer.msg('保养类型与页码不能为空');
+	    			return arrdata;
+	    		}
+	    		var url = 'http://120.24.93.43/ych-jk/jk/sbs?ms_id=' + ms_id + '&page=' + page;
+	    		if (lat && lon) 
+	    			url = url + '&lat=' + lat + '&lon=' + lon;
+	    		if (city)
+	    			url = url + '&city=' + city;
+	    		$.ajax(url,  {
+	    			async: false,
+	    			success: function(data) {
+	    				if (!data || !data.r) {
+	    					layer.msg('获取数据失败');
+	    					return;
+	    				}
+	    				arrdata = data.d;
+	    				/*alert(JSON.stringify(data));*/
+	    			}
+				});
+				return arrdata;
+	    	}
+	    	$(function(){
+	    		var arrdata = [];
 				var pageObj = $("#__order_list").pagination({
-					totalPage:3,//总页数
-					data:arrdata,
 					htmlTplDomId:"theTmpl",
 					scrollBottomCalFn:function(pageIndex){
-						pageObj.appendChild(arrdata);
+						layer.load(2);
+						/*console.log('pageIndex: ' + pageIndex);*/
+						var type = $('input[name=sort]:checked').val();
+						arrdata = [];
+		    	        switch(type) {
+		    	        	case 0:
+		    	        		arrdata = getStoreByDistance(${msID}, pageIndex, ${lat}, ${lon});
+							break;
+							case 1:
+								arrdata = getStoreByGrade(${msID}, pageIndex, ${lat}, ${lon});
+							break;
+							case 2:
+								arrdata = getStoreByLevel(${msID}, pageIndex, ${lat}, ${lon});
+							break;
+							case 3:
+								arrdata = getStoreByServiceTimes(${msID}, pageIndex, ${lat}, ${lon});
+							break;
+		    	        }
+		    	        /*layer.msg('scroll data length: ' + arrdata.length);*/
+		    	        if (arrdata.length == 0) {
+		    	        	pageObj.options.totalPage = pageIndex - 1;
+		    	        	layer.msg('已经到达最后一页');
+		    	        } else {
+		    	        	pageObj.options.totalPage++;
+		    	        	pageObj.appendChild(arrdata);
+		    	        	$(':radio[name=store]').unbind('click').bind('click', function(eventObject) {
+						        $(':radio[name=store]').each(function(index, element) {
+						            if (element.checked) {
+						                $(element).parent().addClass('checked');
+						            } else {
+						                $(element).parent().removeClass('checked');
+						            }
+						        });
+						    });
+		    	        }
+						layer.closeAll('loading');
 					}
 				});
-				//重新加载数据，该方法可以解决“点击分类标签调用不同的排序接口取第一页数据”
-				//pageObj.reloadData([{},{},{}]);
+				layer.load(2);
+				arrdata = getStoreByDistance(${msID}, 1, ${lat}, ${lon});
+				if (arrdata.length == 0) {
+					pageObj.options.totalPage = 1;
+					layer.msg('没有可以提供该保养类型的门店');
+				} else {
+					pageObj.options.totalPage = 2;
+					arrdata[0].checked = true;
+		    	    pageObj.reloadData(arrdata);
+		    	    $(':radio[name=store]').unbind('click').bind('click', function(eventObject) {
+				        $(':radio[name=store]').each(function(index, element) {
+				            if (element.checked) {
+				                $(element).parent().addClass('checked');
+				            } else {
+				                $(element).parent().removeClass('checked');
+				            }
+				        });
+				    });
+				}
+				layer.closeAll('loading');
+				/*重新加载数据，该方法可以解决“点击分类标签调用不同的排序接口取第一页数据”*/
+				/*pageObj.reloadData([{},{},{}]);*/
 				new Tabs({
-					//idArray:["tab1","tab2","tab3"],
+					/*idArray:["tab1","tab2","tab3"],*/
 					className:"__tabs",
 					click:function(el,index){
-						//do something 在这里可以实现“点击分类标签调用不同的排序接口取第一页数据”,可以根据索引index来判断到底该执行那一个逻辑进行分页数据查询
-						console.log("index:"+index+"__"+el.text().trim());
-						//在这里调用分页组建进行分页处理
-						alert("执行'"+el.text().trim()+"'的分页查询逻辑");
+						layer.load(2);
+		    	        switch(index) {
+		    	        	case 0:
+		    	        		arrdata = getStoreByDistance(${msID}, 1, ${lat}, ${lon});
+							break;
+							case 1:
+								arrdata = getStoreByGrade(${msID}, 1, ${lat}, ${lon});
+							break;
+							case 2:
+								arrdata = getStoreByLevel(${msID}, 1, ${lat}, ${lon});
+							break;
+							case 3:
+								arrdata = getStoreByServiceTimes(${msID}, 1, ${lat}, ${lon});
+							break;
+		    	        }
+		    	        /*layer.msg('reload data length: ' + arrdata.length);*/
+		    	        if (arrdata.length == 0) {
+		    	        	pageObj.pageIndex = 1;
+		    	        	pageObj.options.totalPage = 1;
+		    	        	layer.msg('没有可以提供该保养类型的门店');
+		    	        } else {
+		    	        	pageObj.options.totalPage = 2;
+		    	        	arrdata[0].checked = true;
+		    	        	pageObj.reloadData(arrdata);
+		    	        	$(':radio[name=store]').unbind('click').bind('click', function(eventObject) {
+						        $(':radio[name=store]').each(function(index, element) {
+						            if (element.checked) {
+						                $(element).parent().addClass('checked');
+						            } else {
+						                $(element).parent().removeClass('checked');
+						            }
+						        });
+						    });
+		    	        }
+		    	        layer.closeAll('loading');
+						/*do something 在这里可以实现“点击分类标签调用不同的排序接口取第一页数据”,可以根据索引index来判断到底该执行那一个逻辑进行分页数据查询*/
+						/*console.log("index:"+index+"__"+el.text().trim());*/
+						/*在这里调用分页组建进行分页处理*/
+						/*alert("执行'"+el.text().trim()+"'的分页查询逻辑");*/
 					}
 				});
 	    	});
@@ -54,6 +231,9 @@
 
 	<body>
 		<div class="container-fluid">
+			<input id="msID" type="hidden" value="${msID}">
+			<input id="page" type="hidden" value="${page!1}">
+			<input id="totalPage" type="hidden" value="${totalPage!1}">
 			<form action="qrxq?msID=${msID}" method="post">
 				<div class="row">
 					<div class="part">
@@ -181,6 +361,7 @@
 							<% } %>
 						</div>
 						<div class="part-footer text-right middle">
+							<input id="totalPrice" type="hidden" value="${trunc(totalPrice!0, 2)}">
 							共计： <span class="emphasis" id="totalPriceText">${totalPrice != -1 ? '￥' + trunc(totalPrice, 2) + '元' : '请以门店价格为准'}</span>
 						</div>
 					</div>
@@ -190,34 +371,17 @@
 						<div class="part-title">
 							<img src="img/ic_title_prompt.png" alt="" /><strong>选择门店</strong>
 							<label class="__tabs classify checked middle" for="distance">
-								<input id="distance" type="radio" name="sort" checked>按距离
+								<input id="distance" type="radio" name="sort" value="0" checked>按距离
 							</label>
 							<label class="__tabs classify middle" for="score">
-								<input id="score" type="radio" name="sort">按评分
+								<input id="score" type="radio" value="1" name="sort">按评分
 							</label>
 							<label class="__tabs classify middle" for="aptitude">
-								<input id="aptitude" type="radio" name="sort">按资质
+								<input id="aptitude" type="radio" value="2" name="sort">按资质
 							</label>
 							<a href="../news/show?nID=3">什么是资质？</a>
 						</div>
 						<div id="__order_list" class="part-body">
-						<% for(store in stores) { %>
-							<label class="part ${storeLP.first ? 'checked'}" for="${store.id}">
-								<input class="store" id="${store.id}" name="store" type="radio" value="${store.id!}" ${storeLP.first ? 'checked'}>
-								<div class="part-title"><strong>${store.name}</strong>&nbsp;&nbsp;<a href="ckmd?sID=${store.id}">查看详情</a>
-								</div>
-								<div class="part-body light">
-									<div class="col-xs-12">
-										<div class="col-xs-4"><img class="icon" src="img/ic_praise.png">&nbsp;好评率${store.rate!0}%</div>
-										<div class="col-xs-4"><img class="icon" src="img/ic_tool.png">&nbsp;服务${store.service!0}次</div>
-										<div class="col-xs-4"><img class="icon" src="img/ic_address.png">&nbsp;离我${store.distance!(10000 / 1000)}K米</div>
-									</div>
-								</div>
-								<div class="part-footer middle">
-									地址：${store.address}
-								</div>
-							</label>
-						<% } %>
 						</div>
 					</div>
 				</div>
@@ -232,19 +396,19 @@
 		</div>
 
 		<script id="theTmpl" type="text/x-jsrender">
-			<label class="part" for="{{:id}}">
-				<input class="store" id="{{:id}}" name="store" type="radio" value="{{:id}}">
-				<div class="part-title"><strong>{{:msname}}</strong>&nbsp;&nbsp;<a href="ckmd?sID={{:id}}">查看详情</a>
+			<label class="part {{if checked}} checked {{/if}}" for="{{:id}}">
+				<input class="store" id="{{:id}}" name="store" type="radio" value="{{:id}}" {{if checked}} checked {{/if}}>
+				<div class="part-title"><strong>{{:name}}</strong>&nbsp;&nbsp;<a href="ckmd?sID={{:id}}">查看详情</a>
 				</div>
 				<div class="part-body light">
 					<div class="col-xs-12">
-						<div class="col-xs-4"><img class="icon" src="img/ic_praise.png">&nbsp;好评率{{:hpl}}%</div>
-						<div class="col-xs-4"><img class="icon" src="img/ic_tool.png">&nbsp;服务{{:fwnum}}次</div>
-						<div class="col-xs-4"><img class="icon" src="img/ic_address.png">&nbsp;离我{{:jl}}K米</div>
+						<div class="col-xs-4"><img class="icon" src="img/ic_praise.png">&nbsp;{{if rate}}好评率{{:rate}}%{{else}}好评率未知{{/if}}</div>
+						<div class="col-xs-4"><img class="icon" src="img/ic_tool.png">&nbsp;{{if serve}}服务{{:serve}}次{{else}}服务次数未知{{/if}}</div>
+						<div class="col-xs-4"><img class="icon" src="img/ic_address.png">&nbsp;{{if distance}}离我{{:distance}}K米{{else}}距离未知{{/if}}</div>
 					</div>
 				</div>
 				<div class="part-footer middle">
-					地址：{{:address}}
+					地址：{{:ads}}
 				</div>
 			</label>
 		</script>

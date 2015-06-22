@@ -9,13 +9,6 @@ $(function() {
         });
     });
     $(':radio[name=brand]').click(function(){
-        $(':radio[name=brand]').each(function(index, element) {
-            if (element.checked) {
-                $(element).parent().addClass('checked');
-            } else {
-                $(element).parent().removeClass('checked');
-            }
-        });
         var oil1 = $('#oil1').val();
         var oil2 = $('#oil2').val();
         if (oil1) {
@@ -28,51 +21,69 @@ $(function() {
         }
         var brand = $(this).val();
         var url = 'qhjypp?' + (oil1 ? 'oil1=' + oil1 : '') + (oil2 ? (oil1 ? '&oil2=' + oil2 : 'oil2=' + oil2) : '') + '&brand=' + brand;
-        alert(url);
-        $.get(url, function(data) {
-            alert(JSON.stringify(data));
-            if (!data) {
-                alert('未更换成功');
-                return;
-            }
-            if (!data.r) {
-                var arr = data.d;
-                var totalPrice = $('#totalPrice');
-                var totalPriceValue = totalPrice.val();
-                var totalPriceText = $('#totalPriceText');
-                for(var i = 0; i < arr.length; i++) {
-                    var element = arr[i];
-                    var litre = element.litre;
-                    var newId = element.id;
-                    var newName = element.name;
-                    var newPic = element.p_id;
-                    var newPrice = element.price;
-
-                    var oil = $('#oil' + litre);
-                    var oldValue = oil.val();
-                    var oldArr = oldValue.split('-');
-                    var newValue;
-                    var oilName = $('#oil' + litre + '_name');
-                    oilName.text(newName);
-                    var oilPrice = $('#oil' + litre + '_price');
-                    var oldPriceValue = oilPrice.text();
-                    if (oldPriceValue != newPrice) {
-                        if (totalPriceValue >= 0) {
-                            totalPriceValue = totalPriceValue - oilPriceValue + newPrice;
-                        }
-                        oilPrice.text(newPrice);
-                    }
-                    if (oldArr.length == 3) {
-                        newValue = oldArr[0] + '-' + newId + '-' + oldArr[2];
-                        oil.val(newValue);
-                    } else {
-                        alert('品牌更换失败');
-                    }
+        /*alert(url);*/
+        layer.load(2);
+        var result = false;
+        $.ajax(url, {
+            async: false,
+            success: function(data) {
+                /*alert(JSON.stringify(data));*/
+                if (!data) {
+                    layer.msg('未更换成功');
+                    return;
                 }
-                totalPrice.val(totalPriceValue);
-                totalPriceText.text(totalPriceValue >= 0 ? '￥' + totalPriceValue + '元' : '请以门店价格为准');
+                if (!data.r) {
+                    var arr = data.d;
+                    var totalPrice = $('#totalPrice');
+                    var totalPriceValue = totalPrice.val();
+                    var totalPriceText = $('#totalPriceText');
+                    for(var i = 0; i < arr.length; i++) {
+                        var element = arr[i];
+                        var litre = element.litre;
+                        var newId = element.id;
+                        var newName = element.name;
+                        var newPic = element.p_id;
+                        var newPrice = element.price;
+
+                        var oil = $('#oil' + litre);
+                        var oldValue = oil.val();
+                        var oldArr = oldValue.split('-');
+                        var newValue;
+                        var oilName = $('#oil' + litre + '_name');
+                        oilName.text(newName);
+                        var oilPrice = $('#oil' + litre + '_price');
+                        var oldPriceValue = oilPrice.text();
+                        /*alert(totalPriceValue + ', ' + oldPriceValue + ', ' + newPrice);*/
+                        if (oldPriceValue != newPrice) {
+                            if (totalPriceValue >= 0) {
+                                totalPriceValue = totalPriceValue - oldPriceValue + newPrice;
+                            }
+                            oilPrice.text(newPrice);
+                        }
+                        if (oldArr.length == 3) {
+                            newValue = oldArr[0] + '-' + newId + '-' + oldArr[2];
+                            oil.val(newValue);
+                        } else {
+                            layer.msg('品牌更换失败');
+                        }
+                    }
+                    totalPrice.val(totalPriceValue);
+                    totalPriceText.text(totalPriceValue >= 0 ? '￥' + totalPriceValue.toFixed(2) + '元' : '请以门店价格为准');
+                    result = true;
+                } else {
+                    layer.msg(data.e);
+                }
+            }
+        });
+        layer.closeAll('loading');
+        if (!result) {
+            return false;
+        }
+        $(':radio[name=brand]').each(function(index, element) {
+            if (element.checked) {
+                $(element).parent().addClass('checked');
             } else {
-                alert(data.e);
+                $(element).parent().removeClass('checked');
             }
         });
     });

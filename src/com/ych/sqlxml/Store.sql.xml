@@ -6,7 +6,7 @@
 		<![CDATA[ 
 			FROM ( 
 				SELECT
-					id,
+					t1.id,
 					`name`,
 					address,
 					lon,
@@ -82,6 +82,10 @@
 					GROUP BY
 						b_id
 				) t4 ON t1.id = t4.store
+				LEFT JOIN 
+					store_mtser ON
+					t1.id = store_mtser.s_id
+					WHERE store_mtser.ms_id = #$ms_id$#
 			)t ORDER BY distance
 		]]>
 	</sql>

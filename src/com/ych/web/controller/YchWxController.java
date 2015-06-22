@@ -210,6 +210,10 @@ public class YchWxController extends BaseController {
 			lon = Float.parseFloat(lonStr);
 			lat = Float.parseFloat(latStr);
 		}
+		if (lat != null && lon != null) {
+			setAttr("lat", lat);
+			setAttr("lon", lon);
+		}
 		List<ProductModel> recommends = ProductModel.dao.getRecommends(cLyID,
 				msID);
 		for (ProductModel recommend : recommends) {
@@ -251,6 +255,7 @@ public class YchWxController extends BaseController {
 			params.put("lat", lat);
 			params.put("lon", lon);
 		}
+		params.put("ms_id", msID);
 		Page<StoreModel> pager = StoreModel.dao.getPager(0, 10, params);
 		setAttr("stores", pager.getList());
 		setAttr("page", pager.getPageNumber());
@@ -509,6 +514,70 @@ public class YchWxController extends BaseController {
 			render("/ych/store_introduction");
 		} catch (Exception e) {
 			LOG.error("查看门店信息失败", e);
+		}
+	}
+
+	/**
+	 * 获取评论
+	 */
+	public void hqpl() {
+		Map<String, Object> result = getResultMap();
+		try {
+			Integer sID = getParaToInt("sID");
+			Integer pageNumber = getParaToInt("page");
+			if (sID == null) {
+				result.put(RESULT, 1);
+				result.put(ERROR, "门店id不能为空");
+				renderJson(result);
+				return;
+			}
+			if (pageNumber == null) {
+				result.put(RESULT, 2);
+				result.put(ERROR, "页码不能为空");
+				return;
+			}
+			Page<StoreEvalModel> evalsPage = StoreEvalModel.dao.getEvalutates(
+					sID, pageNumber, 10);
+			result.put(RESULT, 0);
+			result.put(DATA, evalsPage.getList());
+			renderJson(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put(RESULT, 3);
+			result.put(ERROR, "请求错误");
+			renderJson(result);
+		}
+	}
+
+	/**
+	 * 获取订单
+	 */
+	public void hqdd() {
+		Map<String, Object> result = getResultMap();
+		try {
+			Integer uID = getParaToInt("uID");
+			Integer pageNumber = getParaToInt("page");
+			if (uID == null) {
+				result.put(RESULT, 1);
+				result.put(ERROR, "用户id不能为空");
+				renderJson(result);
+				return;
+			}
+			if (pageNumber == null) {
+				result.put(RESULT, 2);
+				result.put(ERROR, "页码不能为空");
+				return;
+			}
+			Page<OrderModel> pager = OrderModel.dao.getOrders(pageNumber, 10,
+					uID);
+			result.put(RESULT, 0);
+			result.put(DATA, pager.getList());
+			renderJson(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put(RESULT, 3);
+			result.put(ERROR, "请求错误");
+			renderJson(result);
 		}
 	}
 
