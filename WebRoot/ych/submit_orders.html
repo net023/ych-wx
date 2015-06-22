@@ -361,7 +361,7 @@
 							<% } %>
 						</div>
 						<div class="part-footer text-right middle">
-							<input id="totalPrice" type="hidden" value="${trunc(totalPrice!0, 2)}">
+							<input id="totalPrice" name="totalPrice" type="hidden" value="${trunc(totalPrice!0, 2)}">
 							共计： <span class="emphasis" id="totalPriceText">${totalPrice != -1 ? '￥' + trunc(totalPrice, 2) + '元' : '请以门店价格为准'}</span>
 						</div>
 					</div>

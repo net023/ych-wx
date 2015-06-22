@@ -100,6 +100,12 @@ $(function() {
     	alert('commodities');
     	alert(commodities);*/
     });
+    $('form').submit(function() {
+        if (!$('input[name=store]:checked').val()) {
+            layer.msg('门店不能为空');
+            return false;
+        }
+    });
 });
 
 function getOrder() {

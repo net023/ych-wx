@@ -1,4 +1,5 @@
 @CHARSET "UTF-8";
+html,body{font-family: "微软雅黑";}
 input[type=radio] {
 	display: none;
 }
@@ -32,8 +33,22 @@ input[type=radio] + label {
 .brand:hover {
 	cursor: pointer;
 }
+.query-result {
+	position: absolute;
+	width: 100%;
+	overflow: hidden;
+	top: 50px;
+	bottom: 0px;
+}
+.query-result > .part-body {
+	overflow: auto;
+}
+.part-title img {
+	margin-left: 10px;
+	margin-right: 5px;
+}
 .container-fluid .search.row input.form-control{text-align: center;}
 .container-fluid .row>div.col-xs-12.title{margin:10px}
 .container-fluid .row>div.col-xs-12.title>strong{font-weight: normal;font-size: 15px;}
-.container-fluid .row>div.col-xs-12.brands{margin:15px auto}
-.container-fluid .row>div.col-xs-12.brands div.brand{font-size:14px}
+.container-fluid .row>div.col-xs-3.brands{margin:15px auto}
+.container-fluid .row>div.col-xs-3.brands div.brand{font-size:14px}

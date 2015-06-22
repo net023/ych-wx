@@ -7,3 +7,6 @@
 	height: 20px;
 	margin-right: 10px;
 }
+.row + .row {
+	margin-top: 10px;
+}
