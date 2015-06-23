@@ -38,8 +38,7 @@ public class YchWxController extends BaseController {
 
 	private static final Logger LOG = Logger.getLogger(YchWxController.class);
 	private static final String WX_SER_URL = YchConstants.YCH_BASEURL;
-	private static final String OAUTH2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-			+ DbConstants.APPID
+	private static final String OAUTH2_URL = YchConstants.WXOAUTH2URL+"appid="+ DbConstants.APPID
 			+ "&redirect_uri={0}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
 	/**
@@ -83,6 +82,21 @@ public class YchWxController extends BaseController {
 		List<HelpModel> helpList = HelpModel.dao.getHots();
 		setAttr("helpList", helpList);
 		render("/ych/help_center");
+	}
+	
+	
+	/**
+	 * 吐槽园地
+	 */
+	public void tcyd() {
+		renderHtml(YchConstants.INCONSTRUCTION);
+	}
+	
+	/**
+	 * 反馈信息
+	 */
+	public void fkxx(){
+		renderHtml(YchConstants.INCONSTRUCTION);
 	}
 
 	/**

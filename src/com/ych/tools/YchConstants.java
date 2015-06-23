@@ -11,6 +11,6 @@ public class YchConstants {
 	public static final String YCH_DESC = PROP.get("ych.desc");
 	public static final String YCH_PICURL = PROP.get("ych.picUrl");
 	public static final String YCH_TARGETURL = PROP.get("ych.targetUrl");
-	public static final String YCH_SERVERURL = PROP.get("ych.serverUrl");
 	public static final String WXOAUTH2URL = PROP.get("wxOauth2Url");
+	public static final String INCONSTRUCTION = PROP.get("InConstruction");
 }
