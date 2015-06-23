@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfinal.kit.HttpKit;
-import com.ych.tools.SysConstants;
+import com.ych.tools.DbConstants;
 import com.ych.web.model.WxUserModel;
 
 public class AccessUserInfoByOAuth2 {
-	private static String URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+SysConstants.WX_APPID+"&secret="+ApiConfigKit.getApiConfig().getAppSecret()+"&code={0}&grant_type=authorization_code";
+	private static String URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+DbConstants.APPID+"&secret="+ApiConfigKit.getApiConfig().getAppSecret()+"&code={0}&grant_type=authorization_code";
 
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> getWxUserInfo(String code) {

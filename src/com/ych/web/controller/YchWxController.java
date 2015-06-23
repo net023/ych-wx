@@ -17,7 +17,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.weixin.sdk.api.AccessUserInfoByOAuth2;
 import com.ych.common.BaseController;
 import com.ych.core.plugin.annotation.Control;
-import com.ych.tools.SysConstants;
+import com.ych.tools.DbConstants;
 import com.ych.web.model.CarBrandModel;
 import com.ych.web.model.CarSeriesModel;
 import com.ych.web.model.CarouselModel;
@@ -38,7 +38,7 @@ public class YchWxController extends BaseController {
 	private static final Logger LOG = Logger.getLogger(YchWxController.class);
 	private static final String WX_SER_URL = "http://xmn.tunnel.mobi/ych-wx/";
 	private static final String OAUTH2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-			+ SysConstants.WX_APPID
+			+ DbConstants.APPID
 			+ "&redirect_uri={0}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
 	/**

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfinal.kit.JsonKit;
-import com.ych.tools.SysConstants;
+import com.ych.tools.DbConstants;
 
 /**
  * 封装自定义菜单
@@ -27,7 +27,7 @@ public class MenuKit {
 	public static String createYchMenu() {
 		String wxSerUrl = "http://xmn.tunnel.mobi/ych-wx/";
 		String oauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-				+ SysConstants.WX_APPID
+				+ DbConstants.APPID
 				+ "&redirect_uri={0}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 
 		Map<String, Object> menuMap = new HashMap<String, Object>();
