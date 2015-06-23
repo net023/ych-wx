@@ -18,6 +18,7 @@ import com.jfinal.weixin.sdk.api.AccessUserInfoByOAuth2;
 import com.ych.common.BaseController;
 import com.ych.core.plugin.annotation.Control;
 import com.ych.tools.DbConstants;
+import com.ych.tools.YchConstants;
 import com.ych.web.model.CarBrandModel;
 import com.ych.web.model.CarSeriesModel;
 import com.ych.web.model.CarouselModel;
@@ -36,7 +37,7 @@ import com.ych.web.model.WxUserModel;
 public class YchWxController extends BaseController {
 
 	private static final Logger LOG = Logger.getLogger(YchWxController.class);
-	private static final String WX_SER_URL = "http://xmn.tunnel.mobi/ych-wx/";
+	private static final String WX_SER_URL = YchConstants.YCH_BASEURL;
 	private static final String OAUTH2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
 			+ DbConstants.APPID
 			+ "&redirect_uri={0}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
@@ -49,7 +50,7 @@ public class YchWxController extends BaseController {
 			String code = getPara("code");
 			if (code == null) {
 				redirect(MessageFormat.format(OAUTH2_URL,
-						URLEncoder.encode(WX_SER_URL + "ych/yyby", "UTF-8")));
+						URLEncoder.encode(WX_SER_URL + "/ych/yyby", "UTF-8")));
 				return;
 			}
 			List<CarouselModel> carousels = CarouselModel.dao.getTopThree();
@@ -92,7 +93,7 @@ public class YchWxController extends BaseController {
 			String code = getPara("code");
 			if (code == null) {
 				redirect(MessageFormat.format(OAUTH2_URL,
-						URLEncoder.encode(WX_SER_URL + "ych/byda", "UTF-8")));
+						URLEncoder.encode(WX_SER_URL + "/ych/byda", "UTF-8")));
 				return;
 			}
 			Map<String, Object> infos = AccessUserInfoByOAuth2
@@ -119,7 +120,7 @@ public class YchWxController extends BaseController {
 			String code = getPara("code");
 			if (code == null) {
 				redirect(MessageFormat.format(OAUTH2_URL,
-						URLEncoder.encode(WX_SER_URL + "ych/bycx", "UTF-8")));
+						URLEncoder.encode(WX_SER_URL + "/ych/bycx", "UTF-8")));
 				return;
 			}
 			Map<String, Object> infos = AccessUserInfoByOAuth2
@@ -165,7 +166,7 @@ public class YchWxController extends BaseController {
 			if (code == null) {
 				redirect(MessageFormat.format(
 						OAUTH2_URL,
-						URLEncoder.encode(WX_SER_URL + "ych/bcqc?car=" + cID
+						URLEncoder.encode(WX_SER_URL + "/ych/bcqc?car=" + cID
 								+ (query != null ? "&query=1" : ""), "UTF-8")));
 				return;
 			}
@@ -333,7 +334,7 @@ public class YchWxController extends BaseController {
 			String code = getPara("code");
 			if (code == null) {
 				StringBuilder urlBuilder = new StringBuilder();
-				urlBuilder.append(WX_SER_URL).append("ych/qrxq?msID=")
+				urlBuilder.append(WX_SER_URL).append("/ych/qrxq?msID=")
 						.append(msID);
 				if (oil1 != null)
 					urlBuilder.append("&oil1=").append(oil1);
@@ -428,7 +429,7 @@ public class YchWxController extends BaseController {
 			}
 
 			StringBuilder urlBuilder = new StringBuilder();
-			urlBuilder.append(WX_SER_URL).append("ych/wcyy?msID=").append(msID);
+			urlBuilder.append(WX_SER_URL).append("/ych/wcyy?msID=").append(msID);
 			if (oil1 != null)
 				urlBuilder.append("&oil1=").append(oil1);
 			if (oil2 != null)
@@ -626,7 +627,7 @@ public class YchWxController extends BaseController {
 			Integer grade = getParaToInt("grade");
 			if (code == null) {
 				StringBuilder urlBuilder = new StringBuilder();
-				urlBuilder.append(WX_SER_URL).append("ych/tjpl?o_id=")
+				urlBuilder.append(WX_SER_URL).append("/ych/tjpl?o_id=")
 						.append(oID).append("&s_id=").append(sID)
 						.append("&content=").append(content).append("&grade=")
 						.append(grade);
@@ -649,6 +650,6 @@ public class YchWxController extends BaseController {
 
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		System.out.println(URLEncoder.encode(
-				WX_SER_URL + "ych/tjpl?content=中文", "UTF-8"));
+				WX_SER_URL + "/ych/tjpl?content=中文", "UTF-8"));
 	}
 }

@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfinal.kit.JsonKit;
-import com.ych.tools.DbConstants;
+import com.ych.tools.YchConstants;
 
 /**
  * 封装自定义菜单
- * 
- * @author 曾芸杰
- * @since 2015-5-6 下午10:17:58
  */
 public class MenuKit {
 
@@ -25,10 +22,10 @@ public class MenuKit {
 	 * 服务中心 --反馈信息 --帮众中心 --拨打热线 --门店后台 --吐槽园地
 	 */
 	public static String createYchMenu() {
-		String wxSerUrl = "http://xmn.tunnel.mobi/ych-wx/";
-		String oauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+		String wxSerUrl = YchConstants.YCH_BASEURL;
+		/*String oauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
 				+ DbConstants.APPID
-				+ "&redirect_uri={0}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+				+ "&redirect_uri={0}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";*/
 
 		Map<String, Object> menuMap = new HashMap<String, Object>();
 		List<Map<String, Object>> buttons = new ArrayList<Map<String, Object>>();
@@ -54,27 +51,27 @@ public class MenuKit {
 		// btn1_sb1.put("url", wxSerUrl+"ych/yyby");
 		btn1.put("type", "view");
 		btn1.put("name", "保养预约");
-		btn1.put("url", wxSerUrl + "ych/yyby");
+		btn1.put("url", wxSerUrl + "/ych/yyby");
 
 		btn2_sb1.put("type", "view");
 		btn2_sb1.put("name", "我的订单");
-		btn2_sb1.put("url", wxSerUrl + "ych/byda");
+		btn2_sb1.put("url", wxSerUrl + "/ych/byda");
 
 		btn2_sb2.put("type", "view");
 		btn2_sb2.put("name", "保养档案");
-		btn2_sb2.put("url", wxSerUrl + "ych/byda");
+		btn2_sb2.put("url", wxSerUrl + "/ych/byda");
 
 		btn2_sb3.put("type", "view");
 		btn2_sb3.put("name", "保养查询");
-		btn2_sb3.put("url", wxSerUrl + "ych/bycx");
+		btn2_sb3.put("url", wxSerUrl + "/ych/bycx");
 
 		btn3_sb1.put("type", "view");
 		btn3_sb1.put("name", "反馈信息");
-		btn3_sb1.put("url", wxSerUrl + "ych/fkxx");
+		btn3_sb1.put("url", wxSerUrl + "/ych/fkxx");
 
 		btn3_sb2.put("type", "view");
 		btn3_sb2.put("name", "帮助中心");
-		btn3_sb2.put("url", wxSerUrl + "ych/bzzx");
+		btn3_sb2.put("url", wxSerUrl + "/ych/bzzx");
 
 		btn3_sb3.put("type", "click");
 		btn3_sb3.put("name", "拨打热线");
@@ -82,11 +79,11 @@ public class MenuKit {
 
 		btn3_sb4.put("type", "view");
 		btn3_sb4.put("name", "门店后台");
-		btn3_sb4.put("url", wxSerUrl + "blogin");
+		btn3_sb4.put("url", wxSerUrl + "/blogin");
 
 		btn3_sb5.put("type", "view");
 		btn3_sb5.put("name", "吐槽园地");
-		btn3_sb5.put("url", wxSerUrl + "ych/tcyd");
+		btn3_sb5.put("url", wxSerUrl + "/ych/tcyd");
 
 		// btn1_sbList.add(btn1_sb1);
 
