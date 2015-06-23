@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.core;
 
+import java.util.Date;
+
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
@@ -72,18 +74,14 @@ public class WeixinMsgController extends MsgController {
 	 */
 	@Override
 	protected void processInTextMsg(InTextMsg inTextMsg) {
-		/*OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-		outMsg.addNews(
-				SysConstants.MSG_TITLE,
-				SysConstants.MSG_DESCRIBE,
-				"" + SysConstants.WX_SERVER_URL + SysConstants.MSG_PICTURE_URL
-						+ "",
-				""
-						+ SysConstants.OAUTH2_URL
-						+ "appid="
-						+ SysConstants.WX_APPID
-						+ "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2FinitMsg&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect");
-		render(outMsg);*/
+		/*
+		 * OutNewsMsg outMsg = new OutNewsMsg(inTextMsg); outMsg.addNews(
+		 * SysConstants.MSG_TITLE, SysConstants.MSG_DESCRIBE, "" +
+		 * SysConstants.WX_SERVER_URL + SysConstants.MSG_PICTURE_URL + "", "" +
+		 * SysConstants.OAUTH2_URL + "appid=" + SysConstants.WX_APPID +
+		 * "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2FinitMsg&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
+		 * ); render(outMsg);
+		 */
 		String msgContent = inTextMsg.getContent().trim();
 		// 帮助提示
 		if ("help".equalsIgnoreCase(msgContent)) {
@@ -94,8 +92,16 @@ public class WeixinMsgController extends MsgController {
 		// 图文消息测试
 		else if ("news".equalsIgnoreCase(msgContent)) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-			outMsg.addNews("JFinal 1.8 发布，JAVA 极速 WEB+ORM 框架", "现在就加入 JFinal 极速开发世界，节省更多时间去跟女友游山玩水 ^_^", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq1ibBkhSA1BibMuMxLuHIvUfiaGsK7CC4kIzeh178IYSHbYQ5eg9tVxgEcbegAu22Qhwgl5IhZFWWXUw/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200313981&idx=1&sn=3bc5547ba4beae12a3e8762ababc8175#rd");
-			outMsg.addNews("JFinal 1.6 发布,JAVA极速WEB+ORM框架", "JFinal 1.6 主要升级了 ActiveRecord 插件，本次升级全面支持多数源、多方言、多缓", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq0fcR8VmNCgugHXv7gVlxI6w95RBlKLdKUTjhOZIHGSWsGvjvHqnBnjIWHsicfcXmXlwOWE6sb39kA/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200121522&idx=1&sn=ee24f352e299b2859673b26ffa4a81f6#rd");
+			outMsg.addNews(
+					"JFinal 1.8 发布，JAVA 极速 WEB+ORM 框架",
+					"现在就加入 JFinal 极速开发世界，节省更多时间去跟女友游山玩水 ^_^",
+					"http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq1ibBkhSA1BibMuMxLuHIvUfiaGsK7CC4kIzeh178IYSHbYQ5eg9tVxgEcbegAu22Qhwgl5IhZFWWXUw/0",
+					"http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200313981&idx=1&sn=3bc5547ba4beae12a3e8762ababc8175#rd");
+			outMsg.addNews(
+					"JFinal 1.6 发布,JAVA极速WEB+ORM框架",
+					"JFinal 1.6 主要升级了 ActiveRecord 插件，本次升级全面支持多数源、多方言、多缓",
+					"http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq0fcR8VmNCgugHXv7gVlxI6w95RBlKLdKUTjhOZIHGSWsGvjvHqnBnjIWHsicfcXmXlwOWE6sb39kA/0",
+					"http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200121522&idx=1&sn=ee24f352e299b2859673b26ffa4a81f6#rd");
 			render(outMsg);
 		}
 		// 音乐消息测试
@@ -107,18 +113,24 @@ public class WeixinMsgController extends MsgController {
 			outMsg.setHqMusicUrl("http://www.jfinal.com/Listen_To_Your_Heart.mp3");
 			outMsg.setFuncFlag(true);
 			render(outMsg);
-		}
-		else if ("美女".equalsIgnoreCase(msgContent)) {
+		} else if ("美女".equalsIgnoreCase(msgContent)) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-			outMsg.addNews("我们只看美女", "又一大波美女来袭，我们只看美女 ^_^", "https://mmbiz.qlogo.cn/mmbiz/zz3Q6WSrzq3DmIGiadDEicRIp69r1iccicwKEUOKuLhYgjibyU96ia581gCf5o3kicqz6ZLdsDyUtLib0q0hdgHtZOf4Wg/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=202080887&idx=1&sn=0649c67de565e2d863bf3b8feee24da0#rd");
-			// outMsg.addNews("秀色可餐", "JFinal Weixin 极速开发就是这么爽，有木有 ^_^", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq2GJLC60ECD7rE7n1cvKWRNFvOyib4KGdic3N5APUWf4ia3LLPxJrtyIYRx93aPNkDtib3ADvdaBXmZJg/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200987822&idx=1&sn=7eb2918275fb0fa7b520768854fb7b80#rd");
-			
+			outMsg.addNews(
+					"我们只看美女",
+					"又一大波美女来袭，我们只看美女 ^_^",
+					"https://mmbiz.qlogo.cn/mmbiz/zz3Q6WSrzq3DmIGiadDEicRIp69r1iccicwKEUOKuLhYgjibyU96ia581gCf5o3kicqz6ZLdsDyUtLib0q0hdgHtZOf4Wg/0",
+					"http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=202080887&idx=1&sn=0649c67de565e2d863bf3b8feee24da0#rd");
+			// outMsg.addNews("秀色可餐", "JFinal Weixin 极速开发就是这么爽，有木有 ^_^",
+			// "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq2GJLC60ECD7rE7n1cvKWRNFvOyib4KGdic3N5APUWf4ia3LLPxJrtyIYRx93aPNkDtib3ADvdaBXmZJg/0",
+			// "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200987822&idx=1&sn=7eb2918275fb0fa7b520768854fb7b80#rd");
+
 			render(outMsg);
 		}
 		// 其它文本消息直接返回原值 + 帮助提示
 		else {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n" + helpStr);
+			outMsg.setContent("\t文本消息已成功接收，内容为： " + inTextMsg.getContent()
+					+ "\n\n" + helpStr);
 			render(outMsg);
 		}
 	}
@@ -204,25 +216,34 @@ public class WeixinMsgController extends MsgController {
 		 * "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2FinitMsg&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
 		 * ); render(outMsg);
 		 */
-		/*OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-		outMsg.setContent("感谢关注 JFinal Weixin 极速开发，为您节约更多时间，去陪恋人、家人和朋友 :) \n\n\n "
-				+ helpStr);
-		// 如果为取消关注事件，将无法接收到传回的信息
-		render(outMsg);*/
-		
-		//来自微信客户端用户  到  微信服务器(自己的服务器)
+		/*
+		 * OutTextMsg outMsg = new OutTextMsg(inFollowEvent); outMsg.setContent(
+		 * "感谢关注 JFinal Weixin 极速开发，为您节约更多时间，去陪恋人、家人和朋友 :) \n\n\n " + helpStr);
+		 * // 如果为取消关注事件，将无法接收到传回的信息 render(outMsg);
+		 */
+
+		// 来自微信客户端用户 到 微信服务器(自己的服务器)
 		String event = inFollowEvent.getEvent();
 		String fromUserName = inFollowEvent.getFromUserName();
-//		String toUserName = inFollowEvent.getToUserName();
+		// String toUserName = inFollowEvent.getToUserName();
 		OutNewsMsg outMsg = new OutNewsMsg(inFollowEvent);
-		if("subscribe".equalsIgnoreCase(event)){
-			//保存用户
+		if ("subscribe".equalsIgnoreCase(event)) {
+			// 保存用户
 			WxUserModel wxUserModel = new WxUserModel();
 			ApiResult userInfo = UserApi.getUserInfo(fromUserName);
-			wxUserModel.set("openid", fromUserName).set("name", userInfo.getStr("nickname")).set("head", userInfo.getStr("headimgurl")).save();
-			outMsg.addNews(YchConstants.YCH_TITLE, YchConstants.YCH_DESC, YchConstants.YCH_BASEURL+YchConstants.YCH_PICURL, YchConstants.YCH_BASEURL+YchConstants.YCH_TARGETURL);
-		}else{
-			//unsubscribe  删除用户
+			wxUserModel.set("openid", fromUserName)
+					.set("name", userInfo.getStr("nickname"))
+					.set("head", userInfo.getStr("headimgurl"))
+					.set("sex", userInfo.getInt("sex"))
+					.set("city", userInfo.getStr("city"))
+					.set("province", userInfo.getStr("province"))
+					.set("country", userInfo.getStr("country"))
+					.set("c_time", new Date()).save();
+			outMsg.addNews(YchConstants.YCH_TITLE, YchConstants.YCH_DESC,
+					YchConstants.YCH_BASEURL + YchConstants.YCH_PICURL,
+					YchConstants.YCH_BASEURL + YchConstants.YCH_TARGETURL);
+		} else {
+			// unsubscribe 删除用户
 			WxUserModel.dao.delByOpenId(fromUserName);
 		}
 		render(outMsg);
@@ -256,16 +277,16 @@ public class WeixinMsgController extends MsgController {
 		String msgType = inMenuEvent.getMsgType();
 		String event = inMenuEvent.getEvent();
 		String eventKey = inMenuEvent.getEventKey();
-		System.out.println(msgType+"__"+event+"__"+eventKey);
-		if("click".equalsIgnoreCase(event)){
-			if("key_tell".equals(eventKey)){
-				renderOutTextMsg("拨打热线："+YchConstants.YCH_TELL);
+		System.out.println(msgType + "__" + event + "__" + eventKey);
+		if ("click".equalsIgnoreCase(event)) {
+			if ("key_tell".equals(eventKey)) {
+				renderOutTextMsg("拨打热线：" + YchConstants.YCH_TELL);
 			}
-			
-		}else{
+
+		} else {
 			renderNull();
 		}
-//		renderOutTextMsg("processInMenuEvent() 方法测试成功");
+		// renderOutTextMsg("processInMenuEvent() 方法测试成功");
 	}
 
 	/**
