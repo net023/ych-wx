@@ -3,8 +3,6 @@ package com.ych.tools;
 /**
  * 返回json的bean
  * 
- * @author zyz
- *
  */
 public class ResultJson {
 

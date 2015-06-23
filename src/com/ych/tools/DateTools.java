@@ -9,8 +9,6 @@ import java.util.Date;
 /**
  * 并发时间工具类
  * 
- * @author zyz
- *
  */
 public class DateTools {
 

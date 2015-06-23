@@ -6,8 +6,6 @@ import com.jfinal.kit.PropKit;
 /**
  * 开发者模式判断
  * 
- * @author zyz
- *
  */
 public class DevConstants {
 

@@ -22,8 +22,6 @@ import com.ych.core.kit.ReflectKit;
 /**
  * 定时器插件
  * 
- * @author zyz
- *
  */
 public class QuartzPlugin implements IPlugin {
 	private static final String JOB = "job";

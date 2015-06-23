@@ -18,8 +18,6 @@ import com.yingmob.common.cache.impl.RedisClient;
 /**
  * redis工具类
  * 
- * @author zyz
- *
  */
 public class RedisTools {
 

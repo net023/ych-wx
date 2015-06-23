@@ -3,8 +3,6 @@ package com.ych.tools;
 /**
  * ehcache常量
  * 
- * @author zyz
- *
  */
 public class EhcacheConstants {
 

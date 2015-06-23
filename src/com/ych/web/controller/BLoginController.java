@@ -18,7 +18,6 @@ import com.ych.web.model.OrderModel;
 import com.ych.web.model.SysLoginLogModel;
 
 /**
- * 无图标app
  */
 @Control(controllerKey = {"/blogin"})
 public class BLoginController extends BaseController {

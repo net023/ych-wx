@@ -3,8 +3,6 @@ package com.ych.tools;
 /**
  * redis常量
  * 
- * @author zyz
- *
  */
 public class RedisConstants {
 

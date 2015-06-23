@@ -13,8 +13,6 @@ import de.ruedigermoeller.serialization.FSTObjectOutput;
  * 大数据量序列化用fst
  * 小数据量用jdk
  * 
- * @author zyz
- *
  */
 public class SerializeTools {
 
