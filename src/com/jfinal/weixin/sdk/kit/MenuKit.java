@@ -1,6 +1,5 @@
 package com.jfinal.weixin.sdk.kit;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,67 +15,6 @@ import com.ych.tools.SysConstants;
  * @since 2015-5-6 下午10:17:58
  */
 public class MenuKit {
-	public static String str = "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-
-	public static String createMenuJson() {
-		Map<String, Object> menuMap = new HashMap<String, Object>();
-		List<Map<String, Object>> buttons = new ArrayList<Map<String, Object>>();
-
-		Map<String, Object> btn1 = new HashMap<String, Object>();
-		btn1.put("type", "view");
-		btn1.put("name", "开始赚钱");
-		btn1.put("url", "" + SysConstants.OAUTH2_URL + "appid="
-				+ SysConstants.WX_APPID
-				+ "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2Frwzq" + str
-				+ "");
-
-		Map<String, Object> btn2 = new HashMap<String, Object>();
-		List<Map<String, Object>> btn2_sbList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> btn2_sb1 = new HashMap<String, Object>();
-		btn2_sb1.put("type", "view");
-		btn2_sb1.put("name", "个人中心");
-		btn2_sb1.put("url", "" + SysConstants.OAUTH2_URL + "appid="
-				+ SysConstants.WX_APPID
-				+ "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2Fgrzx" + str
-				+ "");
-		Map<String, Object> btn2_sb2 = new HashMap<String, Object>();
-		btn2_sb2.put("type", "view");
-		btn2_sb2.put("name", "收入查询");
-		btn2_sb2.put("url", "" + SysConstants.OAUTH2_URL + "appid="
-				+ SysConstants.WX_APPID
-				+ "&redirect_uri=http%3A%2F%2F119.29.75.90%2Fwx%2Fsrcx" + str
-				+ "");
-		btn2_sbList.add(btn2_sb1);
-		btn2_sbList.add(btn2_sb2);
-		btn2.put("name", "我的信息");
-		btn2.put("sub_button", btn2_sbList);
-
-		Map<String, Object> btn3 = new HashMap<String, Object>();
-		List<Map<String, Object>> btn3_sbList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> btn3_sb1 = new HashMap<String, Object>();
-		btn3_sb1.put("type", "view");
-		btn3_sb1.put("name", "排行榜");
-		btn3_sb1.put("url", "" + SysConstants.WX_SERVER_URL + "/wx/phb");
-		Map<String, Object> btn3_sb2 = new HashMap<String, Object>();
-		btn3_sb2.put("type", "view");
-		btn3_sb2.put("name", "下载小点儿");
-		btn3_sb2.put("url", "" + SysConstants.WX_SERVER_URL + "/wx/xzxd");
-		Map<String, Object> btn3_sb3 = new HashMap<String, Object>();
-		btn3_sb3.put("type", "view");
-		btn3_sb3.put("name", "联系客服");
-		btn3_sb3.put("url", "" + SysConstants.WX_SERVER_URL + "/wx/lxkf");
-		btn3_sbList.add(btn3_sb1);
-		btn3_sbList.add(btn3_sb2);
-		btn3_sbList.add(btn3_sb3);
-		btn3.put("name", "更多");
-		btn3.put("sub_button", btn3_sbList);
-
-		buttons.add(btn1);
-		buttons.add(btn2);
-		buttons.add(btn3);
-		menuMap.put("button", buttons);
-		return JsonKit.toJson(menuMap);
-	}
 
 	/**
 	 * 
