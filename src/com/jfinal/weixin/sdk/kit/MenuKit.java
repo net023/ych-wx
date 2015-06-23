@@ -120,7 +120,7 @@ public class MenuKit {
 
 		btn2_sb1.put("type", "view");
 		btn2_sb1.put("name", "我的订单");
-		btn2_sb1.put("url", wxSerUrl + "ych/wddd");
+		btn2_sb1.put("url", wxSerUrl + "ych/byda");
 
 		btn2_sb2.put("type", "view");
 		btn2_sb2.put("name", "保养档案");

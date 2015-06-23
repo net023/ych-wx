@@ -18,8 +18,8 @@
 .select_car div.panel-group>div.panel-default>div.panel-collapse>div.panel-body{background-color: #f5f5f5;}
 .select_car div.panel-group>div.panel-default>div.panel-heading{cursor:pointer;padding:15px;background-color: #fff;}
 .select_car div.panel-group>div.panel-default>div.panel-heading>span.ic_arrow{display:inline-block;float:right;width:25px;height:16px;}
-.select_car div.panel-group>div.panel-default>div.panel-heading>span.ic_arrow.up{background: url(img/ic_top.png);}
-.select_car div.panel-group>div.panel-default>div.panel-heading>span.ic_arrow.down{background: url(img/ic_buttom.png);}
+.select_car div.panel-group>div.panel-default>div.panel-heading>span.ic_arrow.up{background: url(../img/ic_top.png);}
+.select_car div.panel-group>div.panel-default>div.panel-heading>span.ic_arrow.down{background: url(../img/ic_buttom.png);}
 .select_car div.modal div.modal-dialog div.modal-body>ul.car_type{margin:0px;padding:0px;list-style: none;}
 .select_car div.modal div.modal-dialog div.modal-body>ul.car_type li{background-color: #fafafa; height:45px;line-height: 45px;padding-left:15px;margin:5px;border:1px solid #ccc;}
 .select_car div.modal div.modal-dialog div.modal-body>ul.car_type li.click{background-color:#BFE4FF;border:1px solid #39AEFF}

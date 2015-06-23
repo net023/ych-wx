@@ -50,7 +50,7 @@ label.part {
 label.part {
     padding: 0;
     border: #C0C0C0 1px solid;
-    background: url(img/maintain-unselected.png) top right no-repeat;
+    background: url(../img/maintain-unselected.png) top right no-repeat;
     margin:10px;   
 }
 .part + .part {
@@ -58,7 +58,7 @@ label.part {
 }
 .part-body > label.checked {
     border: #39adff 1px solid;
-    background: url(img/maintain-selected.png) top right no-repeat;
+    background: url(../img/maintain-selected.png) top right no-repeat;
 }
 .light-emphasis{margin-top:5px}
 .container-fluid div.part-title>strong{font-size:15px;}
