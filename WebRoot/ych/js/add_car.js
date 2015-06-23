@@ -26,7 +26,7 @@ $(function() {
 					$('#result').removeClass('hidden');
 					$('#list').addClass('hidden');
 					var query = sessionStorage.getItem('query');
-					$('#result .part-body').html('<div class="col-xs-12">品牌：' + 1 + '</div><div class="col-xs-12">厂商：' + 2 + '</div><div class="col-xs-12">系列：' + 3 + '</div><div class="col-xs-12">型号：' + 4 + '</div><div class="col-xs-12"><a class="btn btn-green max-width" href="bcqc?car=' + data.d.id + (query ? '&query=1' : '') + '">确定</a></div>');
+					$('#result .part-body').html('<div class="col-xs-12">品牌：' + data.d.b_name + '</div><div class="col-xs-12">厂商：' + data.d.m_name + '</div><div class="col-xs-12">系列：' + data.d.s_name + '</div><div class="col-xs-12">型号：' + data.d.t_name + '</div><div class="col-xs-12"><a class="btn btn-green max-width" href="bcqc?car=' + data.d.id + (query ? '&query=1' : '') + '">确定</a></div>');
 				} else {
 					layer.msg('查无结果');
 				}

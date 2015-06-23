@@ -61,7 +61,7 @@ label.part {
     background: url(../img/maintain-selected.png) top right no-repeat;
 }
 .light-emphasis{margin-top:5px}
-.container-fluid div.part-title>strong{font-size:15px;}
+.container-fluid div.part-title>strong{font-size:15px;margin-right:10px;}
 .container-fluid>form>.row>div.part{border:0px; border-bottom:1px solid #C0C0C0;border-top: 1px solid #C0C0C0;}
 .container-fluid>form>.row>div.part>div.part-body{padding:0px}
 .container-fluid div.part-body>div.part{margin:10px} 
