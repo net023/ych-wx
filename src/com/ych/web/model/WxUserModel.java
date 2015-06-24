@@ -1,7 +1,5 @@
 package com.ych.web.model;
 
-import java.util.List;
-
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.ych.core.plugin.annotation.Table;
@@ -16,17 +14,8 @@ public class WxUserModel extends Model<WxUserModel> {
 		return Db.update(sql, openid);
 	}
 
-	public List<WxUserModel> getPage(String openid) {
-		return this
-				.find("select id, openid, head as pUrl, name as nick, qq as pAccount, phone from wxuser where openid = ? limit 1",
-						openid);
-	}
-
 	public WxUserModel getUser(String openid) {
-		return this
-				.findFirst(
-						"select id, openid, head, `name`, qq from wxuser where openid = ?",
-						openid);
+		return this.findFirst("select * from wxuser where openid = ?",openid);
 	}
 
 	public boolean bindPhone(Integer uID, String phone) {

@@ -39,7 +39,7 @@ public class YchWxController extends BaseController {
 	private static final Logger LOG = Logger.getLogger(YchWxController.class);
 	private static final String WX_SER_URL = YchConstants.YCH_BASEURL;
 	private static final String OAUTH2_URL = YchConstants.WXOAUTH2URL+"appid="+ DbConstants.APPID
-			+ "&redirect_uri={0}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+			+ "&redirect_uri={0}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 
 	/**
 	 * 保养预约
@@ -58,7 +58,7 @@ public class YchWxController extends BaseController {
 					.getWxUserInfo(code);
 			// TODO 此处有一个BUG
 			System.out.println(infos);
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			System.out.println("uID: " + uID);
 			WxUserCarModel car = WxUserCarModel.dao.getCar(uID);
 			setAttr("car", car);
@@ -113,7 +113,7 @@ public class YchWxController extends BaseController {
 			Map<String, Object> infos = AccessUserInfoByOAuth2
 					.getWxUserInfo(code);
 			System.out.println(infos);
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			System.out.println("uID: " + uID);
 			Page<OrderModel> pager = OrderModel.dao.getOrders(1, 10, uID);
 			setAttr("orders", pager.getList());
@@ -140,7 +140,7 @@ public class YchWxController extends BaseController {
 			Map<String, Object> infos = AccessUserInfoByOAuth2
 					.getWxUserInfo(code);
 			System.out.println(infos);
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			System.out.println("uID: " + uID);
 			WxUserCarModel car = WxUserCarModel.dao.getCar(uID);
 			setAttr("car", car);
@@ -187,7 +187,7 @@ public class YchWxController extends BaseController {
 			Map<String, Object> infos = AccessUserInfoByOAuth2
 					.getWxUserInfo(code);
 			System.out.println(infos);
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			WxUserCarModel carModel = WxUserCarModel.dao.getWxUserCarModel(uID);
 			boolean result = false;
 			if (carModel == null) {
@@ -373,9 +373,7 @@ public class YchWxController extends BaseController {
 			Map<String, Object> infos = AccessUserInfoByOAuth2
 					.getWxUserInfo(code);
 			System.out.println(infos);
-			Map<String, Object> userInfos = (Map<String, Object>) infos
-					.get("userInfo");
-			String phone = (String) userInfos.get("phone");
+			String phone = (String) infos.get("phone");
 			if (phone != null)
 				setAttr("phone", phone);
 			System.out
@@ -478,7 +476,7 @@ public class YchWxController extends BaseController {
 					.getWxUserInfo(code);
 			System.out.println(infos);
 
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			if (phone != null) {
 				if (!WxUserModel.dao.bindPhone(uID, phone)) {
 					setAttr("error", "手机绑定失败");
@@ -652,7 +650,7 @@ public class YchWxController extends BaseController {
 			Map<String, Object> infos = AccessUserInfoByOAuth2
 					.getWxUserInfo(code);
 			System.out.println(infos);
-			Integer uID = (Integer) infos.get("did");
+			Integer uID = (Integer) infos.get("id");
 			boolean result = StoreEvalModel.dao.commitEval(uID, sID, content,
 					oID, grade);
 			if (result)
