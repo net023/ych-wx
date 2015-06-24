@@ -22,6 +22,7 @@ import com.ych.core.plugin.annotation.ControlPlugin;
 import com.ych.core.plugin.annotation.TablePlugin;
 import com.ych.core.plugin.sqlinxml.SqlXmlPlugin;
 import com.ych.tools.DevConstants;
+import com.ych.web.interceptor.SessionInterceptor;
 
 public class WeixinConfig extends JFinalConfig {
 
@@ -77,7 +78,7 @@ public class WeixinConfig extends JFinalConfig {
 
 	@Override
 	public void configInterceptor(Interceptors me) {
-
+//		me.add(new SessionInterceptor());
 	}
 
 	@Override
