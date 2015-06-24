@@ -7,6 +7,7 @@ import com.jfinal.kit.EncryptionKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.api.ApiResult;
 import com.jfinal.weixin.sdk.api.JsApiTicket;
 import com.jfinal.weixin.sdk.api.JsApiTicketApi;
@@ -91,6 +92,7 @@ public class WeixinApiController extends ApiController {
 		result.put("timestamp", timestamp);
 		result.put("signature", signature);
 		result.put("nonceStr", noncestr);
+		result.put("appId", ApiConfigKit.getApiConfig().getAppId());
 		renderJson(result);
 
 	}

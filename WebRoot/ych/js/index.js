@@ -51,7 +51,9 @@ $(function() {
 	$.get(url, function(data) {
 		wx.config({
 		    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-		    appId: 'wxff69838532feef00', // 必填，公众号的唯一标识
+		  //  appId: 'wxff69838532feef00', // 必填，公众号的唯一标识
+//		    appId: 'wx9d17e381728dfb0f', // 必填，公众号的唯一标识
+		    appId: data.appId, // 必填，公众号的唯一标识
 		    timestamp: data.timestamp, // 必填，生成签名的时间戳
 		    nonceStr: data.nonceStr, // 必填，生成签名的随机串
 		    signature: data.signature,// 必填，签名，见附录1
@@ -73,7 +75,7 @@ $(function() {
     	}
     	var carId = getCar();
     	var carlyid = $('#car-lyid').val();
-    	sessionStorage.setItem('order', JSON.stringify({car: {id: carId, lyid: carlyid}, mtser: 1}));
+//    	sessionStorage.setItem('order', JSON.stringify({car: {id: carId, lyid: carlyid}, mtser: 1}));
     	wx.getLocation({
     	    success: function (res) {
     	        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
