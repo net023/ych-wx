@@ -42,26 +42,26 @@ a:active {
     color: #c7defb;
 }
 input[type="radio"] {
-    display: none;
+	display: none;
 }
 label.part {
-    display: block;
+	display: block;
 }
 label.part {
-    padding: 0;
+	padding: 0;
     border: #C0C0C0 1px solid;
     background: url(../img/maintain-unselected.png) top right no-repeat;
     margin:10px;   
 }
 .part + .part {
-    margin-top: 5px;
+	margin-top: 5px;
 }
 .part-body > label.checked {
     border: #39adff 1px solid;
     background: url(../img/maintain-selected.png) top right no-repeat;
 }
 .light-emphasis{margin-top:5px}
-.container-fluid div.part-title>strong{font-size:15px;margin-right:10px;}
+.container-fluid div.part-title>strong{font-size:15px;margin-right:10px}
 .container-fluid>form>.row>div.part{border:0px; border-bottom:1px solid #C0C0C0;border-top: 1px solid #C0C0C0;}
 .container-fluid>form>.row>div.part>div.part-body{padding:0px}
 .container-fluid div.part-body>div.part{margin:10px} 
@@ -74,5 +74,7 @@ label.part {
 
 .container-fluid>form>.row>div.part>div.part-body div.row{margin:10px -5px}
 .container-fluid>form>.row>div.part>div.part-body>label.part>div.part-footer{border-top:1px solid #C0C0C0;font-weight: normal;font-size:15px;}
-.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-4{font-weight: normal;padding:0px 5px;}
+.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-6{font-weight: normal;padding:0px 5px;}
+.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-12{margin:0px 0px 10px}
+.container-fluid>form>.row>div.part>div.part-body>label.part>div.part-body div.col-xs-12:last-child{margin:0px}
 .container-fluid>form>.row:last-child>div.part>div.part-body{margin:10px 25px}

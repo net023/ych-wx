@@ -161,33 +161,39 @@
 				`order`.price,
 				ms_id,
 				GROUP_CONCAT(order_commodity.type) AS types,
-				CONCAT(
-			
+				GROUP_CONCAT(
+	
 					IF (
-						GROUP_CONCAT(filter_pic.p_id),
-						GROUP_CONCAT(
-			
+						CONCAT(
+	
 							IF (
-								filter_pic.p_id,
-								filter_pic.p_id,
-								'-1'
-							)
-						),
-						''
-					),
-			
-				IF (
-					GROUP_CONCAT(oil_pic.p_id),
-					GROUP_CONCAT(
-			
+								filter_pic.p_id IS NULL,
+								'',
+								filter_pic.p_id
+							),
+	
 						IF (
-							oil_pic.p_id,
-							oil_pic.p_id,
-							'-1'
+							oil_pic.p_id IS NULL,
+							'',
+							oil_pic.p_id
 						)
-					),
-					''
-				)
+						) = '',
+						- 1,
+						CONCAT(
+	
+							IF (
+								filter_pic.p_id IS NULL,
+								'',
+								filter_pic.p_id
+							),
+	
+						IF (
+							oil_pic.p_id IS NULL,
+							'',
+							oil_pic.p_id
+						)
+						)
+					)
 				) AS pics
 			
 			FROM

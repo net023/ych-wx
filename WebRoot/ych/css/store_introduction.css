@@ -43,7 +43,8 @@
 	z-index: 101;
 }
 
-.container-fluid .row div.col-xs-12.text-light{padding:0px 5px}
+.container-fluid .row div.col-xs-12.text-light{padding:0px 5px;margin-bottom:10px;}
+.container-fluid .row div.col-xs-12.text-light:last-child{margin-bottom:0px}
 .container-fluid .row._title,.container-fluid .row._info,.container-fluid .row._address,.container-fluid .row._pl{padding:10px}
 .container-fluid .row._title>div.col-xs-12{font-size:15px;font-weight: bold;}
 .container-fluid .row._title>div.col-xs-12>span.text-light{font-size:12px;font-weight: normal;color: #676767;margin-left:5px}

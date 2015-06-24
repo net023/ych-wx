@@ -12,7 +12,7 @@ public class WxUserCarModel extends Model<WxUserCarModel> {
 	public WxUserCarModel getCar(Integer uID) {
 		return this
 				.findFirst(
-						"select c_id as id, car.name, ly_id from (select c_id from wxuser_car where wxuser_car.u_id = ?) t left join car on t.c_id = car.id",
+						"SELECT c_id AS id, CONCAT(car_brand.`name`,' ',car. `name`) AS `name`, ly_id FROM ( SELECT c_id FROM wxuser_car WHERE wxuser_car.u_id =? ) t LEFT JOIN car ON t.c_id = car.id LEFT JOIN car_type ON car.t_id = car_type.id LEFT JOIN car_series ON car_type.s_id = car_series.id LEFT JOIN car_brand ON car_series.b_id = car_brand.id",
 						uID);
 	}
 

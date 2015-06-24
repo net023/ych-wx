@@ -362,7 +362,7 @@
 						</div>
 						<div class="part-footer text-right middle">
 							<input id="totalPrice" name="totalPrice" type="hidden" value="${trunc(totalPrice!0, 2)}">
-							共计： <span class="emphasis" id="totalPriceText">${totalPrice != -1 ? '￥' + trunc(totalPrice, 2) + '元' : '请以门店价格为准'}</span>
+							共计： <span class="emphasis" id="totalPriceText">${totalPrice != -1 ? '￥' + trunc(totalPrice, 2) + '元(已包含工时费)' : '请以门店价格为准'}</span>
 						</div>
 					</div>
 				</div>
@@ -402,9 +402,11 @@
 				</div>
 				<div class="part-body light">
 					<div class="col-xs-12">
-						<div class="col-xs-4"><img class="icon" src="img/ic_praise.png">&nbsp;{{if rate}}好评率{{:rate}}%{{else}}好评率未知{{/if}}</div>
-						<div class="col-xs-4"><img class="icon" src="img/ic_tool.png">&nbsp;{{if serve}}服务{{:serve}}次{{else}}服务次数未知{{/if}}</div>
-						<div class="col-xs-4"><img class="icon" src="img/ic_address.png">&nbsp;{{if distance}}离我{{:distance}}K米{{else}}距离未知{{/if}}</div>
+						<div class="col-xs-6"><img class="icon" src="img/ic_praise.png">&nbsp;{{if rate}}好评率{{:rate}}%{{else}}好评率未知{{/if}}</div>
+						<div class="col-xs-6"><img class="icon" src="img/ic_tool.png">&nbsp;{{if serve}}服务{{:serve}}次{{else}}服务次数未知{{/if}}</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="col-xs-6"><img class="icon" src="img/ic_address.png">&nbsp;{{if distance}}离我{{:distance}}K米{{else}}距离未知{{/if}}</div>
 					</div>
 				</div>
 				<div class="part-footer middle">
