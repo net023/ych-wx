@@ -62,6 +62,7 @@ public class YchWxController extends BaseController {
 			System.out.println("uID: " + uID);
 			WxUserCarModel car = WxUserCarModel.dao.getCar(uID);
 			setAttr("car", car);
+			setAttr("tell", YchConstants.YCH_TELL);
 		} catch (Exception e) {
 			LOG.error("失败", e);
 		}
@@ -601,6 +602,8 @@ public class YchWxController extends BaseController {
 	public void ckdt() {
 		setAttr("lon", getPara("lon"));
 		setAttr("lat", getPara("lat"));
+		setAttr("name", getPara("name"));
+		setAttr("address", getPara("address"));
 		render("/ych/store_map");
 	}
 

@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <header class="row">
             <div class="col-xs-4">
-                <a class="plain-link text-white" href="tel:123456789"><img src="img/ic_phone.png" alt="">客服电话</a>
+                <a class="plain-link text-white" href="tel:${tell!}"><img src="img/ic_phone.png" alt="">客服电话</a>
             </div>
             <div class="col-xs-4 text-center">
                 <img class="logo" src="img/title.png">
@@ -32,17 +32,17 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href=""><img src="img/ic_menu.png">
                     </a>
                     <ul class="dropdown-menu" role="menu" style="background-color:#333333">
-                        <li role="presentation"><a title="保养档案" style="color:#939393" href="byda"><img src="img/ic_form.png"/>&nbsp;&nbsp;保养档案</a> </li>
+                        <li role="presentation"><a title="我的订单" style="color:#939393" href="byda"><img src="img/ic_form.png"/>&nbsp;&nbsp;我的订单</a> </li>
                         <li role="presentation"><a title="保养查询" style="color:#939393" href="bycx"><img src="img/ic_search.png"/>&nbsp;&nbsp;保养查询</a> </li>
-                        <li role="presentation"><a title="关于我们" style="color:#939393" href="gywm"><img src="img/ic_about_us.png"/>&nbsp;&nbsp;关于我们</a> </li>
                         <li role="presentation"><a title="帮助中心" style="color:#939393" href="bzzx"><img src="img/ic_help.png"/>&nbsp;&nbsp;帮助中心</a> </li>
+                        <li role="presentation"><a title="关于我们" style="color:#939393" href="gywm"><img src="img/ic_about_us.png"/>&nbsp;&nbsp;关于我们</a> </li>
                     </ul>
                 </div>
 
             </div>
         </header>
         <% if (carousels.~size != 0) { %>
-        <div class="row">
+        <div class="row carousel-row">
             <div id="myCarousel" class="carousel slide col-md-12">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -77,19 +77,19 @@
                     <div id="car-name">${car! != null ? car.name : '添加我的爱车'}</div>
                     <input id="car" type="hidden" value="${car! != null ? car.id}">
                     <input id="car-lyid" type="hidden" value="${car! != null ? car.ly_id}">
-                    <div class="small">点击选择我的爱车品牌</div>
+                    <div class="small">点击${car! != null ? '更改' : '选择'}我的爱车品牌</div>
                 </div>
                 <img class="pull-right icon" src="img/ic_go.png">
             </div>
         </div>
         <div class="row part">
             <div class="col-xs-12 part-title">
-                <img src="img/maintain-1.png" alt="" class="pull-left" />
+                <img src="img/ic_aodi.png" alt="" class="pull-left" />
                 <div class="pull-left">
                     <div>大保养</div>
                     <div class="small">全面的爱车保养服务</div>
                 </div>
-                <button class="pull-right btn btn-green" id="big-maintain">选择保养</button>
+                <button class="pull-right btn btn-green" id="big-maintain">我要保养</button>
             </div>
             <div class="col-xs-12 part-body text-center">
                 <div class="col-xs-3">
@@ -115,9 +115,9 @@
                 <img src="img/maintain-2.png" alt="" class="pull-left" />
                 <div class="pull-left">
                     <div>小保养</div>
-                    <div class="small">方便快捷的爱车保养服务</div>
+                    <div class="small">快捷的爱车保养服务</div>
                 </div>
-                <button class="pull-right btn btn-green" id="small-maintain">选择保养</button>
+                <button class="pull-right btn btn-green" id="small-maintain">我要保养</button>
             </div>
             <div class="col-xs-12 part-body text-center">
                 <div class="col-xs-3">

@@ -55,6 +55,7 @@ $(function() {
             if (data.r) {
             	var bys = data.d != '没识别到该车型相关信息！' ? JSON.parse(data.d) : null;
                 if ($.isArray(bys)) {
+                	$('.query-result').removeClass('hidden');
                     console.log(bys);
                     $('.part-body').empty();
                     $.each(bys, function(index, obj) {

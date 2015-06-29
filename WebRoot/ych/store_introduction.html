@@ -59,7 +59,7 @@
         arrdata = getEvaluates(${store.id}, 1);
         if (arrdata.length == 0) {
             pageObj.options.totalPage = 1;
-            layer.msg('暂无评论');
+            $('._pl').html('<div class="col-xs-12 text-center text-light">暂无车友评论</div>');
         } else {
             pageObj.options.totalPage = 2;
             pageObj.reloadData(arrdata);
@@ -103,18 +103,18 @@
         </div>
         <div class="row">
             <div class="col-xs-12 text-light">
-                <div class="col-xs-4"><img src="img/ic_praise.png">好评率${store.rate!0}%</div>
-                <div class="col-xs-4"><img src="img/ic_tool.png">服务${store.service!0}次</div>
-                <div class="col-xs-4"><img src="img/ic_address.png">离我${store.distance!0/1000}K米</div>
+                <div class="col-xs-6"><img src="img/ic_praise.png">好评率${store.rate!0}%</div>
+                <div class="col-xs-6"><img src="img/ic_tool.png">服务${store.service!0}次</div>
+                <div class="col-xs-6"><img src="img/ic_address.png">离我${store.distance!0/1000}K米</div>
+                <div class="col-xs-6"><img src="img/ic_address.png">资质</div>
             </div>
         </div>
         <div class="row _address">
-            <div class="col-xs-12 _a1">地址：${store.address}</div>
-            <div class="col-xs-12"><a href="ckdt?lat=${store.lat}&lon=${store.lon}">地图上查看&gt;</a>
-            </div>
+            <div class="col-xs-6 _a1">地址：${store.address}</div>
+            <div class="col-xs-6 text-right"><a href="ckdt?lat=${store.lat}&lon=${store.lon}&name=${store.name}&address=${store.address}">地图上查看&gt;</a></div>
         </div>
         <div class="row _info">
-            <div class="col-xs-12 text-light">${store.info}</div>
+            <div class="col-xs-12 text-light">${store.info!'暂无简介'}</div>
         </div>
         <div class="row _title">
             <div class="col-xs-12"><img src="img/ic_title_prompt.png">车友评论<span class="text-light">(限成功下单车友)</span></div>

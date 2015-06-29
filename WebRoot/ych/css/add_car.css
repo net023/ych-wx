@@ -47,6 +47,12 @@ input[type=radio] + label {
 	margin-left: 10px;
 	margin-right: 5px;
 }
+#result .part {
+	border-bottom: none;
+}
+#result button {
+	
+}
 .container-fluid .search.row input.form-control{text-align: center;}
 .container-fluid .row>div.col-xs-12.title{margin:10px}
 .container-fluid .row>div.col-xs-12.title>strong{font-weight: normal;font-size: 15px;}

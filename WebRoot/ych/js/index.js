@@ -42,6 +42,9 @@ $(function() {
             }
         });
     });*/
+	var height = $(window).height() * 0.3 > 145 ? 145 : $(window).height() * 0.3;
+	$('#myCarousel').height(height); 
+//	$('.row.carousel-row').height($(window).height * 0.5);
     if(!/MicroMessenger/i.test(navigator.userAgent)) {
         alert('请通过微信打开');
         location = 'about:blank';

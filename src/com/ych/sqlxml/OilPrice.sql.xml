@@ -83,7 +83,7 @@
 		)
 			) AS `name`,
 			p_id,
-			new_oil.price
+			CEIL(new_oil.price) AS price
 		FROM
 			(
 				SELECT

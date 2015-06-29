@@ -22,7 +22,7 @@ img.icon {
 .query-result {
 	position: absolute;
 	width: 100%;
-	overflow: hidden;
+	overflow: auto;
 	top: 240px;
 	bottom: 0px;
 }

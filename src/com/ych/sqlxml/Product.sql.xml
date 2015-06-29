@@ -123,7 +123,7 @@
 		)
 		)
 			) AS `name`,
-			price,
+			CEIL(price) AS price,
 			number,
 			litre,
 			p_id,
@@ -202,7 +202,7 @@
 					t4.id AS b_id,
 					t1.t_id AS type,
 					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
-					t2.price,
+					CEIL(t2.price) AS price,
 					1 AS number,
 					NULL AS litre,
 					t3.p_id,
@@ -279,7 +279,7 @@
 		)
 		)
 			) AS `name`,
-			price,
+			CEIL(price) AS price,
 			number,
 			litre,
 			p_id,
@@ -358,7 +358,7 @@
 					t4.id AS b_id,
 					t1.t_id AS type,
 					CONCAT(t4.`name`, '|', t5.`name`) AS `name`,
-					t2.price,
+					CEIL(t2.price) AS price,
 					1 AS number,
 					NULL AS litre,
 					t3.p_id,

@@ -51,6 +51,8 @@ $(function() {
                         var newValue;
                         var oilName = $('#oil' + litre + '_name');
                         oilName.text(newName);
+                        var oilPic = $('#oil' + litre + '_img');
+                        oilPic.attr('src', !newPic || newPic == -1 ? 'img/img_product5.png' : '../file/download?fID=' + newPic);
                         var oilPrice = $('#oil' + litre + '_price');
                         var oldPriceValue = oilPrice.text();
                         /*alert(totalPriceValue + ', ' + oldPriceValue + ', ' + newPrice);*/
@@ -68,7 +70,7 @@ $(function() {
                         }
                     }
                     totalPrice.val(totalPriceValue);
-                    totalPriceText.text(totalPriceValue >= 0 ? '￥' + totalPriceValue.toFixed(2) + '元' : '请以门店价格为准');
+                    totalPriceText.text(totalPriceValue >= 0 ? totalPriceValue + '元' : '请以门店价格为准');
                     result = true;
                 } else {
                     layer.msg(data.e);
